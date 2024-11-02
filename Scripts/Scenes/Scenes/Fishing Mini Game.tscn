@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://cwkhbjmb7mev4"]
+
+[ext_resource type="Script" path="res://Scripts/Fishing/FishingMiniGame.cs" id="1_bgull"]
+[ext_resource type="PackedScene" uid="uid://jsmej4omho0p" path="res://Scenes/Prefabs/Fishing Mini Game Fish.tscn" id="2_884n6"]
+[ext_resource type="Texture2D" uid="uid://cgaaggujww1lm" path="res://Assets/icon.svg" id="2_y03hg"]
+[ext_resource type="Script" path="res://Scripts/Fishing/FishingInputHandler.cs" id="3_7kvm4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q6kom"]
+size = Vector2(128, 128)
+
+[node name="FishingMiniGame" type="Node2D"]
+script = ExtResource("1_bgull")
+fishPrefab = ExtResource("2_884n6")
+hook = ExtResource("2_y03hg")
+fishSpeed = 5.0
+fishRespawnDelayMin = 3.0
+fishRespawnDelayMax = 5.0
+fishSpawnPosition = Vector2(0, 600)
+
+[node name="Node" type="Node" parent="." node_paths=PackedStringArray("fishingMiniGame")]
+script = ExtResource("3_7kvm4")
+fishingMiniGame = NodePath("..")
+
+[node name="Sprite2D - Hook" type="Sprite2D" parent="."]
+position = Vector2(1200, 600)
+texture = ExtResource("2_y03hg")
+
+[node name="Area2D" type="Area2D" parent="Sprite2D - Hook"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D - Hook/Area2D"]
+shape = SubResource("RectangleShape2D_q6kom")
+
+[connection signal="area_entered" from="Sprite2D - Hook/Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Sprite2D - Hook/Area2D" to="." method="_on_area_2d_area_exited"]
