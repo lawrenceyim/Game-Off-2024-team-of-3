@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 public partial class PlayerInputHandler : Node, IInputListener {
-    [Export] private PlayerMovement playerMovement;
+    [Export] private PlayerMovement _playerMovement;
 
     public override void _Ready() {
         InputManager.GetInstance().AddListener(this);
@@ -22,7 +22,7 @@ public partial class PlayerInputHandler : Node, IInputListener {
         if (Input.IsActionPressed("MoveRight")) {
             inputVector.X += 1;
         }
-        playerMovement.Move(inputVector.Normalized());
+        _playerMovement.Move(inputVector.Normalized());
         
         if (Input.IsActionJustPressed("Action")) {
             // Player Action

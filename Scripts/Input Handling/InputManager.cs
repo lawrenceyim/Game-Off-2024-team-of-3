@@ -13,9 +13,9 @@ using Godot;
 using System.Collections.Generic;
 
 public partial class InputManager : Node {
-    private static InputManager instance;
-    private Stack<IInputListener> listenerStack;
-    private IInputListener activeListener;
+    private static InputManager _instance;
+    private Stack<IInputListener> _listenerStack;
+    private IInputListener _activeListener;
 
     private InputManager() {
         GD.Print("InputManager created.");
@@ -23,43 +23,43 @@ public partial class InputManager : Node {
 
     public static InputManager GetInstance() {
         GD.Print("InputManager.GetInstance called.");
-        if (instance == null) {
-            instance = new InputManager();
+        if (_instance == null) {
+            _instance = new InputManager();
         }
-        return instance;
+        return _instance;
     }
 
     public override void _Ready() {
-        instance = this;
-        listenerStack = new Stack<IInputListener>();
+        _instance = this;
+        _listenerStack = new Stack<IInputListener>();
     }
 
     public override void _Process(double delta) {
-        activeListener?.ProcessInput();
+        _activeListener?.ProcessInput();
     }
 
     public void AddListener(IInputListener listener) {
         GD.Print("Listener added");
-        if (activeListener == null) {
-            activeListener = listener;
+        if (_activeListener == null) {
+            _activeListener = listener;
             return;
         }
-        listenerStack.Push(activeListener);
-        activeListener = listener;
+        _listenerStack.Push(_activeListener);
+        _activeListener = listener;
     }
 
     public void ReturnToPreviousListener() {
-        if (listenerStack.Count > 0) {
-            activeListener = listenerStack.Pop();
+        if (_listenerStack.Count > 0) {
+            _activeListener = _listenerStack.Pop();
         }
     }
 
     public void EmptyListenerStack() {
-        listenerStack.Clear();
+        _listenerStack.Clear();
     }
 
     public void ClearActiveListener() {
-        activeListener = null;
+        _activeListener = null;
     }
 
     public void RemoveAllListeners() {

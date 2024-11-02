@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 public partial class SceneManager : Node
 {
-	private static SceneManager instance;
-	private Stack<Node> sceneStack;
-	private Node activeScene;
+	private static SceneManager _instance;
+	private Stack<Node> _sceneStack;
+	private Node _activeScene;
 
 	private SceneManager() {
 		GD.Print("SceneManager created.");
@@ -17,56 +17,56 @@ public partial class SceneManager : Node
 
 	public static SceneManager GetInstance() {
         GD.Print("SceneManager.GetInstance called.");
-		if (instance == null) {
-			instance = new SceneManager();
+		if (_instance == null) {
+			_instance = new SceneManager();
 		}
-		return instance;
+		return _instance;
 	}
 
 	public override void _Ready() {
-        instance = this;
-        sceneStack = new Stack<Node>();
+        _instance = this;
+        _sceneStack = new Stack<Node>();
     }
 
 	public void PauseAndAddScene(Node scene) {
 		GD.Print("Scene paused and added.");
-		if (activeScene == null) {
-			activeScene = scene;
+		if (_activeScene == null) {
+			_activeScene = scene;
 			return;
 		}
-		PauseScene(activeScene);
-		sceneStack.Push(activeScene);
-		activeScene = scene;
-		GD.Print("Stack count: " + sceneStack.Count);
+		PauseScene(_activeScene);
+		_sceneStack.Push(_activeScene);
+		_activeScene = scene;
+		GD.Print("Stack count: " + _sceneStack.Count);
 	}
 
 	public void AddScene(Node scene) {
 		GD.Print("Scene added.");
-		if (activeScene == null) {
-			activeScene = scene;
+		if (_activeScene == null) {
+			_activeScene = scene;
 			return;
 		}
-		sceneStack.Push(activeScene);
-		activeScene = scene;
-		GD.Print("Stack count: " + sceneStack.Count);
+		_sceneStack.Push(_activeScene);
+		_activeScene = scene;
+		GD.Print("Stack count: " + _sceneStack.Count);
 	}
 
 	public void ReplaceCurrentScene(Node scene) {
 		GD.Print("Current scene replaced.");
-		activeScene = scene;
+		_activeScene = scene;
 	}
 
 	public void ReturnToPreviousScene() {
 		GD.Print("Return to previous scene called.");
-		if (sceneStack.Count > 0) {
-			activeScene?.QueueFree();
-			activeScene = sceneStack.Pop();
-			UnpauseScene(activeScene);
+		if (_sceneStack.Count > 0) {
+			_activeScene?.QueueFree();
+			_activeScene = _sceneStack.Pop();
+			UnpauseScene(_activeScene);
 		}
 	}
 
 	public void EmptySceneStack() {
-		sceneStack.Clear();
+		_sceneStack.Clear();
 	}
 
 	public void PauseScene(Node scene) {

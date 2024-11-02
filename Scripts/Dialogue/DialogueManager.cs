@@ -1,7 +1,8 @@
 /*
 	Add as AUTOLOAD
 	
-	dialogueDict will contain all the in-game text using a key-value pair.
+
+	textDict will contain all the in-game text using a key-value pair.
 	The key will be the text's unique ID.
 	The value will be the text in the appropriate language, selected in the settings.
 
@@ -17,15 +18,14 @@
 */
 
 using Godot;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
 public partial class DialogueManager : Node
 {
-	private const string textFilePath = "Resources/text.tsv";
-	private string language = "english_text";
-	private Dictionary<string, string> textDict = new Dictionary<string, string>();
+	private const string _textFilePath = "Resources/text.tsv";
+	private string _language = "english_text"; // Move this to a Settings.cs file later
+	private Dictionary<string, string> _textDict = new Dictionary<string, string>();
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -34,26 +34,21 @@ public partial class DialogueManager : Node
 		ReadTextFromFile();
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
-
 	private void ReadTextFromFile() {
-		if (!File.Exists(textFilePath)) {
+		if (!File.Exists(_textFilePath)) {
 			throw new IOException("Dialogue file cannot be found.");
 		}
 		GD.Print("Dialogue file found.");
 
-		textDict.Clear(); 
+		_textDict.Clear(); 
 
-		using (StreamReader reader = new StreamReader(textFilePath)) {
+		using (StreamReader reader = new StreamReader(_textFilePath)) {
 			string line = reader.ReadLine();
 			string[] columnHeaders = line.Split("\t");
 			int translationIndex = 0;
 
 			for (int i = 1; i < columnHeaders.Length; i++) {
-				if (columnHeaders[i].Trim().Equals(language)) {
+				if (columnHeaders[i].Trim().Equals(_language)) {
 					translationIndex = i;
 					break;
 				}
@@ -66,7 +61,7 @@ public partial class DialogueManager : Node
 			while ((line = reader.ReadLine()) != null) {
 				GD.Print(line);
 				string[] cells  = line.Split("\t");
-				textDict.Add(cells[0].Trim(), cells[translationIndex].Trim());
+				_textDict.Add(cells[0].Trim(), cells[translationIndex].Trim());
 			}
 		}
 	}
