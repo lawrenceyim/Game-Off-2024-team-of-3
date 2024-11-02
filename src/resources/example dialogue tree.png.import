@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cpf3vix453upe"
-path="res://.godot/imported/example dialogue tree.png-411bdceae703aaf8e5d58fc3152a0abe.ctex"
+path="res://.godot/imported/example dialogue tree.png-4c6ec35d95628ca5afd2cdd79ce6381f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/example dialogue tree.png"
-dest_files=["res://.godot/imported/example dialogue tree.png-411bdceae703aaf8e5d58fc3152a0abe.ctex"]
+source_file="res://src/resources/example dialogue tree.png"
+dest_files=["res://.godot/imported/example dialogue tree.png-4c6ec35d95628ca5afd2cdd79ce6381f.ctex"]
 
 [params]
 
