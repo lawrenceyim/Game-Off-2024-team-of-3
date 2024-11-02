@@ -18,6 +18,7 @@ config/icon="res://Assets/icon.svg"
 
 SceneManager="*res://Scripts/Scene Management/SceneManager.cs"
 InputManager="*res://Scripts/Input Handling/InputManager.cs"
+DialogueManager="*res://Scripts/Dialogue/DialogueManager.cs"
 
 [display]
 
