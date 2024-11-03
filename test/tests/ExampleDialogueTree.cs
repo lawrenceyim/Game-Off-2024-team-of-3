@@ -36,9 +36,20 @@ public class ExampleDialogueTree {
             new [] {quest1Key, quest2Key, quest3Key}));
         _tree.AddNode(questFinishedKey, new BooleanNode(congratulationKey, waitingKey, () => questFinished));
 
+        _tree.AddNode(waitingKey, new TextNode(nullKey, nullKey, "Waiting for quest to finish.", nullKey));
+        _tree.AddNode(congratulationKey, new TextNode(nullKey, nullKey, "Congratulation on finishing the quest.", givePlayerRewardKey));
+
         _tree.AddNode(assignQuest1Key, new EventNode(() => { questAssigned = true; assignedQuestnumber = 1; }, nullKey));
         _tree.AddNode(assignQuest2Key, new EventNode(() => { questAssigned = true; assignedQuestnumber = 2; }, nullKey));
         _tree.AddNode(assignQuest3Key, new EventNode(() => { questAssigned = true; assignedQuestnumber = 3; }, nullKey));
         _tree.AddNode(givePlayerRewardKey, new EventNode(() => playerGold += playerRewardAmount, nullKey));
+    }
+
+    public BaseNode GetEvaluation() {
+        return _tree.Evaluate();
+    }
+
+    public BaseNode GetNextNodeByKey(string key) {
+        return _tree.GetNodeByKey(key);
     }
 }

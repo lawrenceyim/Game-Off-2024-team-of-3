@@ -20,6 +20,7 @@ public class DialogueTree {
         return _nodeDict.GetValueOrDefault(key, null);
     }
 
+    // TODO: Change to handle complex logic involving events
     public BaseNode Evaluate() {
         BaseNode current = _nodeDict.GetValueOrDefault(_rootKey, null);
         while (current is BooleanNode) {
