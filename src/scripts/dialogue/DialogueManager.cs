@@ -25,7 +25,7 @@ public partial class DialogueManager : Node
 {
 	private const string _textFilePath = "src/resources/text.tsv";
 	private string _language = "english_text"; // Move this to a Settings.cs file later
-	private Dictionary<string, string> _textDict = new Dictionary<string, string>();
+	private Dictionary<string, string> _textDict = new Dictionary<string, string>(); // Move this to a another class?
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

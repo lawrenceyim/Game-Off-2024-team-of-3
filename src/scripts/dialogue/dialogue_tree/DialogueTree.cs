@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 public class DialogueTree {
-    private Dictionary<string, BaseNode> _nodeDict;
+    private Dictionary<string, BaseNode> _nodeDict = new Dictionary<string, BaseNode>();
     private string _rootKey = "";
 
     public DialogueTree(string rootKey) {

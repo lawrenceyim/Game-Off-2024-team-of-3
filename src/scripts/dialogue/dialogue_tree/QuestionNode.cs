@@ -4,15 +4,15 @@ public class QuestionNode : BaseNode {
 	private string _name;
 	private string _icon;
 	private string _question;
-	private string[] _answers;
+	private string[] _answerKeys;
 	private string[] _nextNodeKeys;
 	private string _nextNodeKey = "";
 
-	public QuestionNode(string name, string icon, string question, string[] answers, string[] nextNodeKeys) {
+	public QuestionNode(string name, string icon, string question, string[] answerKeys, string[] nextNodeKeys) {
 		_name = name;
 		_icon = icon;
 		_question = question;
-		_answers = answers;
+		_answerKeys = answerKeys;
 		_nextNodeKeys = nextNodeKeys;
 	}
 
@@ -29,7 +29,7 @@ public class QuestionNode : BaseNode {
 	}
 
 	public string[] GetAnswers() {
-		return _answers;
+		return _answerKeys;
 	}
 
 	public void SetNextNode(int answerIndex) {

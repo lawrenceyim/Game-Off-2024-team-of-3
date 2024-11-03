@@ -10,6 +10,23 @@ export_presets.cfg
 # macOS
 .DS_Store
 
-# VS Code
+
+# Ignore build output directories
+bin/
+obj/
+
+# Ignore temporary files
+*.user
+*.suo
+*.swp
+
+# Ignore lock files and logs
+project.lock.json
+project.fragment.lock.json
+*.log
+
+# Ignore IDE-specific files
+.idea/
+*.csproj.user
 .vscode/
 .vs/
