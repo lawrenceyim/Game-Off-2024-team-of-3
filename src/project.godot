@@ -12,13 +12,12 @@ config_version=5
 
 config/name="GameOff2024teamof3"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
-config/icon="res://src/assets/icon.svg"
+config/icon="res://assets/icon.svg"
 
 [autoload]
 
-SceneManager="*res://src/scripts/scene_management/SceneManager.cs"
-InputManager="*res://src/scripts/input_handling/InputManager.cs"
-DialogueManager="*res://src/scripts/dialogue/DialogueManager.cs"
+DialogueManager="*res://scripts/dialogue/DialogueManager.cs"
+InputManager="*res://scripts/input_handling/InputManager.cs"
 
 [display]
 

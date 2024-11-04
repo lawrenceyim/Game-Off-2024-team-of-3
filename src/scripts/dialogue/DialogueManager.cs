@@ -23,7 +23,7 @@ using System.IO;
 
 public partial class DialogueManager : Node
 {
-	private const string _textFilePath = "src/resources/text.tsv";
+	private const string _textFilePath = "resources/text.tsv";
 	private string _language = "english_text"; // Move this to a Settings.cs file later
 	private Dictionary<string, string> _textDict = new Dictionary<string, string>(); // Move this to a another class?
 	

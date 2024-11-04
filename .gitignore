@@ -10,7 +10,6 @@ export_presets.cfg
 # macOS
 .DS_Store
 
-
 # Ignore build output directories
 bin/
 obj/
