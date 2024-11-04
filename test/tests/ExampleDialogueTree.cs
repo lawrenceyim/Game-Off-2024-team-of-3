@@ -25,15 +25,15 @@ public class ExampleDialogueTree {
         string givePlayerRewardKey = "give_player_reward";
 
         _tree = new DialogueTree(firstTimeMeetingKey);
-        
+
         _tree.AddNode(firstTimeMeetingKey, new BooleanNode(greetingKey, questAssignedKey, () => firstTimeMeeting));
-        
+
         _tree.AddNode(greetingKey, new TextNode(nullKey, nullKey, "Greetings player.", nullKey));
         _tree.AddNode(questAssignedKey, new BooleanNode(questFinishedKey, assignQuestKey, () => questAssigned));
 
         _tree.AddNode(assignQuestKey, new QuestionNode(nullKey, nullKey, "Which quest do you want to take?",
-            new [] {"Quest 1", "Quest 2", "Quest 3"}, // This would use the key for the translated text in prod
-            new [] {quest1Key, quest2Key, quest3Key}));
+            new[] { "Quest 1", "Quest 2", "Quest 3" }, // This would use the key for the translated text in prod
+            new[] { quest1Key, quest2Key, quest3Key }));
         _tree.AddNode(questFinishedKey, new BooleanNode(congratulationKey, waitingKey, () => questFinished));
 
         _tree.AddNode(waitingKey, new TextNode(nullKey, nullKey, "Waiting for quest to finish.", nullKey));

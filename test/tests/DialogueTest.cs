@@ -25,7 +25,7 @@ public class DialogueTreeTest {
         Assert.IsInstanceOfType(node, typeof(TextNode), "Expected a TextNode if quest is assigned but not finished.");
     }
 
-    [TestMethod] 
+    [TestMethod]
     public void QuestAssignedAndFinishedTest() {
         ExampleDialogueTree tree = new ExampleDialogueTree();
         tree.firstTimeMeeting = false;

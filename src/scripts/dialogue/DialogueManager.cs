@@ -21,48 +21,46 @@ using Godot;
 using System.Collections.Generic;
 using System.IO;
 
-public partial class DialogueManager : Node
-{
-	private const string _textFilePath = "resources/text.tsv";
-	private string _language = "english_text"; // Move this to a Settings.cs file later
-	private Dictionary<string, string> _textDict = new Dictionary<string, string>(); // Move this to a another class?
-	
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		GD.Print("DialogueManager added.");
-		ReadTextFromFile();
-	}
+public partial class DialogueManager : Node {
+    private const string _textFilePath = "resources/text.tsv";
+    private string _language = "english_text"; // Move this to a Settings.cs file later
+    private Dictionary<string, string> _textDict = new Dictionary<string, string>(); // Move this to a another class?
 
-	private void ReadTextFromFile() {
-		if (!File.Exists(_textFilePath)) {
-			throw new IOException("Dialogue file cannot be found.");
-		}
-		GD.Print("Dialogue file found.");
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready() {
+        GD.Print("DialogueManager added.");
+        ReadTextFromFile();
+    }
 
-		_textDict.Clear(); 
+    private void ReadTextFromFile() {
+        if (!File.Exists(_textFilePath)) {
+            throw new IOException("Dialogue file cannot be found.");
+        }
+        GD.Print("Dialogue file found.");
 
-		using (StreamReader reader = new StreamReader(_textFilePath)) {
-			string line = reader.ReadLine();
-			string[] columnHeaders = line.Split("\t");
-			int translationIndex = 0;
+        _textDict.Clear();
 
-			for (int i = 1; i < columnHeaders.Length; i++) {
-				if (columnHeaders[i].Trim().Equals(_language)) {
-					translationIndex = i;
-					break;
-				}
-			}
+        using (StreamReader reader = new StreamReader(_textFilePath)) {
+            string line = reader.ReadLine();
+            string[] columnHeaders = line.Split("\t");
+            int translationIndex = 0;
 
-			if (translationIndex == 0) {
-				throw new IOException("Text for selected language not found.");
-			}
+            for (int i = 1; i < columnHeaders.Length; i++) {
+                if (columnHeaders[i].Trim().Equals(_language)) {
+                    translationIndex = i;
+                    break;
+                }
+            }
 
-			while ((line = reader.ReadLine()) != null) {
-				GD.Print(line);
-				string[] cells  = line.Split("\t");
-				_textDict.Add(cells[0].Trim(), cells[translationIndex].Trim());
-			}
-		}
-	}
+            if (translationIndex == 0) {
+                throw new IOException("Text for selected language not found.");
+            }
+
+            while ((line = reader.ReadLine()) != null) {
+                GD.Print(line);
+                string[] cells = line.Split("\t");
+                _textDict.Add(cells[0].Trim(), cells[translationIndex].Trim());
+            }
+        }
+    }
 }
