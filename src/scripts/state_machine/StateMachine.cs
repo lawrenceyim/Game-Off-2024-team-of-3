@@ -9,8 +9,8 @@ public partial class StateMachine : Node {
         _stateDict.Add(key, aiState);
     }
 
-    public void ChangeCurrentState(string key) {
-        _currentState = _stateDict.GetValueOrDefault(key);
+    public string GetCurrentState() {
+        return _currentState.stateName;
     }
 
     public override void _Process(double delta) {
@@ -21,10 +21,10 @@ public partial class StateMachine : Node {
         _currentState.onPhysicsUpdate(delta);
     }
 
-    private void SwitchState(string key) {
+    public void SwitchState(string key) {
         AiState newState = _stateDict.GetValueOrDefault(key, null);
-        _currentState.onExit();
-        newState.onStart();
+        _currentState?.onExit();
+        newState?.onStart();
         _currentState = newState;
     }
 
@@ -36,13 +36,13 @@ public partial class StateMachine : Node {
             _startingStateKey = startingStateKey;
         }
 
-        public Builder AddState(string key, AiState state) {
-            _stateMachine.AddState(key, state);
+        public Builder AddState(AiState state) {
+            _stateMachine.AddState(state.stateName, state);
             return this;
         }
 
         public StateMachine Build() {
-            _stateMachine.ChangeCurrentState(_startingStateKey);
+            _stateMachine.SwitchState(_startingStateKey);
             return _stateMachine;
         }
     }

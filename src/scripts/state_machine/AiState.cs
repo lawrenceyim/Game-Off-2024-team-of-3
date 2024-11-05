@@ -1,12 +1,14 @@
 using System;
 
 public class AiState {
+    public readonly string stateName;
     public readonly Action onStart;
     public readonly Action onExit;
     public readonly Action<double> onUpdate;
     public readonly Action<double> onPhysicsUpdate;
 
-    private AiState(Action start, Action exit, Action<double> update, Action<double> physicsUpdate) {
+    private AiState(string stateName, Action start, Action exit, Action<double> update, Action<double> physicsUpdate) {
+        this.stateName = stateName;
         onStart = start;
         onExit = exit;
         onUpdate = update;
@@ -14,13 +16,14 @@ public class AiState {
     }
 
     public class Builder {
+        private string _stateName;
         private Action _onStart;
         private Action _onExit;
         private Action<double> _onUpdate;
         private Action<double> _onPhysicsUpdate;
 
-        public Builder() {
-
+        public Builder(string stateName) {
+            _stateName = stateName;
         }
 
         public Builder SetStart(Action onStart) {
@@ -47,7 +50,7 @@ public class AiState {
             if (_onStart == null || _onExit == null || _onUpdate == null || _onPhysicsUpdate == null) {
                 throw new Exception("State is not fully initialized");
             }
-            return new AiState(_onStart, _onExit, _onUpdate, _onPhysicsUpdate);
+            return new AiState(_stateName, _onStart, _onExit, _onUpdate, _onPhysicsUpdate);
         }
     }
 
