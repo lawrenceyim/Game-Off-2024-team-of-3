@@ -5,8 +5,6 @@ public partial class StateMachine : Node {
     private readonly Dictionary<string, AiState> _stateDict = new Dictionary<string, AiState>();
     private AiState _currentState;
 
-    private StateMachine() { }
-
     public void AddState(string key, AiState aiState) {
         _stateDict.Add(key, aiState);
     }
@@ -16,17 +14,17 @@ public partial class StateMachine : Node {
     }
 
     public override void _Process(double delta) {
-        _currentState?.onUpdate(delta);
+        _currentState.onUpdate(delta);
     }
 
     public override void _PhysicsProcess(double delta) {
-        _currentState?.onPhysicsUpdate(delta);
+        _currentState.onPhysicsUpdate(delta);
     }
 
     private void SwitchState(string key) {
         AiState newState = _stateDict.GetValueOrDefault(key, null);
-        _currentState?.onExit();
-        newState?.onStart();
+        _currentState.onExit();
+        newState.onStart();
         _currentState = newState;
     }
 
