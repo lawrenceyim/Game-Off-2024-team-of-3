@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://cp0rxpjfn7ga1"]
+[gd_scene load_steps=7 format=3 uid="uid://cp0rxpjfn7ga1"]
 
+[ext_resource type="Script" path="res://scripts/player/Character.cs" id="1_dsl0d"]
 [ext_resource type="Texture2D" uid="uid://xhewsh8n3pk1" path="res://assets/icon.svg" id="1_v3phf"]
 [ext_resource type="Script" path="res://scripts/player/PlayerInputHandler.cs" id="2_ds6w5"]
 [ext_resource type="Script" path="res://scripts/player/PlayerMovement.cs" id="3_mrpve"]
@@ -18,15 +19,14 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_vrk2h"]
 radius = 63.0317
 
-[node name="Node2D" type="Node2D"]
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_dsl0d")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_lhxfb")
 animation = &"new_animation"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_vrk2h")
 
 [node name="Character Input" type="Node" parent="." node_paths=PackedStringArray("_playerMovement")]
@@ -35,5 +35,5 @@ _playerMovement = NodePath("../Character Movement")
 
 [node name="Character Movement" type="Node" parent="." node_paths=PackedStringArray("_body")]
 script = ExtResource("3_mrpve")
-_body = NodePath("../CharacterBody2D")
+_body = NodePath("..")
 _speed = 500.0
