@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-public partial class BatEnemy : CharacterBody2D {
+public partial class BatEnemy : CharacterBody2D, IDamageable {
     private StateMachine _stateMachine;
     private Node2D _player;
     private Vector2 _moveVector;
@@ -12,12 +12,17 @@ public partial class BatEnemy : CharacterBody2D {
     private double _minWanderTime = 3f;
     private double _maxWanderTime = 5f;
     private double _attackCooldown = 3f;
+    private Health _health;
+    private int _baseHealth = 5;
 
     private const string Wander = "wander";
     private const string Pursue = "pursue";
     private const string Attacking = "attacking";
 
     public override void _Ready() {
+        _health = new Health(_baseHealth);
+        _health.ZeroHealthEvent += Die;
+
         // TODO: GET PLAYER REFERENCE. Probably make it a singleton since there's only one player object
         // _player = Player.GetInstance();
 
@@ -81,6 +86,20 @@ public partial class BatEnemy : CharacterBody2D {
                 .Build())
             .Build();
         AddChild(_stateMachine);
+    }
+
+    public void TakeDamage(int damage) {
+        _health.DecreaseHealth(damage);
+    }
+
+    private void Die(object sender, EventArgs e) {
+        // Start death animation
+        // Start death sfx  
+        // Handle removing object in the callback from death animation to ensure that the death animation finishes
+    }
+
+    private void RemoveGameObject() {
+        QueueFree();
     }
 
     private void SetRandomWander() {
