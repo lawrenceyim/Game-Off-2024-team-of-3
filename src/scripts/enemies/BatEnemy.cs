@@ -30,61 +30,68 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
         _timer = TimerUtil.CreateTimer(this);
         _timer.Timeout += HandleTimeOut;
 
-        _stateMachine = new StateMachine.Builder(Wander)
-            .AddState(new AiState.Builder(Wander)
-                .SetStart(() => {
-                    SetRandomWander();
-                })
-                .SetExit(() => {
-                    _timer.Stop();
-                })
-                .SetUpdate((double delta) => {
-                    MoveAndCollide(_moveVector * _speed * (float)delta);
-                })
-                .SetPhysicsUpdate((double delta) => {
-                    // DELETE THIS NULL CHECK LATER
-                    // This is only here to avoid throwing errors until we actually set the player reference later
-                    if (_player == null) {
-                        return;
-                    }
-                    if (Position.DistanceTo(_player.Position) <= _detectionRange) {
-                        _stateMachine.SwitchState(Pursue);
-                        return;
-                    }
-                })
-                .Build())
-            .AddState(new AiState.Builder(Pursue)
-                .SetStart(() => { })
-                .SetExit(() => { })
-                .SetUpdate((double delta) => {
-                    _moveVector = (_player.Position - Position).Normalized();
-                    MoveAndCollide(_moveVector * _speed * (float)delta);
-                })
-                .SetPhysicsUpdate((double delta) => {
-                    // DELETE THIS NULL CHECK LATER
-                    // This is only here to avoid throwing errors until we actually set the player reference later
-                    if (_player == null) {
-                        return;
-                    }
-                    if (Position.DistanceTo(_player.Position) > _detectionRange) {
-                        _stateMachine.SwitchState(Wander);
-                        return;
-                    }
-                })
-                .Build())
-            .AddState(new AiState.Builder(Attacking)
-                .SetStart(() => {
-                    // Start animation
-
-                    _attackCooldownTimer.Start(_attackCooldown);
-                })
-                .SetExit(() => {
+        // State machine creation
+        AiState wanderState = new AiState.Builder(Wander)
+            .SetStart(() => {
+                SetRandomWander();
+            })
+            .SetExit(() => {
+                _timer.Stop();
+            })
+            .SetUpdate((double delta) => {
+                MoveAndCollide(_moveVector * _speed * (float)delta);
+            })
+            .SetPhysicsUpdate((double delta) => {
+                // DELETE THIS NULL CHECK LATER
+                // This is only here to avoid throwing errors until we actually set the player reference later
+                if (_player == null) {
+                    return;
+                }
+                if (Position.DistanceTo(_player.Position) <= _detectionRange) {
                     _stateMachine.SwitchState(Pursue);
-                })
-                .SetUpdate((double delta) => { })
-                .SetPhysicsUpdate((double delta) => { })
-                .Build())
+                    return;
+                }
+            })
             .Build();
+
+        AiState pursueState = new AiState.Builder(Pursue)
+            .SetStart(() => { })
+            .SetExit(() => { })
+            .SetUpdate((double delta) => {
+                _moveVector = (_player.Position - Position).Normalized();
+                MoveAndCollide(_moveVector * _speed * (float)delta);
+            })
+            .SetPhysicsUpdate((double delta) => {
+                // DELETE THIS NULL CHECK LATER
+                // This is only here to avoid throwing errors until we actually set the player reference later
+                if (_player == null) {
+                    return;
+                }
+                if (Position.DistanceTo(_player.Position) > _detectionRange) {
+                    _stateMachine.SwitchState(Wander);
+                    return;
+                }
+            })
+            .Build();
+
+        AiState attackingState = new AiState.Builder(Attacking)
+            .SetStart(() => {
+                // Start animation
+                _attackCooldownTimer.Start(_attackCooldown);
+            })
+            .SetExit(() => {
+                _stateMachine.SwitchState(Pursue);
+            })
+            .SetUpdate((double delta) => { })
+            .SetPhysicsUpdate((double delta) => { })
+            .Build();
+
+        _stateMachine = new StateMachine.Builder(Wander)
+            .AddState(wanderState)
+            .AddState(pursueState)
+            .AddState(attackingState)
+            .Build();
+
         AddChild(_stateMachine);
     }
 
