@@ -1,11 +1,20 @@
+using System;
 using System.Collections.Generic;
 
 public class DialogueTree {
     private Dictionary<string, BaseNode> _nodeDict = new Dictionary<string, BaseNode>();
     private string _rootKey = "";
+    private int _expectedNodeCount;
 
-    public DialogueTree(string rootKey) {
+    public DialogueTree(int expectedNodeCount, string rootKey) {
         _rootKey = rootKey;
+        _expectedNodeCount = expectedNodeCount;
+    }
+
+    public void VerifyNodeCount() {
+        if (_nodeDict.Count != _expectedNodeCount) {
+            throw new Exception("The dialogue tree does not have the expected node count.");
+        }
     }
 
     public void AddNode(string nodeKey, BaseNode node) {
