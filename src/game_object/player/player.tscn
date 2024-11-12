@@ -1,32 +1,120 @@
-[gd_scene load_steps=7 format=3 uid="uid://cp0rxpjfn7ga1"]
+[gd_scene load_steps=20 format=3 uid="uid://cp0rxpjfn7ga1"]
 
-[ext_resource type="Texture2D" uid="uid://xhewsh8n3pk1" path="res://assets/icon.svg" id="1_v3phf"]
 [ext_resource type="Script" path="res://game_object/player/PlayerCharacter.cs" id="1_ysqf6"]
+[ext_resource type="Texture2D" uid="uid://d4maau12k5l40" path="res://game_object/player/Hunter_idle.png" id="2_cd0sn"]
 [ext_resource type="Script" path="res://game_object/player/PlayerInputHandler.cs" id="2_ds6w5"]
+[ext_resource type="Texture2D" uid="uid://dgkxjwgcdsj18" path="res://game_object/player/Hunter_move.png" id="3_bn2vs"]
 [ext_resource type="Script" path="res://game_object/player/PlayerMovement.cs" id="3_mrpve"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_lhxfb"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_07ag4"]
+atlas = ExtResource("2_cd0sn")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uposm"]
+atlas = ExtResource("2_cd0sn")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjilk"]
+atlas = ExtResource("2_cd0sn")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xcfu6"]
+atlas = ExtResource("3_bn2vs")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hlqno"]
+atlas = ExtResource("3_bn2vs")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hdhuq"]
+atlas = ExtResource("3_bn2vs")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ivt3m"]
+atlas = ExtResource("3_bn2vs")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e531o"]
+atlas = ExtResource("3_bn2vs")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w81ia"]
+atlas = ExtResource("3_bn2vs")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qisxl"]
+atlas = ExtResource("3_bn2vs")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjqus"]
+atlas = ExtResource("3_bn2vs")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5lcww"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_v3phf")
+"texture": SubResource("AtlasTexture_07ag4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uposm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rjilk")
 }],
 "loop": true,
-"name": &"new_animation",
-"speed": 5.0
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xcfu6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hlqno")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hdhuq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ivt3m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e531o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w81ia")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qisxl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sjqus")
+}],
+"loop": true,
+"name": &"move",
+"speed": 7.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vrk2h"]
-radius = 63.0317
+radius = 8.24621
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_efwx0"]
+radius = 4.0
+height = 26.0
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
+scale = Vector2(3, 3)
 script = ExtResource("1_ysqf6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_lhxfb")
-animation = &"new_animation"
+sprite_frames = SubResource("SpriteFrames_5lcww")
+animation = &"move"
+frame = 4
+frame_progress = 0.628005
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 10)
 shape = SubResource("CircleShape2D_vrk2h")
 
 [node name="Character Input" type="Node" parent="." node_paths=PackedStringArray("_playerMovement")]
@@ -37,3 +125,12 @@ _playerMovement = NodePath("../Character Movement")
 script = ExtResource("3_mrpve")
 _body = NodePath("..")
 _speed = 500.0
+
+[node name="Hurtbox Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
+position = Vector2(-1, 5)
+shape = SubResource("CapsuleShape2D_efwx0")
+debug_color = Color(0.979353, 0, 0.388737, 0.42)
