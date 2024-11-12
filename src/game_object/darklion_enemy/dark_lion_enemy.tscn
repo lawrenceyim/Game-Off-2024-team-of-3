@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddikru4jh4tn8"]
+
+[ext_resource type="Script" path="res://game_object/darklion_enemy/dark_lion_enemy.gd" id="1_7ksww"]
+
+[node name="DarkLionEnemy" type="CharacterBody2D"]
+script = ExtResource("1_7ksww")
