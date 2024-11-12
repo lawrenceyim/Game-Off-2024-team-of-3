@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://26cf244jidne"]
+[gd_scene load_steps=3 format=3 uid="uid://26cf244jidne"]
 
 [ext_resource type="Script" path="res://game_object/bat_enemy/BatEnemy.cs" id="1_87655"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_s8j44"]
+
 [node name="BatEnemy" type="CharacterBody2D"]
 script = ExtResource("1_87655")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_s8j44")
