@@ -3,7 +3,7 @@ using Godot;
 
 public partial class BatEnemy : CharacterBody2D, IDamageable {
     private StateMachine _stateMachine;
-    private Node2D _player;
+    private PlayerCharacter _player;
     private Vector2 _moveVector;
     private Timer _timer;
     private Timer _attackCooldownTimer;
@@ -19,11 +19,10 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
     private const string Pursue = "pursue";
 
     public override void _Ready() {
-        _health = new Health(_baseHealth);
-        _health.ZeroHealthEvent += Die;
+        _player = PlayerCharacter.GetInstance();
 
-        // TODO: GET PLAYER REFERENCE. Probably make it a singleton since there's only one player object
-        // _player = Player.GetInstance();
+        _health = new Health(_baseHealth);
+        _health.ZeroHealthEvent += InitiateDeath;
 
         _attackCooldownTimer = TimerUtil.CreateTimer(this);
         _timer = TimerUtil.CreateTimer(this);
@@ -41,11 +40,6 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
                 MoveAndCollide(_moveVector * _speed * (float)delta);
             })
             .SetPhysicsUpdate((double delta) => {
-                // DELETE THIS NULL CHECK LATER
-                // This is only here to avoid throwing errors until we actually set the player reference later
-                if (_player == null) {
-                    return;
-                }
                 if (Position.DistanceTo(_player.Position) <= _detectionRange) {
                     _stateMachine.SwitchState(Pursue);
                     return;
@@ -61,11 +55,6 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
                 MoveAndCollide(_moveVector * _speed * (float)delta);
             })
             .SetPhysicsUpdate((double delta) => {
-                // DELETE THIS NULL CHECK LATER
-                // This is only here to avoid throwing errors until we actually set the player reference later
-                if (_player == null) {
-                    return;
-                }
                 if (Position.DistanceTo(_player.Position) > _detectionRange) {
                     _stateMachine.SwitchState(Wander);
                     return;
@@ -85,13 +74,13 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
         _health.DecreaseHealth(damage);
     }
 
-    private void Die(object sender, EventArgs e) {
+    private void InitiateDeath(object sender, EventArgs e) {
         // Start death animation
         // Start death sfx  
         // Handle removing object in the callback from death animation to ensure that the death animation finishes
     }
 
-    private void RemoveGameObject() {
+    private void FinishDeath() {
         QueueFree();
     }
 
