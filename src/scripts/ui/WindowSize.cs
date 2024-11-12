@@ -14,8 +14,7 @@ public partial class WindowSize : Node {
     };
 
     public override void _Ready() {
-        SetScreenSize(_sizes[3]);
-
+        SetScreenSize(_sizes[2]);
     }
 
     public void SetScreenSize(Vector2I size) {

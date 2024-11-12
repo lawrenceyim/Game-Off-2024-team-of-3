@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dkqxnp3rgn3mj"]
 
-[ext_resource type="Script" path="res://game_object/floating_enemy/floating_enemy.gd" id="1_2ring"]
+[ext_resource type="Script" path="res://game_object/floating_enemy/FloatingEnemy.cs" id="1_4wsbe"]
 
 [node name="FloatingEnemy" type="CharacterBody2D"]
-script = ExtResource("1_2ring")
+script = ExtResource("1_4wsbe")

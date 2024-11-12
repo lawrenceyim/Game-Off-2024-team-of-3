@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://26cf244jidne"]
 
-[ext_resource type="Script" path="res://game_object/bat_enemy/bat_enemy.gd" id="1_wspgj"]
+[ext_resource type="Script" path="res://game_object/bat_enemy/BatEnemy.cs" id="1_87655"]
 
 [node name="BatEnemy" type="CharacterBody2D"]
-script = ExtResource("1_wspgj")
+script = ExtResource("1_87655")
