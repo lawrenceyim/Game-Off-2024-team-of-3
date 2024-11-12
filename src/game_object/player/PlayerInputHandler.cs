@@ -31,4 +31,19 @@ public partial class PlayerInputHandler : Node, IInputListener {
             // Escape menu
         }
     }
+
+    public override void _Input(InputEvent @event) {
+        // Mouse in viewport coordinates.
+        if (@event is InputEventMouseButton eventMouseButton) {
+            if (eventMouseButton.ButtonIndex == MouseButton.Left &&
+                eventMouseButton.IsPressed()
+            ) {
+                // Send mouse click to fire player weapon
+                GD.Print("Mouse Left Button pressed at " + eventMouseButton.Position);
+            }
+        } else if (@event is InputEventMouseMotion eventMouseMotion) {
+            // GD.Print("Mouse Motion at: ", eventMouseMotion.Position);
+            // Send position to aim player weapon and reticle
+        }
+    }
 }
