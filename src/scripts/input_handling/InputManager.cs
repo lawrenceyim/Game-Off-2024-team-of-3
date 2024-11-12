@@ -18,11 +18,11 @@ public partial class InputManager : Node {
     private IInputListener _activeListener;
 
     private InputManager() {
-        GD.Print("InputManager created.");
+        // GD.Print("InputManager created.");
     }
 
     public static InputManager GetInstance() {
-        GD.Print("InputManager.GetInstance called.");
+        // GD.Print("InputManager.GetInstance called.");
         if (_instance == null) {
             _instance = new InputManager();
         }
@@ -39,7 +39,7 @@ public partial class InputManager : Node {
     }
 
     public void AddListener(IInputListener listener) {
-        GD.Print("Listener added");
+        // GD.Print("Listener added");
         if (_activeListener == null) {
             _activeListener = listener;
             return;

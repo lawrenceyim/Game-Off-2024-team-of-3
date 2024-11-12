@@ -28,7 +28,7 @@ public partial class DialogueManager : Node {
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() {
-        GD.Print("DialogueManager added.");
+        // GD.Print("DialogueManager added.");
         ReadTextFromFile();
     }
 
@@ -36,7 +36,7 @@ public partial class DialogueManager : Node {
         if (!File.Exists(_textFilePath)) {
             throw new IOException("Dialogue file cannot be found.");
         }
-        GD.Print("Dialogue file found.");
+        // GD.Print("Dialogue file found.");
 
         _textDict.Clear();
 
@@ -57,7 +57,7 @@ public partial class DialogueManager : Node {
             }
 
             while ((line = reader.ReadLine()) != null) {
-                GD.Print(line);
+                // GD.Print(line);
                 string[] cells = line.Split("\t");
                 _textDict.Add(cells[0].Trim(), cells[translationIndex].Trim());
             }

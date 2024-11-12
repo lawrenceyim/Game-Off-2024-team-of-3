@@ -6,8 +6,9 @@ using Godot;
     AddChild(timer);
 */
 public class TimerUtil {
-    public static Timer CreateTimer(Node node) {
+    public static Timer CreateTimer(Node node, bool dontRestart) {
         Timer timer = new Timer();
+        timer.OneShot = dontRestart;
         node.AddChild(timer);
         return timer;
     }

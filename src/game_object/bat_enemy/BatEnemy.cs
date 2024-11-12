@@ -7,11 +7,17 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
     private Vector2 _moveVector;
     private Timer _timer;
     private Timer _attackCooldownTimer;
-    private float _detectionRange = 10;
-    private float _speed = 10f;
+
+    private float _detectionRange = 1000;
+    private float _speed = 300f;
+
     private double _minWanderTime = 3f;
     private double _maxWanderTime = 5f;
-    private double _attackCooldown = 3f;
+
+    private double _attackCooldown = .5f;
+    private int _attackDamage = 1;
+
+
     private Health _health;
     private int _baseHealth = 5;
 
@@ -20,12 +26,16 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 
     public override void _Ready() {
         _player = PlayerCharacter.GetInstance();
+        if (_player == null) {
+            GD.Print("Player is null");
+            QueueFree();
+        }
 
         _health = new Health(_baseHealth);
         _health.ZeroHealthEvent += InitiateDeath;
 
-        _attackCooldownTimer = TimerUtil.CreateTimer(this);
-        _timer = TimerUtil.CreateTimer(this);
+        _attackCooldownTimer = TimerUtil.CreateTimer(this, true);
+        _timer = TimerUtil.CreateTimer(this, true);
         _timer.Timeout += HandleTimeOut;
 
         // State machine creation
@@ -35,6 +45,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
             })
             .SetExit(() => {
                 _timer.Stop();
+                _timer.Paused = true;
             })
             .SetUpdate((double delta) => {
                 MoveAndCollide(_moveVector * _speed * (float)delta);
@@ -52,7 +63,13 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
             .SetExit(() => { })
             .SetUpdate((double delta) => {
                 _moveVector = (_player.Position - Position).Normalized();
-                MoveAndCollide(_moveVector * _speed * (float)delta);
+                KinematicCollision2D collision = MoveAndCollide(_moveVector * _speed * (float)delta);
+                if (collision == null) {
+                    return;
+                }
+                if (collision.GetCollider() is PlayerCharacter player) {
+                    AttackIfReady(player);
+                }
             })
             .SetPhysicsUpdate((double delta) => {
                 if (Position.DistanceTo(_player.Position) > _detectionRange) {
@@ -74,6 +91,15 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
         _health.DecreaseHealth(damage);
     }
 
+    private void AttackIfReady(IDamageable damageable) {
+        if (_attackCooldownTimer.TimeLeft > 0) {
+            return;
+        }
+        _attackCooldownTimer.Start(_attackCooldown);
+        _attackCooldownTimer.Paused = false;
+        damageable.TakeDamage(_attackDamage);
+    }
+
     private void InitiateDeath(object sender, EventArgs e) {
         // Start death animation
         // Start death sfx  
@@ -86,6 +112,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 
     private void SetRandomWander() {
         _timer.Start(RandomNumber.RandomDoubleBetween(_minWanderTime, _maxWanderTime));
+        _timer.Paused = false;
         _moveVector = new Vector2(RandomNumber.RandomFloatBetween(-1, 1), RandomNumber.RandomFloatBetween(-1, 1));
     }
 

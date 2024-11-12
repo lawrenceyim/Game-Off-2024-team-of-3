@@ -1,11 +1,58 @@
-[gd_scene load_steps=3 format=3 uid="uid://26cf244jidne"]
+[gd_scene load_steps=9 format=3 uid="uid://26cf244jidne"]
 
 [ext_resource type="Script" path="res://game_object/bat_enemy/BatEnemy.cs" id="1_87655"]
+[ext_resource type="Texture2D" uid="uid://ccx10lguvpbd5" path="res://game_object/bat_enemy/Bat_move.png" id="2_yabgy"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_s8j44"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2dfb"]
+atlas = ExtResource("2_yabgy")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sdkx2"]
+atlas = ExtResource("2_yabgy")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knmb5"]
+atlas = ExtResource("2_yabgy")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fi44v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y2dfb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sdkx2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knmb5")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q1fxa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7i6a5"]
 
 [node name="BatEnemy" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+collision_layer = 0
+collision_mask = 3
 script = ExtResource("1_87655")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_s8j44")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_fi44v")
+animation = &"move"
+
+[node name="Hurtbox Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
+shape = SubResource("CircleShape2D_q1fxa")
+debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
+
+[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_7i6a5")

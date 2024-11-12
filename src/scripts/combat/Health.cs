@@ -19,6 +19,12 @@ public class Health {
 
     public void DecreaseHealth(int amount) {
         _currentHealth = Math.Max(_currentHealth - amount, 0);
-        ZeroHealthEvent?.Invoke(this, EventArgs.Empty);
+        if (_currentHealth == 0) {
+            ZeroHealthEvent?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public int GetCurrentHealth() {
+        return _currentHealth;
     }
 }
