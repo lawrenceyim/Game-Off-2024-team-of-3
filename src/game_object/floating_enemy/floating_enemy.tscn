@@ -1,6 +1,68 @@
-[gd_scene load_steps=2 format=3 uid="uid://dkqxnp3rgn3mj"]
+[gd_scene load_steps=10 format=3 uid="uid://dkqxnp3rgn3mj"]
 
 [ext_resource type="Script" path="res://game_object/floating_enemy/FloatingEnemy.cs" id="1_4wsbe"]
+[ext_resource type="Texture2D" uid="uid://b7tq0npuqpivb" path="res://game_object/floating_enemy/FloatingMonster_move.png" id="2_881nq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5fwy3"]
+atlas = ExtResource("2_881nq")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pwlfd"]
+atlas = ExtResource("2_881nq")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_al8re"]
+atlas = ExtResource("2_881nq")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_052pq"]
+atlas = ExtResource("2_881nq")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i3jxy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5fwy3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pwlfd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_al8re")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_052pq")
+}],
+"loop": true,
+"name": &"move",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m33yx"]
+radius = 13.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8b82s"]
+radius = 13.0
 
 [node name="FloatingEnemy" type="CharacterBody2D"]
 script = ExtResource("1_4wsbe")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_i3jxy")
+animation = &"move"
+frame = 3
+frame_progress = 0.62441
+
+[node name="Hurtbox Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_m33yx")
+debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
+
+[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_8b82s")

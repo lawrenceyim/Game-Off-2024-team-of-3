@@ -64,7 +64,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 6.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -93,7 +93,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"move",
-"speed": 7.0
+"speed": 8.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vrk2h"]
@@ -109,9 +109,7 @@ script = ExtResource("1_ysqf6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_5lcww")
-animation = &"move"
-frame = 4
-frame_progress = 0.628005
+animation = &"idle"
 
 [node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.333333, 14)

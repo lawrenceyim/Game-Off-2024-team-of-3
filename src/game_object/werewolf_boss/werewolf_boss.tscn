@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dovgvwa4c7xqb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m1so2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jfygv"]
+
+[node name="WerewolfBoss" type="CharacterBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+
+[node name="Hurtbox Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
+shape = SubResource("CircleShape2D_m1so2")
+debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
+
+[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_jfygv")
