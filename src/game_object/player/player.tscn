@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://cp0rxpjfn7ga1"]
+[gd_scene load_steps=21 format=3 uid="uid://cp0rxpjfn7ga1"]
 
 [ext_resource type="Script" path="res://game_object/player/PlayerCharacter.cs" id="1_ysqf6"]
 [ext_resource type="Texture2D" uid="uid://d4maau12k5l40" path="res://game_object/player/Hunter_idle.png" id="2_cd0sn"]
 [ext_resource type="Script" path="res://game_object/player/PlayerInputHandler.cs" id="2_ds6w5"]
 [ext_resource type="Texture2D" uid="uid://dgkxjwgcdsj18" path="res://game_object/player/Hunter_move.png" id="3_bn2vs"]
 [ext_resource type="Script" path="res://game_object/player/PlayerMovement.cs" id="3_mrpve"]
+[ext_resource type="Script" path="res://game_object/player/PlayerAnimation.cs" id="6_0wnr1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_07ag4"]
 atlas = ExtResource("2_cd0sn")
@@ -109,7 +110,7 @@ script = ExtResource("1_ysqf6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_5lcww")
-animation = &"idle"
+animation = &"move"
 
 [node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.333333, 14)
@@ -119,9 +120,14 @@ shape = SubResource("CircleShape2D_vrk2h")
 script = ExtResource("2_ds6w5")
 _playerMovement = NodePath("../Character Movement")
 
-[node name="Character Movement" type="Node" parent="." node_paths=PackedStringArray("_body")]
+[node name="Character Movement" type="Node" parent="." node_paths=PackedStringArray("_body", "_animation")]
 script = ExtResource("3_mrpve")
 _body = NodePath("..")
+_animation = NodePath("../Player Animation")
+
+[node name="Player Animation" type="Node" parent="." node_paths=PackedStringArray("_sprite")]
+script = ExtResource("6_0wnr1")
+_sprite = NodePath("../AnimatedSprite2D")
 
 [node name="Hurtbox Area2D" type="Area2D" parent="."]
 collision_layer = 2

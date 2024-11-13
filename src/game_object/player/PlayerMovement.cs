@@ -1,14 +1,17 @@
 using Godot;
 
 public partial class PlayerMovement : Node {
-	[Export] private CharacterBody2D _body;
-	private float _speed = 500f;
+    [Export] private CharacterBody2D _body;
+    [Export] private PlayerAnimation _animation;
 
-	public void Move(Vector2 move) {
-		_body.MoveAndCollide(move * _speed * (float)GetProcessDeltaTime());
-	}
+    private float _speed = 500f;
 
-	public void SetSpeed(float speed) {
-		_speed = speed;
-	}
+    public void Move(Vector2 move) {
+        _body.MoveAndCollide(move * _speed * (float)GetProcessDeltaTime());
+        _animation.UpdateMovement(move);
+    }
+
+    public void SetSpeed(float speed) {
+        _speed = speed;
+    }
 }
