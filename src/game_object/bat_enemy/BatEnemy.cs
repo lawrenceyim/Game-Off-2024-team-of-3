@@ -25,20 +25,58 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
     private const string Pursue = "pursue";
 
     public override void _Ready() {
-        _player = PlayerCharacter.GetInstance();
-        if (_player == null) {
-            GD.Print("Player is null");
-            QueueFree();
-        }
+        // Wait until the player is initialized before setting the state machine to avoid errors with null values
+        PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
+            _player = player;
+
+            _attackCooldownTimer = TimerUtil.CreateTimer(this, true);
+            _timer = TimerUtil.CreateTimer(this, true);
+            _timer.Timeout += HandleTimeOut;
+
+            SetStateMachine();
+        });
 
         _health = new Health(_baseHealth);
         _health.ZeroHealthEvent += InitiateDeath;
+    }
 
-        _attackCooldownTimer = TimerUtil.CreateTimer(this, true);
-        _timer = TimerUtil.CreateTimer(this, true);
-        _timer.Timeout += HandleTimeOut;
+    public void TakeDamage(int damage) {
+        _health.DecreaseHealth(damage);
+    }
 
-        // State machine creation
+    private void AttackIfReady(IDamageable damageable) {
+        if (_attackCooldownTimer.TimeLeft > 0) {
+            return;
+        }
+        _attackCooldownTimer.Start(_attackCooldown);
+        _attackCooldownTimer.Paused = false;
+        damageable.TakeDamage(_attackDamage);
+    }
+
+    private void InitiateDeath(object sender, EventArgs e) {
+        // Start death animation
+        // Start death sfx  
+        // Handle removing object in the callback from death animation to ensure that the death animation finishes
+    }
+
+    private void FinishDeath() {
+        QueueFree();
+    }
+
+    private void SetRandomWander() {
+        _timer.Start(RandomNumber.RandomDoubleBetween(_minWanderTime, _maxWanderTime));
+        _timer.Paused = false;
+        _moveVector = new Vector2(RandomNumber.RandomFloatBetween(-1, 1), RandomNumber.RandomFloatBetween(-1, 1));
+    }
+
+    private void HandleTimeOut() {
+        string currentState = _stateMachine.GetCurrentState();
+        if (currentState.Equals(Wander)) {
+            SetRandomWander();
+        }
+    }
+
+    private void SetStateMachine() {
         AiState wanderState = new AiState.Builder(Wander)
             .SetStart(() => {
                 SetRandomWander();
@@ -85,41 +123,5 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
             .Build();
 
         AddChild(_stateMachine);
-    }
-
-    public void TakeDamage(int damage) {
-        _health.DecreaseHealth(damage);
-    }
-
-    private void AttackIfReady(IDamageable damageable) {
-        if (_attackCooldownTimer.TimeLeft > 0) {
-            return;
-        }
-        _attackCooldownTimer.Start(_attackCooldown);
-        _attackCooldownTimer.Paused = false;
-        damageable.TakeDamage(_attackDamage);
-    }
-
-    private void InitiateDeath(object sender, EventArgs e) {
-        // Start death animation
-        // Start death sfx  
-        // Handle removing object in the callback from death animation to ensure that the death animation finishes
-    }
-
-    private void FinishDeath() {
-        QueueFree();
-    }
-
-    private void SetRandomWander() {
-        _timer.Start(RandomNumber.RandomDoubleBetween(_minWanderTime, _maxWanderTime));
-        _timer.Paused = false;
-        _moveVector = new Vector2(RandomNumber.RandomFloatBetween(-1, 1), RandomNumber.RandomFloatBetween(-1, 1));
-    }
-
-    private void HandleTimeOut() {
-        string currentState = _stateMachine.GetCurrentState();
-        if (currentState.Equals(Wander)) {
-            SetRandomWander();
-        }
     }
 }
