@@ -2,14 +2,20 @@ using System;
 using Godot;
 
 public partial class BatEnemy : CharacterBody2D, IDamageable {
+	[Export] AnimatedSprite2D _sprite;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
 	private Timer _timer;
 	private Timer _attackCooldownTimer;
+	private Timer _accelerationTimer;
 
 	private float _detectionRange = 1000;
-	private float _speed = 300f;
+	private float _speed;
+	private float _initialSpeed = 100f;
+	private float _maxSpeed = 500f;
+	private float _accelerationTime = 5;
+
 
 	private double _minWanderTime = 3f;
 	private double _maxWanderTime = 5f;
@@ -25,11 +31,14 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const string Wander = "wander";
 	private const string Pursue = "pursue";
 
+	private const string Move = "move";
+
 	public override void _Ready() {
 		// Wait until the player is initialized before setting the state machine to avoid errors with null values
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
 			_player = player;
 
+			_accelerationTimer = TimerUtil.CreateTimer(this, true);
 			_attackCooldownTimer = TimerUtil.CreateTimer(this, true);
 			_timer = TimerUtil.CreateTimer(this, true);
 			_timer.Timeout += HandleTimeOut;
@@ -39,6 +48,8 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 
 		_health = new Health(_baseHealth);
 		_health.ZeroHealthEvent += InitiateDeath;
+
+		_sprite.Play(Move);
 	}
 
 	public void TakeDamage(int damage) {
@@ -82,6 +93,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 		AiState wanderState = new AiState.Builder(Wander)
 			.SetStart(() => {
 				SetRandomWander();
+				_speed = _initialSpeed;
 			})
 			.SetExit(() => {
 				_timer.Stop();
@@ -99,13 +111,18 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 			.Build();
 
 		AiState pursueState = new AiState.Builder(Pursue)
-			.SetStart(() => { })
+			.SetStart(() => {
+				_accelerationTimer.Start(_accelerationTime);
+			})
 			.SetExit(() => { })
 			.SetUpdate((double delta) => {
 				_moveVector = (_player.Position - Position).Normalized();
 				MoveAndCollide(_moveVector * _speed * (float)delta);
 			})
 			.SetPhysicsUpdate((double delta) => {
+				if (_accelerationTimer.TimeLeft > 0) {
+					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / _accelerationTime)) * _maxSpeed, _initialSpeed);
+				}
 				if (_touchingPlayer) {
 					AttackIfReady(_player);
 				}
