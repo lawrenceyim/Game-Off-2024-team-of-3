@@ -6,7 +6,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
-	private Timer _timer;
+	private Timer _wanderingTimer;
 	private Timer _attackCooldownTimer;
 	private Timer _accelerationTimer;
 
@@ -34,14 +34,13 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const string Move = "move";
 
 	public override void _Ready() {
-		// Wait until the player is initialized before setting the state machine to avoid errors with null values
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
 			_player = player;
 
 			_accelerationTimer = TimerUtil.CreateTimer(this, true);
 			_attackCooldownTimer = TimerUtil.CreateTimer(this, true);
-			_timer = TimerUtil.CreateTimer(this, true);
-			_timer.Timeout += HandleTimeOut;
+			_wanderingTimer = TimerUtil.CreateTimer(this, true);
+			_wanderingTimer.Timeout += HandleTimeOut;
 
 			SetStateMachine();
 		});
@@ -77,8 +76,8 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	}
 
 	private void SetRandomWander() {
-		_timer.Start(RandomNumber.RandomDoubleBetween(_minWanderTime, _maxWanderTime));
-		_timer.Paused = false;
+		_wanderingTimer.Start(RandomNumber.RandomDoubleBetween(_minWanderTime, _maxWanderTime));
+		_wanderingTimer.Paused = false;
 		_moveVector = new Vector2(RandomNumber.RandomFloatBetween(-1, 1), RandomNumber.RandomFloatBetween(-1, 1));
 	}
 
@@ -96,8 +95,8 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 				_speed = _initialSpeed;
 			})
 			.SetExit(() => {
-				_timer.Stop();
-				_timer.Paused = true;
+				_wanderingTimer.Stop();
+				_wanderingTimer.Paused = true;
 			})
 			.SetUpdate((double delta) => {
 				Velocity = _moveVector * _speed;
