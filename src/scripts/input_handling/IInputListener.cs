@@ -4,5 +4,5 @@
 	InputManager singleton. ProcessInput should not be called anywhere else.
  */
 public interface IInputListener {
-    void ProcessInput();
+	void ProcessInput();
 }

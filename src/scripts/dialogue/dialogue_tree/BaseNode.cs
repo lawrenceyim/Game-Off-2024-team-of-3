@@ -5,5 +5,5 @@
     Do not use null values. An empty string of "" should be used to indicate the absence of the next node.
 */
 public abstract class BaseNode {
-    public abstract string GetNextNodeKey();
+	public abstract string GetNextNodeKey();
 }

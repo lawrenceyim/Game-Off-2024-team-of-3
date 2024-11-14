@@ -13,57 +13,57 @@ using Godot;
 using System.Collections.Generic;
 
 public partial class InputManager : Node {
-    private static InputManager _instance;
-    private Stack<IInputListener> _listenerStack;
-    private IInputListener _activeListener;
+	private static InputManager _instance;
+	private Stack<IInputListener> _listenerStack;
+	private IInputListener _activeListener;
 
-    private InputManager() {
-        // GD.Print("InputManager created.");
-    }
+	private InputManager() {
+		// GD.Print("InputManager created.");
+	}
 
-    public static InputManager GetInstance() {
-        // GD.Print("InputManager.GetInstance called.");
-        if (_instance == null) {
-            _instance = new InputManager();
-        }
-        return _instance;
-    }
+	public static InputManager GetInstance() {
+		// GD.Print("InputManager.GetInstance called.");
+		if (_instance == null) {
+			_instance = new InputManager();
+		}
+		return _instance;
+	}
 
-    public override void _Ready() {
-        _instance = this;
-        _listenerStack = new Stack<IInputListener>();
-    }
+	public override void _Ready() {
+		_instance = this;
+		_listenerStack = new Stack<IInputListener>();
+	}
 
-    public override void _Process(double delta) {
-        _activeListener?.ProcessInput();
-    }
+	public override void _Process(double delta) {
+		_activeListener?.ProcessInput();
+	}
 
-    public void AddListener(IInputListener listener) {
-        // GD.Print("Listener added");
-        if (_activeListener == null) {
-            _activeListener = listener;
-            return;
-        }
-        _listenerStack.Push(_activeListener);
-        _activeListener = listener;
-    }
+	public void AddListener(IInputListener listener) {
+		// GD.Print("Listener added");
+		if (_activeListener == null) {
+			_activeListener = listener;
+			return;
+		}
+		_listenerStack.Push(_activeListener);
+		_activeListener = listener;
+	}
 
-    public void ReturnToPreviousListener() {
-        if (_listenerStack.Count > 0) {
-            _activeListener = _listenerStack.Pop();
-        }
-    }
+	public void ReturnToPreviousListener() {
+		if (_listenerStack.Count > 0) {
+			_activeListener = _listenerStack.Pop();
+		}
+	}
 
-    public void EmptyListenerStack() {
-        _listenerStack.Clear();
-    }
+	public void EmptyListenerStack() {
+		_listenerStack.Clear();
+	}
 
-    public void ClearActiveListener() {
-        _activeListener = null;
-    }
+	public void ClearActiveListener() {
+		_activeListener = null;
+	}
 
-    public void RemoveAllListeners() {
-        ClearActiveListener();
-        EmptyListenerStack();
-    }
+	public void RemoveAllListeners() {
+		ClearActiveListener();
+		EmptyListenerStack();
+	}
 }
