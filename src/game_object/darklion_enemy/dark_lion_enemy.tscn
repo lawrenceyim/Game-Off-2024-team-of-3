@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ddikru4jh4tn8"]
+[gd_scene load_steps=13 format=3 uid="uid://ddikru4jh4tn8"]
 
 [ext_resource type="Script" path="res://game_object/darklion_enemy/DarkLion.cs" id="1_yf821"]
 [ext_resource type="Texture2D" uid="uid://bdhw02j1y7isu" path="res://game_object/darklion_enemy/DarkLion_move.png" id="2_wl5pc"]
@@ -67,29 +67,40 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_eqm2c"]
-radius = 21.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_evod3"]
+radius = 18.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_j2x1x"]
-radius = 21.0238
-
-[node name="DarkLionEnemy" type="CharacterBody2D"]
+[node name="DarkLionEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_sprite")]
+scale = Vector2(3, 3)
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("1_yf821")
+_sprite = NodePath("AnimatedSprite2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_7ucr4")
 animation = &"move"
 frame_progress = 0.547799
 
+[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.33333, -2.66667)
+shape = SubResource("CircleShape2D_evod3")
+
 [node name="Hurtbox Area2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
-position = Vector2(1, -4)
-shape = SubResource("CircleShape2D_eqm2c")
-debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
+position = Vector2(1.33333, -2.66667)
+shape = SubResource("CircleShape2D_evod3")
 
-[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, -4)
-shape = SubResource("CircleShape2D_j2x1x")
+[node name="Hitbox Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
+position = Vector2(1.33333, -2.66667)
+shape = SubResource("CircleShape2D_evod3")
+
+[connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
+[connection signal="area_exited" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_exited"]

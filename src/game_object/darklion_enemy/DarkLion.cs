@@ -8,15 +8,15 @@ public partial class DarkLion : CharacterBody2D {
 	private Vector2 _moveVector;
 	private Timer _wanderingTimer;
 	private Timer _attackCooldownTimer;
-	private Timer _dashTimer;
+	private Timer _dashCooldownTimer;
+	private Timer _dashDurationTimer;
 
 
 	private float _detectionRange = 1000;
 	private float _speed = 100f;
 	private float _dashSpeed = 1000f;
-	private float _dashDuration = .5f;
+	private float _dashDuration = 1f;
 	private float _dashCooldown = 5f;
-
 
 	private double _minWanderTime = 3f;
 	private double _maxWanderTime = 5f;
@@ -31,6 +31,7 @@ public partial class DarkLion : CharacterBody2D {
 
 	private const string Wander = "wander";
 	private const string Pursue = "pursue";
+	private const string Dash = "dash";
 
 	private const string Move = "move";
 
@@ -39,8 +40,14 @@ public partial class DarkLion : CharacterBody2D {
 			_player = player;
 
 			_attackCooldownTimer = TimerUtil.CreateTimer(this, true);
-			_dashTimer = TimerUtil.CreateTimer(this, true);
+			_dashCooldownTimer = TimerUtil.CreateTimer(this, true);
+			_dashDurationTimer = TimerUtil.CreateTimer(this, true);
 			_wanderingTimer = TimerUtil.CreateTimer(this, true);
+
+			_dashDurationTimer.Timeout += () => {
+				_stateMachine.SwitchState(Pursue);
+				GD.Print("DASH ENDED");
+			};
 			_wanderingTimer.Timeout += HandleTimeOut;
 
 			SetStateMachine();
@@ -93,6 +100,7 @@ public partial class DarkLion : CharacterBody2D {
 		AiState wanderState = new AiState.Builder(Wander)
 			.SetStart(() => {
 				SetRandomWander();
+				ChangeSpriteDirection();
 			})
 			.SetExit(() => {
 				_wanderingTimer.Stop();
@@ -114,9 +122,34 @@ public partial class DarkLion : CharacterBody2D {
 			.SetStart(() => { })
 			.SetExit(() => { })
 			.SetUpdate((double delta) => {
-				// Add feature for chase() vs dash()
+				if (_dashCooldownTimer.TimeLeft == 0) {
+					_stateMachine.SwitchState(Dash);
+					return;
+				}
 				_moveVector = (_player.Position - Position).Normalized();
 				Velocity = _moveVector * _speed;
+				MoveAndSlide();
+				ChangeSpriteDirection();
+			})
+			.SetPhysicsUpdate((double delta) => {
+				if (_touchingPlayer) {
+					AttackIfReady(_player);
+				}
+			})
+			.Build();
+
+		AiState dashingState = new AiState.Builder(Dash)
+			.SetStart(() => {
+				_moveVector = (_player.Position - Position).Normalized();
+				Velocity = _moveVector * _dashSpeed;
+				_dashCooldownTimer.Start(_dashCooldown);
+				_dashDurationTimer.Start(_dashDuration);
+				ChangeSpriteDirection();
+			})
+			.SetExit(() => {
+				MoveAndSlide();
+			})
+			.SetUpdate((double delta) => {
 				MoveAndSlide();
 			})
 			.SetPhysicsUpdate((double delta) => {
@@ -133,6 +166,7 @@ public partial class DarkLion : CharacterBody2D {
 		_stateMachine = new StateMachine.Builder(Wander)
 			.AddState(wanderState)
 			.AddState(pursueState)
+			.AddState(dashingState)
 			.Build();
 
 		AddChild(_stateMachine);
@@ -149,6 +183,14 @@ public partial class DarkLion : CharacterBody2D {
 		if (body.GetParent() is PlayerCharacter) {
 			GD.Print("No longer touching player");
 			_touchingPlayer = false;
+		}
+	}
+
+	private void ChangeSpriteDirection() {
+		if (Velocity.X > 0) {
+			_sprite.FlipH = false;
+		} else {
+			_sprite.FlipH = true;
 		}
 	}
 }

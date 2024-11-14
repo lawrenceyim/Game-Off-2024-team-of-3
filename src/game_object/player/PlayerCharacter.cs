@@ -35,8 +35,8 @@ public partial class PlayerCharacter : CharacterBody2D, IDamageable {
 	public void TakeDamage(int damage) {
 		// Play damaged sfx
 		// Add damaged vfx
-		GD.Print("Player damaged. Health is " + _health.GetCurrentHealth().ToString());
 		_health.DecreaseHealth(damage);
+		GD.Print("Player damaged. Health is " + _health.GetCurrentHealth().ToString());
 	}
 
 	private void InitiateDeath(object sender, EventArgs e) {

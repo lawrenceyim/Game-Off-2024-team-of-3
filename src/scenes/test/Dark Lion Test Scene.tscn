@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0armw404mnk7"]
+
+[ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="1_dg3d0"]
+[ext_resource type="PackedScene" uid="uid://ddikru4jh4tn8" path="res://game_object/darklion_enemy/dark_lion_enemy.tscn" id="2_bgup7"]
+
+[node name="DarkLionTestScene" type="Node2D"]
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("1_dg3d0")]
+position = Vector2(493, 174)
+
+[node name="DarkLionEnemy" parent="." instance=ExtResource("2_bgup7")]
+position = Vector2(148, 85)
