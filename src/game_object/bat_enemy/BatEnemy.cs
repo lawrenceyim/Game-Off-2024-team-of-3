@@ -16,6 +16,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 
     private double _attackCooldown = .5f;
     private int _attackDamage = 1;
+    private bool _touchingPlayer = false;
 
 
     private Health _health;
@@ -57,6 +58,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
         // Start death animation
         // Start death sfx  
         // Handle removing object in the callback from death animation to ensure that the death animation finishes
+        FinishDeath(); // Remove this later and make it called by death animation function
     }
 
     private void FinishDeath() {
@@ -101,15 +103,12 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
             .SetExit(() => { })
             .SetUpdate((double delta) => {
                 _moveVector = (_player.Position - Position).Normalized();
-                KinematicCollision2D collision = MoveAndCollide(_moveVector * _speed * (float)delta);
-                if (collision == null) {
-                    return;
-                }
-                if (collision.GetCollider() is PlayerCharacter player) {
-                    AttackIfReady(player);
-                }
+                MoveAndCollide(_moveVector * _speed * (float)delta);
             })
             .SetPhysicsUpdate((double delta) => {
+                if (_touchingPlayer) {
+                    AttackIfReady(_player);
+                }
                 if (Position.DistanceTo(_player.Position) > _detectionRange) {
                     _stateMachine.SwitchState(Wander);
                     return;
@@ -123,5 +122,19 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
             .Build();
 
         AddChild(_stateMachine);
+    }
+
+    private void _on_hitbox_area_2d_area_entered(Area2D body) {
+        if (body.GetParent() is PlayerCharacter) {
+            GD.Print("Touching player");
+            _touchingPlayer = true;
+        }
+    }
+
+    private void _on_hitbox_area_2d_area_exited(Area2D body) {
+        if (body.GetParent() is PlayerCharacter) {
+            GD.Print("No longer touching player");
+            _touchingPlayer = false;
+        }
     }
 }

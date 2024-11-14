@@ -39,7 +39,7 @@ animations = [{
 [node name="BatEnemy" type="CharacterBody2D"]
 scale = Vector2(3, 3)
 collision_layer = 0
-collision_mask = 3
+collision_mask = 0
 script = ExtResource("1_87655")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -54,5 +54,12 @@ collision_mask = 0
 shape = SubResource("CircleShape2D_q1fxa")
 debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
 
-[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Hitbox Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
 shape = SubResource("CircleShape2D_7i6a5")
+
+[connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
+[connection signal="area_exited" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_exited"]
