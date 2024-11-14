@@ -1,7 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://26cf244jidne"]
+[gd_scene load_steps=10 format=3 uid="uid://26cf244jidne"]
 
 [ext_resource type="Script" path="res://game_object/bat_enemy/BatEnemy.cs" id="1_87655"]
 [ext_resource type="Texture2D" uid="uid://ccx10lguvpbd5" path="res://game_object/bat_enemy/Bat_move.png" id="2_yabgy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wr3yr"]
+radius = 7.67391
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y2dfb"]
 atlas = ExtResource("2_yabgy")
@@ -43,11 +46,15 @@ collision_mask = 4
 script = ExtResource("1_87655")
 _sprite = NodePath("AnimatedSprite2D")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_wr3yr")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_fi44v")
 animation = &"move"
 
 [node name="Hurtbox Area2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 2
 collision_mask = 0
 
@@ -56,6 +63,7 @@ shape = SubResource("CircleShape2D_q1fxa")
 debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
 
 [node name="Hitbox Area2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 2
 
