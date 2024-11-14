@@ -100,7 +100,8 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 				_timer.Paused = true;
 			})
 			.SetUpdate((double delta) => {
-				MoveAndCollide(_moveVector * _speed * (float)delta);
+				Velocity = _moveVector * _speed;
+				MoveAndSlide();
 			})
 			.SetPhysicsUpdate((double delta) => {
 				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
@@ -117,7 +118,8 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 			.SetExit(() => { })
 			.SetUpdate((double delta) => {
 				_moveVector = (_player.Position - Position).Normalized();
-				MoveAndCollide(_moveVector * _speed * (float)delta);
+				Velocity = _moveVector * _speed;
+				MoveAndSlide();
 			})
 			.SetPhysicsUpdate((double delta) => {
 				if (_accelerationTimer.TimeLeft > 0) {
