@@ -12,7 +12,7 @@ public class MeleeAttack {
 	}
 
 	public void AttackIfReady(IDamageable damageable) {
-		if (_cooldownTimer.TimeLeft > 0) {
+		if (!_cooldownTimer.IsStopped()) {
 			return;
 		}
 		_cooldownTimer.Start(_cooldown);

@@ -1,11 +1,11 @@
 using System;
 
 public class Health {
+	public event EventHandler ZeroHealthEvent;
 	private int _baseHealth;
 	private int _maxHealth;
 	private int _currentHealth;
 
-	public event EventHandler ZeroHealthEvent;
 
 	public Health(int baseHealth) {
 		_baseHealth = baseHealth;

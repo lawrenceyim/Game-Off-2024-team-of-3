@@ -3,7 +3,6 @@ using Godot;
 public partial class PlayerMovement : Node {
 	[Export] private CharacterBody2D _body;
 	[Export] private PlayerAnimation _animation;
-
 	private float _speed = 500f;
 
 	public void Move(Vector2 move) {

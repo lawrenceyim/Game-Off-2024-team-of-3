@@ -2,17 +2,6 @@ using System;
 using Godot;
 
 public partial class BatEnemy : CharacterBody2D, IDamageable {
-	[Export] AnimatedSprite2D _sprite;
-	private StateMachine _stateMachine;
-	private PlayerCharacter _player;
-	private Vector2 _moveVector;
-	private Timer _accelerationTimer;
-	private MeleeAttack _meleeAttack;
-	private Wander _wander;
-	private Health _health;
-	private float _detectionRange = 1000;
-	private float _speed;
-	private bool _touchingPlayer = false;
 	private const float _wanderingSpeed = 100f;
 	private const float _maxSpeed = 500f;
 	private const float _accelerationTime = 5;
@@ -24,6 +13,17 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string MoveAnimation = "move";
+	[Export] AnimatedSprite2D _sprite;
+	private StateMachine _stateMachine;
+	private PlayerCharacter _player;
+	private Vector2 _moveVector;
+	private Timer _accelerationTimer;
+	private MeleeAttack _meleeAttack;
+	private Wander _wander;
+	private Health _health;
+	private float _detectionRange = 1000;
+	private float _speed;
+	private bool _touchingPlayer = false;
 
 	public override void _Ready() {
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {

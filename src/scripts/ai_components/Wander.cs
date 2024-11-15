@@ -1,12 +1,11 @@
 using Godot;
-using System;
 
 public partial class Wander {
+	private readonly float _wanderingSpeed;
 	private CharacterBody2D _body;
 	private Timer _wanderingTimer;
 	private double _minWanderingTime;
 	private double _maxWanderingTime;
-	private readonly float _wanderingSpeed;
 
 	public Wander(CharacterBody2D body, Timer timer, double minTime, double maxTime, float wanderSpeed) {
 		_body = body;
