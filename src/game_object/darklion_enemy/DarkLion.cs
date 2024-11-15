@@ -7,46 +7,36 @@ public partial class DarkLion : CharacterBody2D {
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
 	private Timer _wanderingTimer;
-	private Timer _attackCooldownTimer;
 	private Timer _dashCooldownTimer;
 	private Timer _dashDurationTimer;
-
-
-	private float _detectionRange = 1000;
-	private float _speed = 100f;
-	private float _dashSpeed = 1000f;
-	private float _dashDuration = 1f;
-	private float _dashCooldown = 5f;
-
-	private double _minWanderTime = 3f;
-	private double _maxWanderTime = 5f;
-
-	private double _attackCooldown = .5f;
-	private int _attackDamage = 1;
-	private bool _touchingPlayer = false;
-
-
+	private MeleeAttack _meleeAttack;
 	private Health _health;
-	private int _baseHealth = 10;
-
+	private bool _touchingPlayer = false;
+	private float _speed = 100f;
+	private const float _detectionRange = 1000;
+	private const float _dashSpeed = 1000f;
+	private const float _dashDuration = 1f;
+	private const float _dashCooldown = 5f;
+	private const double _minWanderTime = 3f;
+	private const double _maxWanderTime = 5f;
+	private const double _attackCooldown = .5f;
+	private const int _attackDamage = 1;
+	private const int _baseHealth = 10;
 	private const string Wander = "wander";
 	private const string Pursue = "pursue";
 	private const string Dash = "dash";
-
 	private const string Move = "move";
 
 	public override void _Ready() {
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
 			_player = player;
 
-			_attackCooldownTimer = TimerUtil.CreateTimer(this, true);
 			_dashCooldownTimer = TimerUtil.CreateTimer(this, true);
 			_dashDurationTimer = TimerUtil.CreateTimer(this, true);
 			_wanderingTimer = TimerUtil.CreateTimer(this, true);
 
 			_dashDurationTimer.Timeout += () => {
 				_stateMachine.SwitchState(Pursue);
-				GD.Print("DASH ENDED");
 			};
 			_wanderingTimer.Timeout += HandleTimeOut;
 
@@ -55,21 +45,13 @@ public partial class DarkLion : CharacterBody2D {
 
 		_health = new Health(_baseHealth);
 		_health.ZeroHealthEvent += InitiateDeath;
+		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
 
 		_sprite.Play(Move);
 	}
 
 	public void TakeDamage(int damage) {
 		_health.DecreaseHealth(damage);
-	}
-
-	private void AttackIfReady(IDamageable damageable) {
-		if (_attackCooldownTimer.TimeLeft > 0) {
-			return;
-		}
-		_attackCooldownTimer.Start(_attackCooldown);
-		_attackCooldownTimer.Paused = false;
-		damageable.TakeDamage(_attackDamage);
 	}
 
 	private void InitiateDeath(object sender, EventArgs e) {
@@ -133,7 +115,7 @@ public partial class DarkLion : CharacterBody2D {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				if (_touchingPlayer) {
-					AttackIfReady(_player);
+					_meleeAttack.AttackIfReady(_player);
 				}
 			})
 			.Build();
@@ -154,7 +136,7 @@ public partial class DarkLion : CharacterBody2D {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				if (_touchingPlayer) {
-					AttackIfReady(_player);
+					_meleeAttack.AttackIfReady(_player);
 				}
 				if (Position.DistanceTo(_player.Position) > _detectionRange) {
 					_stateMachine.SwitchState(Wander);
@@ -174,14 +156,12 @@ public partial class DarkLion : CharacterBody2D {
 
 	private void _on_hitbox_area_2d_area_entered(Area2D body) {
 		if (body.GetParent() is PlayerCharacter) {
-			GD.Print("Touching player");
 			_touchingPlayer = true;
 		}
 	}
 
 	private void _on_hitbox_area_2d_area_exited(Area2D body) {
 		if (body.GetParent() is PlayerCharacter) {
-			GD.Print("No longer touching player");
 			_touchingPlayer = false;
 		}
 	}

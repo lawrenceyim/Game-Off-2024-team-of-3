@@ -7,30 +7,22 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
 	private Timer _wanderingTimer;
-	private Timer _attackCooldownTimer;
 	private Timer _accelerationTimer;
-
+	private MeleeAttack _meleeAttack;
+	private Health _health;
 	private float _detectionRange = 1000;
 	private float _speed;
-	private float _initialSpeed = 100f;
-	private float _maxSpeed = 500f;
-	private float _accelerationTime = 5;
-
-
-	private double _minWanderTime = 3f;
-	private double _maxWanderTime = 5f;
-
-	private double _attackCooldown = .5f;
-	private int _attackDamage = 1;
 	private bool _touchingPlayer = false;
-
-
-	private Health _health;
-	private int _baseHealth = 5;
-
+	private const float _initialSpeed = 100f;
+	private const float _maxSpeed = 500f;
+	private const float _accelerationTime = 5;
+	private const double _minWanderTime = 3f;
+	private const double _maxWanderTime = 5f;
+	private const int _baseHealth = 5;
+	private const double _attackCooldown = .5f;
+	private const int _attackDamage = 1;
 	private const string Wander = "wander";
 	private const string Pursue = "pursue";
-
 	private const string Move = "move";
 
 	public override void _Ready() {
@@ -38,7 +30,6 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 			_player = player;
 
 			_accelerationTimer = TimerUtil.CreateTimer(this, true);
-			_attackCooldownTimer = TimerUtil.CreateTimer(this, true);
 			_wanderingTimer = TimerUtil.CreateTimer(this, true);
 			_wanderingTimer.Timeout += HandleTimeOut;
 
@@ -48,20 +39,13 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 		_health = new Health(_baseHealth);
 		_health.ZeroHealthEvent += InitiateDeath;
 
+		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
+
 		_sprite.Play(Move);
 	}
 
 	public void TakeDamage(int damage) {
 		_health.DecreaseHealth(damage);
-	}
-
-	private void AttackIfReady(IDamageable damageable) {
-		if (_attackCooldownTimer.TimeLeft > 0) {
-			return;
-		}
-		_attackCooldownTimer.Start(_attackCooldown);
-		_attackCooldownTimer.Paused = false;
-		damageable.TakeDamage(_attackDamage);
 	}
 
 	private void InitiateDeath(object sender, EventArgs e) {
@@ -125,7 +109,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / _accelerationTime)) * _maxSpeed, _initialSpeed);
 				}
 				if (_touchingPlayer) {
-					AttackIfReady(_player);
+					_meleeAttack.AttackIfReady(_player);
 				}
 				if (Position.DistanceTo(_player.Position) > _detectionRange) {
 					_stateMachine.SwitchState(Wander);
@@ -144,14 +128,12 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 
 	private void _on_hitbox_area_2d_area_entered(Area2D body) {
 		if (body.GetParent() is PlayerCharacter) {
-			GD.Print("Touching player");
 			_touchingPlayer = true;
 		}
 	}
 
 	private void _on_hitbox_area_2d_area_exited(Area2D body) {
 		if (body.GetParent() is PlayerCharacter) {
-			GD.Print("No longer touching player");
 			_touchingPlayer = false;
 		}
 	}
