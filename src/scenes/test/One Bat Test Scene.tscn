@@ -6,7 +6,7 @@
 [node name="One Enemy Test Scene" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_xfer7")]
-position = Vector2(582, 225)
+position = Vector2(815, 236)
 
 [node name="Enemy" parent="." instance=ExtResource("2_vm4hg")]
 position = Vector2(388, 148)

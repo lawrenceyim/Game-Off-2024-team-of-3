@@ -6,14 +6,14 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
-	private Timer _wanderingTimer;
 	private Timer _accelerationTimer;
 	private MeleeAttack _meleeAttack;
+	private Wander _wander;
 	private Health _health;
 	private float _detectionRange = 1000;
 	private float _speed;
 	private bool _touchingPlayer = false;
-	private const float _initialSpeed = 100f;
+	private const float _wanderingSpeed = 100f;
 	private const float _maxSpeed = 500f;
 	private const float _accelerationTime = 5;
 	private const double _minWanderTime = 3f;
@@ -30,8 +30,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 			_player = player;
 
 			_accelerationTimer = TimerUtil.CreateTimer(this, true);
-			_wanderingTimer = TimerUtil.CreateTimer(this, true);
-			_wanderingTimer.Timeout += HandleTimeOut;
+			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
 
 			SetStateMachine();
 		});
@@ -59,31 +58,15 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 		QueueFree();
 	}
 
-	private void SetRandomWander() {
-		_wanderingTimer.Start(RandomNumber.RandomDoubleBetween(_minWanderTime, _maxWanderTime));
-		_wanderingTimer.Paused = false;
-		_moveVector = new Vector2(RandomNumber.RandomFloatBetween(-1, 1), RandomNumber.RandomFloatBetween(-1, 1));
-	}
-
-	private void HandleTimeOut() {
-		string currentState = _stateMachine.GetCurrentState();
-		if (currentState.Equals(Wander)) {
-			SetRandomWander();
-		}
-	}
-
 	private void SetStateMachine() {
 		AiState wanderState = new AiState.Builder(Wander)
 			.SetStart(() => {
-				SetRandomWander();
-				_speed = _initialSpeed;
+				_wander.SetWanderingVelocity();
 			})
 			.SetExit(() => {
-				_wanderingTimer.Stop();
-				_wanderingTimer.Paused = true;
+				_wander.StopWandering();
 			})
 			.SetUpdate((double delta) => {
-				Velocity = _moveVector * _speed;
 				MoveAndSlide();
 			})
 			.SetPhysicsUpdate((double delta) => {
@@ -106,7 +89,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				if (_accelerationTimer.TimeLeft > 0) {
-					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / _accelerationTime)) * _maxSpeed, _initialSpeed);
+					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / _accelerationTime)) * _maxSpeed, _wanderingSpeed);
 				}
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);

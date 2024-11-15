@@ -6,15 +6,16 @@ public partial class DarkLion : CharacterBody2D {
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
-	private Timer _wanderingTimer;
 	private Timer _dashCooldownTimer;
 	private Timer _dashDurationTimer;
 	private MeleeAttack _meleeAttack;
+	private Wander _wander;
 	private Health _health;
 	private bool _touchingPlayer = false;
 	private float _speed = 100f;
 	private const float _detectionRange = 1000;
 	private const float _dashSpeed = 1000f;
+	private const float _wanderingSpeed = 100f;
 	private const float _dashDuration = 1f;
 	private const float _dashCooldown = 5f;
 	private const double _minWanderTime = 3f;
@@ -33,12 +34,12 @@ public partial class DarkLion : CharacterBody2D {
 
 			_dashCooldownTimer = TimerUtil.CreateTimer(this, true);
 			_dashDurationTimer = TimerUtil.CreateTimer(this, true);
-			_wanderingTimer = TimerUtil.CreateTimer(this, true);
 
 			_dashDurationTimer.Timeout += () => {
 				_stateMachine.SwitchState(Pursue);
 			};
-			_wanderingTimer.Timeout += HandleTimeOut;
+
+			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
 
 			SetStateMachine();
 		});
@@ -65,31 +66,16 @@ public partial class DarkLion : CharacterBody2D {
 		QueueFree();
 	}
 
-	private void SetRandomWander() {
-		_wanderingTimer.Start(RandomNumber.RandomDoubleBetween(_minWanderTime, _maxWanderTime));
-		_wanderingTimer.Paused = false;
-		_moveVector = new Vector2(RandomNumber.RandomFloatBetween(-1, 1), RandomNumber.RandomFloatBetween(-1, 1));
-	}
-
-	private void HandleTimeOut() {
-		string currentState = _stateMachine.GetCurrentState();
-		if (currentState.Equals(Wander)) {
-			SetRandomWander();
-		}
-	}
-
 	private void SetStateMachine() {
 		AiState wanderState = new AiState.Builder(Wander)
 			.SetStart(() => {
-				SetRandomWander();
+				_wander.SetWanderingVelocity();
 				ChangeSpriteDirection();
 			})
 			.SetExit(() => {
-				_wanderingTimer.Stop();
-				_wanderingTimer.Paused = true;
+				_wander.StopWandering();
 			})
 			.SetUpdate((double delta) => {
-				Velocity = _moveVector * _speed;
 				MoveAndSlide();
 			})
 			.SetPhysicsUpdate((double delta) => {
@@ -109,7 +95,7 @@ public partial class DarkLion : CharacterBody2D {
 					return;
 				}
 				_moveVector = (_player.Position - Position).Normalized();
-				Velocity = _moveVector * _speed;
+				Velocity = _moveVector * _wanderingSpeed;
 				MoveAndSlide();
 				ChangeSpriteDirection();
 			})
@@ -128,9 +114,7 @@ public partial class DarkLion : CharacterBody2D {
 				_dashDurationTimer.Start(_dashDuration);
 				ChangeSpriteDirection();
 			})
-			.SetExit(() => {
-				MoveAndSlide();
-			})
+			.SetExit(() => { })
 			.SetUpdate((double delta) => {
 				MoveAndSlide();
 			})
