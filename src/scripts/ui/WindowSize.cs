@@ -15,6 +15,7 @@ public partial class WindowSize : Node {
 
 	public override void _Ready() {
 		SetScreenSize(_sizes[2]);
+		GetWindow().Position = new Vector2I(0, 20);
 	}
 
 	public void SetScreenSize(Vector2I size) {
