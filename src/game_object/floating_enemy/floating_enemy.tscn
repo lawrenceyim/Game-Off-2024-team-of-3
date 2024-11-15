@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dkqxnp3rgn3mj"]
+[gd_scene load_steps=11 format=3 uid="uid://dkqxnp3rgn3mj"]
 
 [ext_resource type="Script" path="res://game_object/floating_enemy/FloatingEnemy.cs" id="1_4wsbe"]
 [ext_resource type="Texture2D" uid="uid://b7tq0npuqpivb" path="res://game_object/floating_enemy/FloatingMonster_move.png" id="2_881nq"]
@@ -39,13 +39,17 @@ animations = [{
 "speed": 6.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_m33yx"]
-radius = 13.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_xxmo3"]
+radius = 7.67391
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_8b82s"]
-radius = 13.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_y1mvd"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_akm3t"]
 
 [node name="FloatingEnemy" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("1_4wsbe")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -54,15 +58,22 @@ animation = &"move"
 frame = 3
 frame_progress = 0.62441
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xxmo3")
+
 [node name="Hurtbox Area2D" type="Area2D" parent="."]
+visible = false
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
-position = Vector2(0, -1)
-shape = SubResource("CircleShape2D_m33yx")
+shape = SubResource("CircleShape2D_y1mvd")
 debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
 
-[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1)
-shape = SubResource("CircleShape2D_8b82s")
+[node name="Hitbox Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
+shape = SubResource("CircleShape2D_akm3t")

@@ -82,7 +82,7 @@ sprite_frames = SubResource("SpriteFrames_7ucr4")
 animation = &"move"
 frame_progress = 0.547799
 
-[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1.33333, -2.66667)
 shape = SubResource("CircleShape2D_evod3")
 

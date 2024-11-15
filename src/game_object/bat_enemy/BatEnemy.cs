@@ -21,9 +21,9 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const int _baseHealth = 5;
 	private const double _attackCooldown = .5f;
 	private const int _attackDamage = 1;
-	private const string Wander = "wander";
-	private const string Pursue = "pursue";
-	private const string Move = "move";
+	private const string WanderingState = "wander";
+	private const string PursuitState = "pursue";
+	private const string MoveAnimation = "move";
 
 	public override void _Ready() {
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
@@ -40,7 +40,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 
 		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
 
-		_sprite.Play(Move);
+		_sprite.Play(MoveAnimation);
 	}
 
 	public void TakeDamage(int damage) {
@@ -59,7 +59,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	}
 
 	private void SetStateMachine() {
-		AiState wanderState = new AiState.Builder(Wander)
+		AiState wanderState = new AiState.Builder(WanderingState)
 			.SetStart(() => {
 				_wander.SetWanderingVelocity();
 			})
@@ -71,13 +71,13 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
-					_stateMachine.SwitchState(Pursue);
+					_stateMachine.SwitchState(PursuitState);
 					return;
 				}
 			})
 			.Build();
 
-		AiState pursueState = new AiState.Builder(Pursue)
+		AiState pursueState = new AiState.Builder(PursuitState)
 			.SetStart(() => {
 				_accelerationTimer.Start(_accelerationTime);
 			})
@@ -95,13 +95,13 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 					_meleeAttack.AttackIfReady(_player);
 				}
 				if (Position.DistanceTo(_player.Position) > _detectionRange) {
-					_stateMachine.SwitchState(Wander);
+					_stateMachine.SwitchState(WanderingState);
 					return;
 				}
 			})
 			.Build();
 
-		_stateMachine = new StateMachine.Builder(Wander)
+		_stateMachine = new StateMachine.Builder(WanderingState)
 			.AddState(wanderState)
 			.AddState(pursueState)
 			.Build();

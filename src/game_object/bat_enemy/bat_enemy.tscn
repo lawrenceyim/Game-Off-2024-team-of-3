@@ -67,7 +67,7 @@ visible = false
 collision_layer = 0
 collision_mask = 2
 
-[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
 shape = SubResource("CircleShape2D_7i6a5")
 
 [connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
