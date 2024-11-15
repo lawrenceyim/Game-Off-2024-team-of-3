@@ -2,16 +2,6 @@ using Godot;
 using System;
 
 public partial class FloatingEnemy : CharacterBody2D, IDamageable {
-	[Export] AnimatedSprite2D _sprite;
-	private StateMachine _stateMachine;
-	private PlayerCharacter _player;
-	private Vector2 _moveVector;
-	private MeleeAttack _meleeAttack;
-	private Wander _wander;
-	private Health _health;
-	private float _detectionRange = 1000;
-	private float _speed;
-	private bool _touchingPlayer = false;
 	private const float _wanderingSpeed = 100f;
 	private const double _minWanderTime = 3f;
 	private const double _maxWanderTime = 5f;
@@ -21,6 +11,17 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string MoveAnimation = "move";
+	[Export] AnimatedSprite2D _sprite;
+	private StateMachine _stateMachine;
+	private PlayerCharacter _player;
+	private Vector2 _moveVector;
+	private MeleeAttack _meleeAttack;
+	private RangedAttack _rangedAttack;
+	private Wander _wander;
+	private Health _health;
+	private float _detectionRange = 1000;
+	private float _speed;
+	private bool _touchingPlayer = false;
 
 	public override void _Ready() {
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
@@ -35,6 +36,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		_health.ZeroHealthEvent += InitiateDeath;
 
 		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
+		_rangedAttack = new RangedAttack(this, TimerUtil.CreateTimer(this, true));
 
 		_sprite.Play(MoveAnimation);
 	}
@@ -82,6 +84,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 				MoveAndSlide();
 			})
 			.SetPhysicsUpdate((double delta) => {
+				_rangedAttack.AttackIfReady(_player);
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
 				}
