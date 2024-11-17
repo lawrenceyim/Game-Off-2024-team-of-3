@@ -11,7 +11,8 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string MoveAnimation = "move";
-	[Export] AnimatedSprite2D _sprite;
+	[Export] AnimationPlayer _animationPlayer;
+	[Export] Sprite2D _sprite;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
@@ -38,7 +39,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
 		_rangedAttack = new RangedAttack(this, TimerUtil.CreateTimer(this, true));
 
-		_sprite.Play(MoveAnimation);
+		_animationPlayer.Play(MoveAnimation);
 	}
 
 	public void TakeDamage(int damage) {
