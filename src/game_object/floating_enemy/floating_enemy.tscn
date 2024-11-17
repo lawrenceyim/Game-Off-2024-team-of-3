@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkqxnp3rgn3mj"]
+[gd_scene load_steps=10 format=3 uid="uid://dkqxnp3rgn3mj"]
 
 [ext_resource type="Script" path="res://game_object/floating_enemy/FloatingEnemy.cs" id="1_4wsbe"]
+[ext_resource type="PackedScene" uid="uid://d1kmpkjchb7f6" path="res://game_object/floating_enemy/FloatingMonsterProjectile.tscn" id="2_8sgm4"]
 [ext_resource type="Texture2D" uid="uid://b7tq0npuqpivb" path="res://game_object/floating_enemy/FloatingMonster_move.png" id="2_881nq"]
 [ext_resource type="Texture2D" uid="uid://bufm0yrlw2osq" path="res://game_object/floating_enemy/FloatingMonster_attack.png" id="3_jip3p"]
 
@@ -172,9 +173,11 @@ _data = {
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ihmf"]
 
 [node name="FloatingEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite")]
+scale = Vector2(3, 3)
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("1_4wsbe")
+_projectilePrefab = ExtResource("2_8sgm4")
 _animationPlayer = NodePath("AnimationPlayer")
 _sprite = NodePath("Sprite2D")
 

@@ -2,13 +2,15 @@ using Godot;
 
 public class RangedAttack {
 	private readonly Timer _cooldownTimer;
-	[Export] private readonly PackedScene _projectilePrefab;
-	[Export] private readonly double _cooldown;
-	private Node2D _host;
+	private readonly PackedScene _projectilePrefab;
+	private readonly double _cooldown;
+	private readonly Node2D _host;
 
-	public RangedAttack(Node2D host, Timer timer) {
+	public RangedAttack(Node2D host, Timer timer, PackedScene projectilePrefab, double cooldown) {
 		_host = host;
 		_cooldownTimer = timer;
+		_projectilePrefab = projectilePrefab;
+		_cooldown = cooldown;
 	}
 
 	public void AttackIfReady(IDamageable damageable) {
@@ -21,7 +23,8 @@ public class RangedAttack {
 		Node2D target = damageable as Node2D;
 		Vector2 movementVector = (target.Position - _host.Position).Normalized();
 
-		Projectile projectile = (Projectile)_projectilePrefab.Instantiate();
-		projectile.Initialize(movementVector);
+		Node2D projectile = _projectilePrefab.Instantiate<Node2D>();
+		_host.GetTree().Root.GetNode("Projectiles").AddChild(projectile);
+		(projectile as Projectile).Initialize(_host.Position, movementVector);
 	}
 }

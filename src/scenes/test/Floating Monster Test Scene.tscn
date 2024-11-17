@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7cie700f4vky"]
+
+[ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="1_kcu4d"]
+[ext_resource type="PackedScene" uid="uid://dkqxnp3rgn3mj" path="res://game_object/floating_enemy/floating_enemy.tscn" id="2_4x630"]
+
+[node name="FloatingMonsterTestScene" type="Node2D"]
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("1_kcu4d")]
+position = Vector2(616, 239)
+
+[node name="FloatingEnemy" parent="." instance=ExtResource("2_4x630")]
+position = Vector2(145, 66)

@@ -6,11 +6,16 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const double _minWanderTime = 3f;
 	private const double _maxWanderTime = 5f;
 	private const int _baseHealth = 5;
-	private const double _attackCooldown = .5f;
+	private const double _meleeAttackCooldown = .5f;
+	private const double _rangedAttackCooldown = 5f;
 	private const int _attackDamage = 1;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
+	private const string AttackState = "attack";
 	private const string MoveAnimation = "move";
+	private const string AttackAnimation = "attack";
+	private const string ResetAnimation = "RESET";
+	[Export] PackedScene _projectilePrefab;
 	[Export] AnimationPlayer _animationPlayer;
 	[Export] Sprite2D _sprite;
 	private StateMachine _stateMachine;
@@ -36,8 +41,8 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		_health = new Health(_baseHealth);
 		_health.ZeroHealthEvent += InitiateDeath;
 
-		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
-		_rangedAttack = new RangedAttack(this, TimerUtil.CreateTimer(this, true));
+		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _meleeAttackCooldown, _attackDamage);
+		_rangedAttack = new RangedAttack(this, TimerUtil.CreateTimer(this, true), _projectilePrefab, _rangedAttackCooldown);
 
 		_animationPlayer.Play(MoveAnimation);
 	}

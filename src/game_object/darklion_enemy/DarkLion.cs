@@ -18,7 +18,7 @@ public partial class DarkLion : CharacterBody2D {
 	private const String PreparingDashState = "preparingDash";
 	private const string MoveAnimation = "move";
 	private const string DashAnimation = "dash";
-	private const string ResetAnimation = "reset";
+	private const string ResetAnimation = "RESET";
 	[Export] AnimationPlayer _animationPlayer;
 	[Export] Sprite2D _sprite;
 	private StateMachine _stateMachine;

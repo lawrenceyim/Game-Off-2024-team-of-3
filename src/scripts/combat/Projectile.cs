@@ -6,14 +6,14 @@ public partial class Projectile : Node2D {
 	[Export] private int _damage;
 	[Export] private float _projectileSpeed;
 	private Vector2 _velocity = Vector2.Zero;
+	private Timer _lifeSpanTimer;
 
-	public override void _Ready() {
-		GetNode("/root/Projectiles").AddChild(this);
-		// _sprite.Play(ProjectileAnimation);
-	}
-
-	public void Initialize(Vector2 velocity) {
+	public void Initialize(Vector2 startPosition, Vector2 velocity) {
+		Position = startPosition;
 		_velocity = velocity * _projectileSpeed;
+		_lifeSpanTimer = TimerUtil.CreateTimer(this, true);
+		_lifeSpanTimer.Timeout += QueueFree;
+		_lifeSpanTimer.Start(10);
 	}
 
 	public override void _Process(double delta) {
