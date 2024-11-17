@@ -13,6 +13,10 @@ public class RangedAttack {
 		_cooldown = cooldown;
 	}
 
+	public bool CanAttack() {
+		return _cooldownTimer.IsStopped();
+	}
+
 	public void AttackIfReady(IDamageable damageable) {
 		if (!_cooldownTimer.IsStopped()) {
 			return;

@@ -66,6 +66,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		AiState wanderState = new AiState.Builder(WanderingState)
 			.SetStart(() => {
 				_wander.SetWanderingVelocity();
+				ChangeSpriteDirection();
 			})
 			.SetExit(() => {
 				_wander.StopWandering();
@@ -82,15 +83,21 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			.Build();
 
 		AiState pursueState = new AiState.Builder(PursuitState)
-			.SetStart(() => { })
+			.SetStart(() => {
+				_animationPlayer.Play(MoveAnimation);
+			})
 			.SetExit(() => { })
 			.SetUpdate((double delta) => {
 				_moveVector = (_player.Position - Position).Normalized();
 				Velocity = _moveVector * _wanderingSpeed;
 				MoveAndSlide();
+				ChangeSpriteDirection();
 			})
 			.SetPhysicsUpdate((double delta) => {
-				_rangedAttack.AttackIfReady(_player);
+				if (_rangedAttack.CanAttack()) {
+					_stateMachine.SwitchState(AttackState);
+					return;
+				}
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
 				}
@@ -101,9 +108,19 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			})
 			.Build();
 
+		AiState attackState = new AiState.Builder(AttackState)
+			.SetStart(() => {
+				_animationPlayer.Play(AttackAnimation);
+			})
+			.SetExit(() => { })
+			.SetUpdate((double delta) => { })
+			.SetPhysicsUpdate((double delta) => { })
+			.Build();
+
 		_stateMachine = new StateMachine.Builder(WanderingState)
 			.AddState(wanderState)
 			.AddState(pursueState)
+			.AddState(attackState)
 			.Build();
 
 		AddChild(_stateMachine);
@@ -119,5 +136,19 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		if (body.GetParent() is PlayerCharacter) {
 			_touchingPlayer = false;
 		}
+	}
+
+	private void ChangeSpriteDirection() {
+		if (Velocity.X > 0) {
+			_sprite.FlipH = false;
+		} else {
+			_sprite.FlipH = true;
+		}
+	}
+
+	// Called by the animation player to switch from attacking to pursuit
+	private void FinishAttackAnimation() {
+		_rangedAttack.AttackIfReady(_player);
+		_stateMachine.SwitchState(PursuitState);
 	}
 }
