@@ -1,20 +1,88 @@
-[gd_scene load_steps=3 format=3 uid="uid://dovgvwa4c7xqb"]
+[gd_scene load_steps=12 format=3 uid="uid://dovgvwa4c7xqb"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_m1so2"]
+[ext_resource type="Texture2D" uid="uid://cwbajjajs3de7" path="res://game_object/werewolf_boss/Werewolf_move.png" id="1_ejwmd"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_jfygv"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ntr3f"]
+atlas = ExtResource("1_ejwmd")
+region = Rect2(0, 0, 64, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tlskw"]
+atlas = ExtResource("1_ejwmd")
+region = Rect2(64, 0, 64, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_un4jx"]
+atlas = ExtResource("1_ejwmd")
+region = Rect2(128, 0, 64, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3gga4"]
+atlas = ExtResource("1_ejwmd")
+region = Rect2(192, 0, 64, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n4mj0"]
+atlas = ExtResource("1_ejwmd")
+region = Rect2(256, 0, 64, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppiv7"]
+atlas = ExtResource("1_ejwmd")
+region = Rect2(320, 0, 64, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lxlak"]
+atlas = ExtResource("1_ejwmd")
+region = Rect2(384, 0, 64, 67)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mo8nt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ntr3f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tlskw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_un4jx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3gga4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n4mj0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppiv7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lxlak")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d161v"]
+radius = 16.0
+height = 62.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4uwxx"]
+radius = 16.0
+height = 62.0
 
 [node name="WerewolfBoss" type="CharacterBody2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_mo8nt")
+animation = &"move"
+frame_progress = 0.878461
 
 [node name="Hurtbox Area2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
-shape = SubResource("CircleShape2D_m1so2")
+position = Vector2(-1, 2)
+shape = SubResource("CapsuleShape2D_d161v")
 debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
 
 [node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_jfygv")
+position = Vector2(-1, 2)
+shape = SubResource("CapsuleShape2D_4uwxx")
