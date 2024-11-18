@@ -17,9 +17,10 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const string MoveAnimation = "move";
 	private const string AttackAnimation = "attack";
 	private const string ResetAnimation = "RESET";
-	[Export] PackedScene _projectilePrefab;
-	[Export] AnimationPlayer _animationPlayer;
-	[Export] Sprite2D _sprite;
+	[Export] private PackedScene _projectilePrefab;
+	[Export] private AnimationPlayer _animationPlayer;
+	[Export] private Sprite2D _sprite;
+	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
@@ -58,6 +59,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			.SetStart(() => {
 				_wander.SetWanderingVelocity();
 				ChangeSpriteDirection();
+				_alertLabel.DisplayQuestionMark();
 			})
 			.SetExit(() => {
 				_wander.StopWandering();
@@ -67,6 +69,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
+					_alertLabel.DisplayExclamationMark();
 					_stateMachine.SwitchState(PursuitState);
 					return;
 				}

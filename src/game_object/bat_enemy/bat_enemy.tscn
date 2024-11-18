@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://26cf244jidne"]
+[gd_scene load_steps=11 format=3 uid="uid://26cf244jidne"]
 
 [ext_resource type="Script" path="res://game_object/bat_enemy/BatEnemy.cs" id="1_87655"]
 [ext_resource type="Texture2D" uid="uid://ccx10lguvpbd5" path="res://game_object/bat_enemy/Bat_move.png" id="2_yabgy"]
+[ext_resource type="PackedScene" uid="uid://cd6m7jcbua0x0" path="res://prefabs/Alert Label.tscn" id="3_8x76j"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wr3yr"]
 radius = 7.67391
@@ -39,12 +40,13 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7i6a5"]
 
-[node name="BatEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_sprite")]
+[node name="BatEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_sprite", "_alertLabel")]
 scale = Vector2(3, 3)
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("1_87655")
 _sprite = NodePath("AnimatedSprite2D")
+_alertLabel = NodePath("Alert")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_wr3yr")
@@ -69,6 +71,9 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
 shape = SubResource("CircleShape2D_7i6a5")
+
+[node name="Alert" parent="." instance=ExtResource("3_8x76j")]
+position = Vector2(-6, -33.3333)
 
 [connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
 [connection signal="area_exited" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_exited"]

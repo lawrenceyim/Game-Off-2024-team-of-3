@@ -10,11 +10,13 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const int _baseHealth = 5;
 	private const double _attackCooldown = .5f;
 	private const int _attackDamage = 1;
+	private const float _detectionRange = 500;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
-	[Export] AnimatedSprite2D _sprite;
+	[Export] private AnimatedSprite2D _sprite;
+	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
@@ -22,7 +24,6 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private MeleeAttack _meleeAttack;
 	private Wander _wander;
 	private Health _health;
-	private float _detectionRange = 1000;
 	private float _speed;
 	private bool _touchingPlayer = false;
 
@@ -69,6 +70,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 
 		AiState pursueState = new AiState.Builder(PursuitState)
 			.SetStart(() => {
+				_alertLabel.DisplayExclamationMark();
 				_accelerationTimer.Start(_accelerationTime);
 			})
 			.SetExit(() => { })
@@ -85,6 +87,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 					_meleeAttack.AttackIfReady(_player);
 				}
 				if (Position.DistanceTo(_player.Position) > _detectionRange) {
+					_alertLabel.DisplayQuestionMark();
 					_stateMachine.SwitchState(WanderingState);
 					return;
 				}

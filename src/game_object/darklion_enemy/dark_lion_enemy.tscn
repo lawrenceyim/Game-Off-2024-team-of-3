@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://ddikru4jh4tn8"]
+[gd_scene load_steps=10 format=3 uid="uid://ddikru4jh4tn8"]
 
 [ext_resource type="Script" path="res://game_object/darklion_enemy/DarkLion.cs" id="1_yf821"]
 [ext_resource type="Texture2D" uid="uid://bdhw02j1y7isu" path="res://game_object/darklion_enemy/DarkLion_move.png" id="2_wl5pc"]
 [ext_resource type="Texture2D" uid="uid://oi6qronqyd12" path="res://game_object/darklion_enemy/DarkLion_dash.png" id="3_svuej"]
+[ext_resource type="PackedScene" uid="uid://cd6m7jcbua0x0" path="res://prefabs/Alert Label.tscn" id="4_15klr"]
 
 [sub_resource type="Animation" id="Animation_qvurc"]
 length = 0.001
@@ -245,13 +246,14 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_v6qa1"]
 radius = 19.0
 
-[node name="DarkLionEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite")]
+[node name="DarkLionEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel")]
 scale = Vector2(3, 3)
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("1_yf821")
 _animationPlayer = NodePath("AnimationPlayer")
 _sprite = NodePath("Sprite2D")
+_alertLabel = NodePath("Alert")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("3_svuej")
@@ -282,6 +284,9 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
 position = Vector2(1, -3)
 shape = SubResource("CircleShape2D_v6qa1")
+
+[node name="Alert" parent="." instance=ExtResource("4_15klr")]
+position = Vector2(-5.66667, -52.6667)
 
 [connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
 [connection signal="area_exited" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_exited"]

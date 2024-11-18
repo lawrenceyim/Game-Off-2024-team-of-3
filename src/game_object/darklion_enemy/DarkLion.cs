@@ -2,8 +2,8 @@ using Godot;
 using System;
 
 public partial class DarkLion : CharacterBody2D {
-	private const float _detectionRange = 1000;
-	private const float _dashSpeed = 1000f;
+	private const float _detectionRange = 700;
+	private const float _dashSpeed = 750f;
 	private const float _wanderingSpeed = 100f;
 	private const float _dashDuration = 1f;
 	private const float _dashCooldown = 5f;
@@ -15,13 +15,14 @@ public partial class DarkLion : CharacterBody2D {
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DashingState = "dash";
-	private const String PreparingDashState = "preparingDash";
+	private const string PreparingDashState = "preparingDash";
 	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
 	private const string DashAnimation = "dash";
 	private const string ResetAnimation = "RESET";
-	[Export] AnimationPlayer _animationPlayer;
-	[Export] Sprite2D _sprite;
+	[Export] private AnimationPlayer _animationPlayer;
+	[Export] private Sprite2D _sprite;
+	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
@@ -75,6 +76,7 @@ public partial class DarkLion : CharacterBody2D {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
+					_alertLabel.DisplayExclamationMark();
 					_stateMachine.SwitchState(PursuitState);
 					return;
 				}
@@ -99,6 +101,11 @@ public partial class DarkLion : CharacterBody2D {
 			.SetPhysicsUpdate((double delta) => {
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
+				}
+				if (Position.DistanceTo(_player.Position) > _detectionRange) {
+					_alertLabel.DisplayQuestionMark();
+					_stateMachine.SwitchState(WanderingState);
+					return;
 				}
 			})
 			.Build();
