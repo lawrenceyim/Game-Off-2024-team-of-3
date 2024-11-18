@@ -16,6 +16,7 @@ public partial class DarkLion : CharacterBody2D {
 	private const string PursuitState = "pursue";
 	private const string DashingState = "dash";
 	private const String PreparingDashState = "preparingDash";
+	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
 	private const string DashAnimation = "dash";
 	private const string ResetAnimation = "RESET";
@@ -49,7 +50,7 @@ public partial class DarkLion : CharacterBody2D {
 		});
 
 		_health = new Health(_baseHealth);
-		_health.ZeroHealthEvent += InitiateDeath;
+		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
 		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
 
 		_animationPlayer.Play(MoveAnimation);
@@ -57,17 +58,6 @@ public partial class DarkLion : CharacterBody2D {
 
 	public void TakeDamage(int damage) {
 		_health.DecreaseHealth(damage);
-	}
-
-	private void InitiateDeath(object sender, EventArgs e) {
-		// Start death animation
-		// Start death sfx  
-		// Handle removing object in the callback from death animation to ensure that the death animation finishes
-		FinishDeath(); // Remove this later and make it called by death animation function
-	}
-
-	private void FinishDeath() {
-		QueueFree();
 	}
 
 	private void SetStateMachine() {
@@ -145,11 +135,24 @@ public partial class DarkLion : CharacterBody2D {
 			})
 			.Build();
 
+		AiState deathState = new AiState.Builder(DeathState)
+			.SetStart(() => {
+				// Play death SFX
+				// Play death animation
+			})
+			.SetExit(() => {
+				QueueFree();
+			})
+			.SetUpdate((double delta) => { })
+			.SetPhysicsUpdate((double delta) => { })
+			.Build();
+
 		_stateMachine = new StateMachine.Builder(WanderingState)
 			.AddState(wanderState)
 			.AddState(pursueState)
 			.AddState(preparingDashState)
 			.AddState(dashingState)
+			.AddState(deathState)
 			.Build();
 
 		AddChild(_stateMachine);

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const float _wanderingSpeed = 100f;
@@ -12,6 +13,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string AttackState = "attack";
+	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
 	private const string AttackAnimation = "attack";
 	private const string ResetAnimation = "RESET";
@@ -39,7 +41,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		});
 
 		_health = new Health(_baseHealth);
-		_health.ZeroHealthEvent += InitiateDeath;
+		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
 
 		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _meleeAttackCooldown, _attackDamage);
 		_rangedAttack = new RangedAttack(this, TimerUtil.CreateTimer(this, true), _projectilePrefab, _rangedAttackCooldown);
@@ -49,17 +51,6 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 
 	public void TakeDamage(int damage) {
 		_health.DecreaseHealth(damage);
-	}
-
-	private void InitiateDeath(object sender, EventArgs e) {
-		// Start death animation
-		// Start death sfx  
-		// Handle removing object in the callback from death animation to ensure that the death animation finishes
-		FinishDeath(); // Remove this later and make it called by death animation function
-	}
-
-	private void FinishDeath() {
-		QueueFree();
 	}
 
 	private void SetStateMachine() {
@@ -117,10 +108,23 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			.SetPhysicsUpdate((double delta) => { })
 			.Build();
 
+		AiState deathState = new AiState.Builder(DeathState)
+			.SetStart(() => {
+				// Play death SFX
+				// Play death animation
+			})
+			.SetExit(() => {
+				QueueFree();
+			})
+			.SetUpdate((double delta) => { })
+			.SetPhysicsUpdate((double delta) => { })
+			.Build();
+
 		_stateMachine = new StateMachine.Builder(WanderingState)
 			.AddState(wanderState)
 			.AddState(pursueState)
 			.AddState(attackState)
+			.AddState(deathState)
 			.Build();
 
 		AddChild(_stateMachine);
