@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://crfgdfjexgbyc"]
+
+[ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="1_xfer7"]
+[ext_resource type="PackedScene" uid="uid://26cf244jidne" path="res://game_object/bat_enemy/bat_enemy.tscn" id="2_vm4hg"]
+
+[node name="One Enemy Test Scene" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_xfer7")]
+position = Vector2(815, 236)
+
+[node name="Enemy" parent="." instance=ExtResource("2_vm4hg")]
+position = Vector2(388, 148)

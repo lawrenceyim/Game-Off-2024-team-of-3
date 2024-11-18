@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5syntfd4csam"]
+
+[ext_resource type="Script" path="res://scripts/combat/Projectile.cs" id="1_tfjpr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i2fwh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7hymj"]
+
+[node name="FloatEnemyProjectile" type="Node2D" node_paths=PackedStringArray("_sprite")]
+script = ExtResource("1_tfjpr")
+_sprite = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_i2fwh")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_7hymj")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

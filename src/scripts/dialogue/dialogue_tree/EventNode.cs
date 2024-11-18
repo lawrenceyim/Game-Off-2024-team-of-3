@@ -11,17 +11,17 @@
 using System;
 
 public class EventNode : BaseNode {
-    private string _nextNodeKey = "";
+	private string _nextNodeKey = "";
 
-    private Action _eventAction;
+	private Action _eventAction;
 
-    public EventNode(Action eventAction, string nextNodeKey) {
-        _eventAction = eventAction;
-        _nextNodeKey = nextNodeKey;
-    }
+	public EventNode(Action eventAction, string nextNodeKey) {
+		_eventAction = eventAction;
+		_nextNodeKey = nextNodeKey;
+	}
 
-    public override string GetNextNodeKey() {
-        _eventAction();
-        return _nextNodeKey;
-    }
+	public override string GetNextNodeKey() {
+		_eventAction();
+		return _nextNodeKey;
+	}
 }

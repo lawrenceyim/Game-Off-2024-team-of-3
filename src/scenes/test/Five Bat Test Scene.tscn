@@ -3,10 +3,22 @@
 [ext_resource type="PackedScene" uid="uid://26cf244jidne" path="res://game_object/bat_enemy/bat_enemy.tscn" id="1_4fr1w"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_c75so"]
 
-[node name="EnemyTestScene" type="Node2D"]
+[node name="One Bat Test Scene" type="Node2D"]
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("2_c75so")]
 position = Vector2(582, 225)
 
 [node name="BatEnemy" parent="." instance=ExtResource("1_4fr1w")]
 position = Vector2(388, 148)
+
+[node name="BatEnemy2" parent="." instance=ExtResource("1_4fr1w")]
+position = Vector2(357, 48)
+
+[node name="BatEnemy3" parent="." instance=ExtResource("1_4fr1w")]
+position = Vector2(253, 257)
+
+[node name="BatEnemy4" parent="." instance=ExtResource("1_4fr1w")]
+position = Vector2(214, 94)
+
+[node name="BatEnemy5" parent="." instance=ExtResource("1_4fr1w")]
+position = Vector2(103, 225)
