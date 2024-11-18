@@ -1,19 +1,29 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class PlayerCharacter : CharacterBody2D, IDamageable {
 	private static PlayerCharacter _instance;
+	private static Queue<Action<PlayerCharacter>> _waitingForInstance = new Queue<Action<PlayerCharacter>>();
+
 	private Health _health;
 	private int _baseHealth = 10;
 
-	public static PlayerCharacter GetInstance() {
-		GD.Print("GET INSTANCE OF PLAYER CALLED. _instance is null? " + (_instance == null).ToString());
-		return _instance;
+	public static void GetInstanceWithCallback(Action<PlayerCharacter> callback) {
+		if (_instance == null) {
+			_waitingForInstance.Enqueue(callback);
+		} else {
+			callback(_instance);
+		}
 	}
 
 	public override void _Ready() {
 		_instance = this;
-		GD.Print("PlayerCharacter Ready. _instance is null?" + (_instance == null).ToString());
+		while (_waitingForInstance.Count > 0) {
+			Action<PlayerCharacter> callback = _waitingForInstance.Dequeue();
+			callback(this);
+		}
+
 		_health = new Health(_baseHealth);
 		_health.ZeroHealthEvent += InitiateDeath;
 	}
@@ -25,8 +35,8 @@ public partial class PlayerCharacter : CharacterBody2D, IDamageable {
 	public void TakeDamage(int damage) {
 		// Play damaged sfx
 		// Add damaged vfx
-		GD.Print("Player damaged. Health is " + _health.GetCurrentHealth().ToString());
 		_health.DecreaseHealth(damage);
+		GD.Print("Player damaged. Health is " + _health.GetCurrentHealth().ToString());
 	}
 
 	private void InitiateDeath(object sender, EventArgs e) {

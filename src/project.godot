@@ -19,6 +19,7 @@ config/icon="res://assets/icon.svg"
 DialogueManager="*res://scripts/dialogue/DialogueManager.cs"
 InputManager="*res://scripts/input_handling/InputManager.cs"
 WindowSize="*res://scripts/ui/WindowSize.cs"
+Projectiles="*res://prefabs/Projectiles.tscn"
 
 [display]
 

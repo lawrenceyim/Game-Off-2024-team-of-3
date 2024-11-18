@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://vqs61dxgh8bt"]
+
+[ext_resource type="Script" path="res://scripts/ai_components/AlertLabel.cs" id="1_i6qrv"]
+
+[node name="Alert" type="Node2D" node_paths=PackedStringArray("_alertLabel")]
+script = ExtResource("1_i6qrv")
+_alertLabel = NodePath("Label")
+
+[node name="Label" type="Label" parent="."]
+self_modulate = Color(1, 0, 0, 1)
+offset_right = 15.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 20
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1

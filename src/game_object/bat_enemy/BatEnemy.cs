@@ -2,124 +2,128 @@ using System;
 using Godot;
 
 public partial class BatEnemy : CharacterBody2D, IDamageable {
+	private const float _wanderingSpeed = 100f;
+	private const float _maxSpeed = 500f;
+	private const float _accelerationTime = 5;
+	private const double _minWanderTime = 3f;
+	private const double _maxWanderTime = 5f;
+	private const int _baseHealth = 5;
+	private const double _attackCooldown = .5f;
+	private const int _attackDamage = 1;
+	private const float _detectionRange = 500;
+	private const string WanderingState = "wander";
+	private const string PursuitState = "pursue";
+	private const string DeathState = "death";
+	private const string MoveAnimation = "move";
+	[Export] private AnimatedSprite2D _sprite;
+	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Vector2 _moveVector;
-	private Timer _timer;
-	private Timer _attackCooldownTimer;
-
-	private float _detectionRange = 1000;
-	private float _speed = 300f;
-
-	private double _minWanderTime = 3f;
-	private double _maxWanderTime = 5f;
-
-	private double _attackCooldown = .5f;
-	private int _attackDamage = 1;
-
-
+	private Timer _accelerationTimer;
+	private MeleeAttack _meleeAttack;
+	private Wander _wander;
 	private Health _health;
-	private int _baseHealth = 5;
-
-	private const string Wander = "wander";
-	private const string Pursue = "pursue";
+	private float _speed;
+	private bool _touchingPlayer = false;
 
 	public override void _Ready() {
-		_player = PlayerCharacter.GetInstance();
-		if (_player == null) {
-			GD.Print("Player is null");
-			QueueFree();
-		}
+		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
+			_player = player;
+
+			_accelerationTimer = TimerUtil.CreateTimer(this, true);
+			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
+
+			SetStateMachine();
+		});
 
 		_health = new Health(_baseHealth);
-		_health.ZeroHealthEvent += InitiateDeath;
+		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
 
-		_attackCooldownTimer = TimerUtil.CreateTimer(this, true);
-		_timer = TimerUtil.CreateTimer(this, true);
-		_timer.Timeout += HandleTimeOut;
+		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
 
-		// State machine creation
-		AiState wanderState = new AiState.Builder(Wander)
-			.SetStart(() => {
-				SetRandomWander();
-			})
-			.SetExit(() => {
-				_timer.Stop();
-				_timer.Paused = true;
-			})
-			.SetUpdate((double delta) => {
-				MoveAndCollide(_moveVector * _speed * (float)delta);
-			})
-			.SetPhysicsUpdate((double delta) => {
-				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
-					_stateMachine.SwitchState(Pursue);
-					return;
-				}
-			})
-			.Build();
-
-		AiState pursueState = new AiState.Builder(Pursue)
-			.SetStart(() => { })
-			.SetExit(() => { })
-			.SetUpdate((double delta) => {
-				_moveVector = (_player.Position - Position).Normalized();
-				KinematicCollision2D collision = MoveAndCollide(_moveVector * _speed * (float)delta);
-				if (collision == null) {
-					return;
-				}
-				if (collision.GetCollider() is PlayerCharacter player) {
-					AttackIfReady(player);
-				}
-			})
-			.SetPhysicsUpdate((double delta) => {
-				if (Position.DistanceTo(_player.Position) > _detectionRange) {
-					_stateMachine.SwitchState(Wander);
-					return;
-				}
-			})
-			.Build();
-
-		_stateMachine = new StateMachine.Builder(Wander)
-			.AddState(wanderState)
-			.AddState(pursueState)
-			.Build();
-
-		AddChild(_stateMachine);
+		_sprite.Play(MoveAnimation);
 	}
 
 	public void TakeDamage(int damage) {
 		_health.DecreaseHealth(damage);
 	}
 
-	private void AttackIfReady(IDamageable damageable) {
-		if (_attackCooldownTimer.TimeLeft > 0) {
-			return;
+	private void SetStateMachine() {
+		AiState wanderState = new AiState.Builder(WanderingState)
+			.SetStart(() => {
+				_wander.SetWanderingVelocity();
+			})
+			.SetExit(() => {
+				_wander.StopWandering();
+			})
+			.SetUpdate((double delta) => {
+				MoveAndSlide();
+			})
+			.SetPhysicsUpdate((double delta) => {
+				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
+					_stateMachine.SwitchState(PursuitState);
+					return;
+				}
+			})
+			.Build();
+
+		AiState pursueState = new AiState.Builder(PursuitState)
+			.SetStart(() => {
+				_alertLabel.DisplayExclamationMark();
+				_accelerationTimer.Start(_accelerationTime);
+			})
+			.SetExit(() => { })
+			.SetUpdate((double delta) => {
+				_moveVector = (_player.Position - Position).Normalized();
+				Velocity = _moveVector * _speed;
+				MoveAndSlide();
+			})
+			.SetPhysicsUpdate((double delta) => {
+				if (_accelerationTimer.TimeLeft > 0) {
+					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / _accelerationTime)) * _maxSpeed, _wanderingSpeed);
+				}
+				if (_touchingPlayer) {
+					_meleeAttack.AttackIfReady(_player);
+				}
+				if (Position.DistanceTo(_player.Position) > _detectionRange) {
+					_alertLabel.DisplayQuestionMark();
+					_stateMachine.SwitchState(WanderingState);
+					return;
+				}
+			})
+			.Build();
+
+		AiState deathState = new AiState.Builder(DeathState)
+			.SetStart(() => {
+				// Play death SFX
+				// Play death animation
+			})
+			.SetExit(() => {
+				QueueFree();
+			})
+			.SetUpdate((double delta) => { })
+			.SetPhysicsUpdate((double delta) => { })
+			.Build();
+
+		_stateMachine = new StateMachine.Builder(WanderingState)
+			.AddState(wanderState)
+			.AddState(pursueState)
+			.AddState(deathState)
+			.Build();
+
+		AddChild(_stateMachine);
+	}
+
+	private void _on_hitbox_area_2d_area_entered(Area2D body) {
+		if (body.GetParent() is PlayerCharacter) {
+			_touchingPlayer = true;
 		}
-		_attackCooldownTimer.Start(_attackCooldown);
-		_attackCooldownTimer.Paused = false;
-		damageable.TakeDamage(_attackDamage);
 	}
 
-	private void InitiateDeath(object sender, EventArgs e) {
-		// Start death animation
-		// Start death sfx  
-		// Handle removing object in the callback from death animation to ensure that the death animation finishes
-	}
-
-	private void FinishDeath() {
-		QueueFree();
-	}
-
-	private void SetRandomWander() {
-		_timer.Start(RandomNumber.RandomDoubleBetween(_minWanderTime, _maxWanderTime));
-		_timer.Paused = false;
-		_moveVector = new Vector2(RandomNumber.RandomFloatBetween(-1, 1), RandomNumber.RandomFloatBetween(-1, 1));
-	}
-
-	private void HandleTimeOut() {
-		string currentState = _stateMachine.GetCurrentState();
-		if (currentState.Equals(Wander)) {
-			SetRandomWander();
+	private void _on_hitbox_area_2d_area_exited(Area2D body) {
+		if (body.GetParent() is PlayerCharacter) {
+			_touchingPlayer = false;
 		}
 	}
 }
