@@ -29,6 +29,6 @@ public class RangedAttack {
 
 		Node2D projectile = _projectilePrefab.Instantiate<Node2D>();
 		_host.GetTree().Root.GetNode("Projectiles").AddChild(projectile);
-		(projectile as Projectile).Initialize(_host.Position, movementVector);
+		(projectile as Projectile).Initialize(_host, _host.Position, movementVector);
 	}
 }

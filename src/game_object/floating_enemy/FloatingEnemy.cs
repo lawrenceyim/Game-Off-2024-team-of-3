@@ -1,12 +1,10 @@
 using Godot;
-using System;
-using System.Security.Cryptography.X509Certificates;
 
 public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const float _wanderingSpeed = 100f;
 	private const double _minWanderTime = 3f;
 	private const double _maxWanderTime = 5f;
-	private const int _baseHealth = 5;
+	private const int _baseHealth = 1;
 	private const double _meleeAttackCooldown = .5f;
 	private const double _rangedAttackCooldown = 5f;
 	private const int _attackDamage = 1;

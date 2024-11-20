@@ -7,8 +7,10 @@ public partial class Projectile : Node2D {
 	[Export] private float _projectileSpeed;
 	private Vector2 _velocity = Vector2.Zero;
 	private Timer _lifeSpanTimer;
+	private Node2D _shooter;
 
-	public void Initialize(Vector2 startPosition, Vector2 velocity) {
+	public void Initialize(Node2D shooter, Vector2 startPosition, Vector2 velocity) {
+		_shooter = shooter;
 		Position = startPosition;
 		_velocity = velocity * _projectileSpeed;
 		_lifeSpanTimer = TimerUtil.CreateTimer(this, true);
@@ -21,8 +23,11 @@ public partial class Projectile : Node2D {
 	}
 
 	public void _on_area_2d_area_entered(Area2D area) {
-		if (area.GetParent() is PlayerCharacter player) {
-			player.TakeDamage(_damage);
+		if (area.GetParent() is IDamageable damageable) {
+			if (damageable == _shooter) {
+				return;
+			}
+			damageable.TakeDamage(_damage);
 			QueueFree();
 		}
 	}
