@@ -1,6 +1,35 @@
-[gd_scene load_steps=12 format=3 uid="uid://dovgvwa4c7xqb"]
+[gd_scene load_steps=20 format=3 uid="uid://dovgvwa4c7xqb"]
 
 [ext_resource type="Texture2D" uid="uid://b4b5br62uhj2p" path="res://game_object/werewolf_boss/Werewolf_move.png" id="1_ejwmd"]
+[ext_resource type="Texture2D" uid="uid://cy8rvbfmedvqc" path="res://game_object/werewolf_boss/Werewolf_attack.png" id="1_l2jky"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7a8xx"]
+atlas = ExtResource("1_l2jky")
+region = Rect2(0, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_43ch7"]
+atlas = ExtResource("1_l2jky")
+region = Rect2(76, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60koc"]
+atlas = ExtResource("1_l2jky")
+region = Rect2(152, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slr3k"]
+atlas = ExtResource("1_l2jky")
+region = Rect2(228, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3hebj"]
+atlas = ExtResource("1_l2jky")
+region = Rect2(304, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pdkq7"]
+atlas = ExtResource("1_l2jky")
+region = Rect2(380, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wtxvl"]
+atlas = ExtResource("1_l2jky")
+region = Rect2(456, 0, 76, 67)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r18fh"]
 atlas = ExtResource("1_ejwmd")
@@ -32,6 +61,32 @@ region = Rect2(384, 0, 64, 67)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8psg8"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7a8xx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_43ch7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60koc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slr3k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3hebj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pdkq7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wtxvl")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 9.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_r18fh")
@@ -71,9 +126,8 @@ height = 58.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_8psg8")
-animation = &"move"
-frame = 4
-frame_progress = 0.357018
+animation = &"attack"
+frame_progress = 0.92599
 
 [node name="Hurtbox Area2D" type="Area2D" parent="."]
 collision_layer = 2
