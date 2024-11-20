@@ -9,8 +9,12 @@ public partial class StateMachine : Node {
 		_stateDict.Add(key, aiState);
 	}
 
-	public string GetCurrentState() {
+	public string GetCurrentStateName() {
 		return _currentState.stateName;
+	}
+
+	public AiState GetCurrentState() {
+		return _currentState;
 	}
 
 	public override void _Process(double delta) {
@@ -24,8 +28,8 @@ public partial class StateMachine : Node {
 	public void SwitchState(string key) {
 		AiState newState = _stateDict.GetValueOrDefault(key, null);
 		_currentState?.onExit();
-		newState?.onStart();
 		_currentState = newState;
+		newState?.onStart();
 	}
 
 	public class Builder {
