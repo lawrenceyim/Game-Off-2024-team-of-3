@@ -14,11 +14,11 @@ public partial class StateMachine : Node {
 	}
 
 	public override void _Process(double delta) {
-		_currentState.onUpdate(delta);
+		_currentState?.onUpdate(delta);
 	}
 
 	public override void _PhysicsProcess(double delta) {
-		_currentState.onPhysicsUpdate(delta);
+		_currentState?.onPhysicsUpdate(delta);
 	}
 
 	public void SwitchState(string key) {

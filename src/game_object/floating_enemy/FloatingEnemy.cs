@@ -23,7 +23,6 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
-	private Vector2 _moveVector;
 	private MeleeAttack _meleeAttack;
 	private RangedAttack _rangedAttack;
 	private Wander _wander;
@@ -64,10 +63,10 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			.SetExit(() => {
 				_wander.StopWandering();
 			})
-			.SetUpdate((double delta) => {
-				MoveAndSlide();
-			})
+			.SetUpdate((double delta) => { })
 			.SetPhysicsUpdate((double delta) => {
+				MoveAndSlide();
+
 				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
 					_alertLabel.DisplayExclamationMark();
 					_stateMachine.SwitchState(PursuitState);
@@ -82,19 +81,21 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			})
 			.SetExit(() => { })
 			.SetUpdate((double delta) => {
-				_moveVector = (_player.Position - Position).Normalized();
-				Velocity = _moveVector * _wanderingSpeed;
-				MoveAndSlide();
 				ChangeSpriteDirection();
 			})
 			.SetPhysicsUpdate((double delta) => {
+				Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+				MoveAndSlide();
+
 				if (_rangedAttack.CanAttack()) {
 					_stateMachine.SwitchState(AttackState);
 					return;
 				}
+
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
 				}
+
 				if (Position.DistanceTo(_player.Position) > _detectionRange) {
 					_stateMachine.SwitchState(WanderingState);
 					return;

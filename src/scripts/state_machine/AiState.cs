@@ -47,9 +47,6 @@ public class AiState {
 		}
 
 		public AiState Build() {
-			if (_onStart == null || _onExit == null || _onUpdate == null || _onPhysicsUpdate == null) {
-				throw new Exception("State is not fully initialized");
-			}
 			return new AiState(_stateName, _onStart, _onExit, _onUpdate, _onPhysicsUpdate);
 		}
 	}

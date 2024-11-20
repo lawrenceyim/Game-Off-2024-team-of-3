@@ -19,7 +19,6 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
-	private Vector2 _moveVector;
 	private Timer _accelerationTimer;
 	private MeleeAttack _meleeAttack;
 	private Wander _wander;
@@ -74,15 +73,16 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 				_accelerationTimer.Start(_accelerationTime);
 			})
 			.SetExit(() => { })
-			.SetUpdate((double delta) => {
-				_moveVector = (_player.Position - Position).Normalized();
-				Velocity = _moveVector * _speed;
-				MoveAndSlide();
-			})
+			.SetUpdate((double delta) => { })
 			.SetPhysicsUpdate((double delta) => {
 				if (_accelerationTimer.TimeLeft > 0) {
 					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / _accelerationTime)) * _maxSpeed, _wanderingSpeed);
 				}
+
+				Velocity = (_player.Position - Position).Normalized() * _speed;
+				MoveAndSlide();
+
+
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
 				}

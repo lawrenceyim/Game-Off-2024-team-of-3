@@ -3,9 +3,9 @@ using System;
 
 public partial class DarkLion : CharacterBody2D {
 	private const float _detectionRange = 700;
-	private const float _dashSpeed = 750f;
+	private const float _dashSpeed = 1500f;
 	private const float _wanderingSpeed = 100f;
-	private const float _dashDuration = 1f;
+	private const float _dashDuration = .5f;
 	private const float _dashCooldown = 5f;
 	private const double _minWanderTime = 3f;
 	private const double _maxWanderTime = 5f;
@@ -25,7 +25,6 @@ public partial class DarkLion : CharacterBody2D {
 	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
-	private Vector2 _moveVector;
 	private Timer _dashCooldownTimer;
 	private Timer _dashDurationTimer;
 	private MeleeAttack _meleeAttack;
@@ -71,10 +70,10 @@ public partial class DarkLion : CharacterBody2D {
 			.SetExit(() => {
 				_wander.StopWandering();
 			})
-			.SetUpdate((double delta) => {
-				MoveAndSlide();
-			})
+			.SetUpdate((double delta) => { })
 			.SetPhysicsUpdate((double delta) => {
+				MoveAndSlide();
+
 				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
 					_alertLabel.DisplayExclamationMark();
 					_stateMachine.SwitchState(PursuitState);
@@ -89,19 +88,21 @@ public partial class DarkLion : CharacterBody2D {
 			})
 			.SetExit(() => { })
 			.SetUpdate((double delta) => {
+				ChangeSpriteDirection();
+			})
+			.SetPhysicsUpdate((double delta) => {
 				if (_dashCooldownTimer.TimeLeft == 0) {
 					_stateMachine.SwitchState(PreparingDashState);
 					return;
 				}
-				_moveVector = (_player.Position - Position).Normalized();
-				Velocity = _moveVector * _wanderingSpeed;
+
+				Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
 				MoveAndSlide();
-				ChangeSpriteDirection();
-			})
-			.SetPhysicsUpdate((double delta) => {
+
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
 				}
+
 				if (Position.DistanceTo(_player.Position) > _detectionRange) {
 					_alertLabel.DisplayQuestionMark();
 					_stateMachine.SwitchState(WanderingState);
@@ -113,8 +114,7 @@ public partial class DarkLion : CharacterBody2D {
 		AiState preparingDashState = new AiState.Builder(PreparingDashState)
 			.SetStart(() => {
 				_animationPlayer.Play(DashAnimation);
-				_moveVector = (_player.Position - Position).Normalized();
-				Velocity = _moveVector * _dashSpeed;
+				Velocity = (_player.Position - Position).Normalized() * _dashSpeed;
 				ChangeSpriteDirection();
 			})
 			.SetExit(() => { })
@@ -132,10 +132,10 @@ public partial class DarkLion : CharacterBody2D {
 				_dashDurationTimer.Start(_dashDuration);
 			})
 			.SetExit(() => { })
-			.SetUpdate((double delta) => {
-				MoveAndSlide();
-			})
+			.SetUpdate((double delta) => { })
 			.SetPhysicsUpdate((double delta) => {
+				MoveAndSlide();
+
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
 				}
