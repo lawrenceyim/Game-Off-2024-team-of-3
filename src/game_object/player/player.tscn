@@ -108,6 +108,8 @@ height = 26.0
 scale = Vector2(3, 3)
 script = ExtResource("1_ysqf6")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_5lcww")
 animation = &"move"

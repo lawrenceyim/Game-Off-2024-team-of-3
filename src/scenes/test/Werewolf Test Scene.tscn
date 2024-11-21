@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1p8f2neanb4i"]
+
+[ext_resource type="PackedScene" uid="uid://dovgvwa4c7xqb" path="res://game_object/werewolf_boss/werewolf_boss.tscn" id="1_a27qn"]
+[ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_hg74k"]
+
+[node name="WerewolfTestScene" type="Node2D"]
+
+[node name="WerewolfBoss" parent="." instance=ExtResource("1_a27qn")]
+position = Vector2(174, 136)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_hg74k")]
+position = Vector2(696, 263)

@@ -8,6 +8,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const double _meleeAttackCooldown = .5f;
 	private const double _rangedAttackCooldown = 5f;
 	private const int _attackDamage = 1;
+	private const float closeEnoughRange = 10f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string AttackState = "attack";
@@ -55,13 +56,14 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		AiState wanderState = new AiState.Builder(WanderingState)
 			.SetStart(() => {
 				_wander.SetWanderingVelocity();
-				ChangeSpriteDirection();
 				_alertLabel.DisplayQuestionMark();
 			})
 			.SetExit(() => {
 				_wander.StopWandering();
 			})
-			.SetUpdate((double delta) => { })
+			.SetUpdate((double delta) => {
+				ChangeSpriteDirection();
+			})
 			.SetPhysicsUpdate((double delta) => {
 				MoveAndSlide();
 
@@ -82,8 +84,15 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 				ChangeSpriteDirection();
 			})
 			.SetPhysicsUpdate((double delta) => {
-				Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
-				MoveAndSlide();
+				float distanceFromTarget = Position.DistanceTo(_player.Position);
+				if (distanceFromTarget > _detectionRange) {
+					_stateMachine.SwitchState(WanderingState);
+					return;
+				}
+				if (distanceFromTarget > closeEnoughRange) {
+					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+					MoveAndSlide();
+				}
 
 				if (_rangedAttack.CanAttack()) {
 					_stateMachine.SwitchState(AttackState);
@@ -92,11 +101,6 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
-				}
-
-				if (Position.DistanceTo(_player.Position) > _detectionRange) {
-					_stateMachine.SwitchState(WanderingState);
-					return;
 				}
 			})
 			.Build();

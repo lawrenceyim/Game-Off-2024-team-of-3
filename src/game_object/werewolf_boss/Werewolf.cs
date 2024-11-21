@@ -2,38 +2,37 @@ using Godot;
 
 public partial class Werewolf : CharacterBody2D {
 	private const float _wanderingSpeed = 200f;
-	private const float _accelerationTime = 5;
 	private const double _minWanderTime = 3f;
 	private const double _maxWanderTime = 5f;
 	private const int _baseHealth = 15;
-	private const double _attackCooldown = .5f;
+	private const double _attackCooldown = 3f;
 	private const int _attackDamage = 2;
 	private const float _detectionRange = 500;
 	private const float _timeUntilLanding = 1f;
 	private const int _landingDamage = 3;
+	private const float closeEnoughRange = 30f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string JumpingState = "jumping";
 	private const string LandingState = "landing";
+	private const string AttackingState = "attacking";
 	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
+	private const string MeleeAttackAnimation = "attack";
 	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private AnimatedSprite2D _sprite;
 	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
-	private Timer _accelerationTimer;
 	private MeleeAttack _meleeAttack;
 	private Wander _wander;
 	private Health _health;
-	private float _speed;
 	private bool _touchingPlayer = false;
 
 	public override void _Ready() {
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
 			_player = player;
 
-			_accelerationTimer = TimerUtil.CreateTimer(this, true);
 			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
 
 			SetStateMachine();
@@ -51,6 +50,19 @@ public partial class Werewolf : CharacterBody2D {
 		_health.DecreaseHealth(damage);
 	}
 
+	// Called when melee attack animation finishes
+	public void MeleeAttackFinished() {
+		_stateMachine.SwitchState(PursuitState);
+	}
+
+	private void ChangeSpriteDirection() {
+		if (Velocity.X > 0) {
+			_sprite.FlipH = false;
+		} else {
+			_sprite.FlipH = true;
+		}
+	}
+
 	private void SetStateMachine() {
 		AiState wanderState = new AiState.Builder(WanderingState)
 			.SetStart(() => {
@@ -60,7 +72,9 @@ public partial class Werewolf : CharacterBody2D {
 			.SetExit(() => {
 				_wander.StopWandering();
 			})
-			.SetUpdate((double delta) => { })
+			.SetUpdate((double delta) => {
+				ChangeSpriteDirection();
+			})
 			.SetPhysicsUpdate((double delta) => {
 				MoveAndSlide();
 
@@ -75,24 +89,37 @@ public partial class Werewolf : CharacterBody2D {
 			.SetStart(() => {
 				_animationPlayer.Play(MoveAnimation);
 				_alertLabel.DisplayExclamationMark();
-				_accelerationTimer.Start(_accelerationTime);
 			})
 			.SetExit(() => { })
-			.SetUpdate((double delta) => { })
+			.SetUpdate((double delta) => {
+				ChangeSpriteDirection();
+			})
 			.SetPhysicsUpdate((double delta) => {
-				Velocity = (_player.Position - Position).Normalized() * _speed;
-				MoveAndSlide();
-
-				if (_touchingPlayer) {
-					_meleeAttack.AttackIfReady(_player);
-				}
-
-				if (Position.DistanceTo(_player.Position) > _detectionRange) {
+				float distanceFromTarget = Position.DistanceTo(_player.Position);
+				if (distanceFromTarget > _detectionRange) {
 					_alertLabel.DisplayQuestionMark();
 					_stateMachine.SwitchState(WanderingState);
 					return;
 				}
+				if (distanceFromTarget > closeEnoughRange) {
+					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+					MoveAndSlide();
+				}
+
+				if (_touchingPlayer && _meleeAttack.CanAttack()) {
+					_stateMachine.SwitchState(AttackingState);
+				}
 			})
+			.Build();
+
+		AiState attackingState = new AiState.Builder(AttackingState)
+			.SetStart(() => {
+				_animationPlayer.Play(MeleeAttackAnimation);
+				_meleeAttack.AttackIfReady(_player);
+			})
+			.SetExit(() => { })
+			.SetUpdate((double delta) => { })
+			.SetPhysicsUpdate((double delta) => { })
 			.Build();
 
 		AiState jumpingState = new AiState.Builder(JumpingState)
@@ -138,6 +165,7 @@ public partial class Werewolf : CharacterBody2D {
 		_stateMachine = new StateMachine.Builder(WanderingState)
 			.AddState(wanderState)
 			.AddState(pursueState)
+			.AddState(attackingState)
 			.AddState(deathState)
 			.AddState(jumpingState)
 			.AddState(landingState)

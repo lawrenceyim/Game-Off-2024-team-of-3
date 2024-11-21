@@ -12,6 +12,7 @@ public partial class DarkLion : CharacterBody2D {
 	private const double _attackCooldown = .5f;
 	private const int _attackDamage = 1;
 	private const int _baseHealth = 10;
+	private const float closeEnoughRange = 10f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DashingState = "dash";
@@ -60,17 +61,31 @@ public partial class DarkLion : CharacterBody2D {
 		_health.DecreaseHealth(damage);
 	}
 
+	private void ChangeSpriteDirection() {
+		if (Velocity.X > 0) {
+			_sprite.FlipH = false;
+		} else {
+			_sprite.FlipH = true;
+		}
+	}
+
+	// Called by the animation player to switch from preparing to dash to dashing
+	private void FinishDashPreparation() {
+		_stateMachine.SwitchState(DashingState);
+	}
+
 	private void SetStateMachine() {
 		AiState wanderState = new AiState.Builder(WanderingState)
 			.SetStart(() => {
 				_animationPlayer.Play(MoveAnimation);
 				_wander.SetWanderingVelocity();
-				ChangeSpriteDirection();
 			})
 			.SetExit(() => {
 				_wander.StopWandering();
 			})
-			.SetUpdate((double delta) => { })
+			.SetUpdate((double delta) => {
+				ChangeSpriteDirection();
+			})
 			.SetPhysicsUpdate((double delta) => {
 				MoveAndSlide();
 
@@ -91,22 +106,24 @@ public partial class DarkLion : CharacterBody2D {
 				ChangeSpriteDirection();
 			})
 			.SetPhysicsUpdate((double delta) => {
+				float distanceFromTarget = Position.DistanceTo(_player.Position);
+				if (distanceFromTarget > _detectionRange) {
+					_alertLabel.DisplayQuestionMark();
+					_stateMachine.SwitchState(WanderingState);
+					return;
+				}
+				if (distanceFromTarget > closeEnoughRange) {
+					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+					MoveAndSlide();
+				}
+
 				if (_dashCooldownTimer.TimeLeft == 0) {
 					_stateMachine.SwitchState(PreparingDashState);
 					return;
 				}
 
-				Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
-				MoveAndSlide();
-
 				if (_touchingPlayer) {
 					_meleeAttack.AttackIfReady(_player);
-				}
-
-				if (Position.DistanceTo(_player.Position) > _detectionRange) {
-					_alertLabel.DisplayQuestionMark();
-					_stateMachine.SwitchState(WanderingState);
-					return;
 				}
 			})
 			.Build();
@@ -175,18 +192,5 @@ public partial class DarkLion : CharacterBody2D {
 		if (body.GetParent() is PlayerCharacter) {
 			_touchingPlayer = false;
 		}
-	}
-
-	private void ChangeSpriteDirection() {
-		if (Velocity.X > 0) {
-			_sprite.FlipH = false;
-		} else {
-			_sprite.FlipH = true;
-		}
-	}
-
-	// Called by the animation player to switch from preparing to dash to dashing
-	private void FinishDashPreparation() {
-		_stateMachine.SwitchState(DashingState);
 	}
 }

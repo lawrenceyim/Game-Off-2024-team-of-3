@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://dovgvwa4c7xqb"]
+[gd_scene load_steps=25 format=3 uid="uid://dovgvwa4c7xqb"]
 
 [ext_resource type="Texture2D" uid="uid://b4b5br62uhj2p" path="res://game_object/werewolf_boss/Werewolf_move.png" id="1_ejwmd"]
 [ext_resource type="Texture2D" uid="uid://cy8rvbfmedvqc" path="res://game_object/werewolf_boss/Werewolf_attack.png" id="1_l2jky"]
+[ext_resource type="Script" path="res://game_object/werewolf_boss/Werewolf.cs" id="1_w3hsg"]
 [ext_resource type="PackedScene" uid="uid://cd6m7jcbua0x0" path="res://prefabs/Alert Label.tscn" id="3_bwec1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7a8xx"]
@@ -170,22 +171,67 @@ tracks/1/keys = {
 "values": [0, 1, 2, 3, 4, 5, 6]
 }
 
+[sub_resource type="Animation" id="Animation_y3sja"]
+resource_name = "attack"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.25),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"MeleeAttackFinished"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sqp5p"]
 _data = {
 "RESET": SubResource("Animation_is54g"),
+"attack": SubResource("Animation_y3sja"),
 "move": SubResource("Animation_5ajo3")
 }
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j1yhg"]
-radius = 16.0
-height = 58.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ffsqr"]
+radius = 17.0
+height = 64.6667
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d2p0b"]
-radius = 16.0
-height = 58.0
-
-[node name="WerewolfBoss" type="CharacterBody2D"]
+[node name="WerewolfBoss" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel")]
 scale = Vector2(3, 3)
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_w3hsg")
+_animationPlayer = NodePath("AnimationPlayer")
+_sprite = NodePath("AnimatedSprite2D")
+_alertLabel = NodePath("Alert")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_8psg8")
@@ -196,18 +242,29 @@ libraries = {
 "": SubResource("AnimationLibrary_sqp5p")
 }
 
+[node name="Alert" parent="." instance=ExtResource("3_bwec1")]
+position = Vector2(0.333333, -41.6667)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.66667, 0.666667)
+shape = SubResource("CapsuleShape2D_ffsqr")
+
 [node name="Hurtbox Area2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
-position = Vector2(-1, 2)
-shape = SubResource("CapsuleShape2D_j1yhg")
-debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
+position = Vector2(-1.66667, 0.666667)
+shape = SubResource("CapsuleShape2D_ffsqr")
+debug_color = Color(0.87045, 0.000497865, 0.848907, 0.42)
 
-[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 2)
-shape = SubResource("CapsuleShape2D_d2p0b")
+[node name="Hitbox Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
-[node name="Alert" parent="." instance=ExtResource("3_bwec1")]
-position = Vector2(0.333333, -41.6667)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
+position = Vector2(-1.66667, 0.666667)
+shape = SubResource("CapsuleShape2D_ffsqr")
+
+[connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
+[connection signal="area_exited" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_exited"]

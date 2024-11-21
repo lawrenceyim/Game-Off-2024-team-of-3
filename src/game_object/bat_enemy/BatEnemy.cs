@@ -11,6 +11,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const double _attackCooldown = .5f;
 	private const int _attackDamage = 1;
 	private const float _detectionRange = 500;
+	private const float closeEnoughRange = 10f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DeathState = "death";
@@ -79,17 +80,19 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / _accelerationTime)) * _maxSpeed, _wanderingSpeed);
 				}
 
-				Velocity = (_player.Position - Position).Normalized() * _speed;
-				MoveAndSlide();
-
-
-				if (_touchingPlayer) {
-					_meleeAttack.AttackIfReady(_player);
-				}
-				if (Position.DistanceTo(_player.Position) > _detectionRange) {
+				float distanceFromTarget = Position.DistanceTo(_player.Position);
+				if (distanceFromTarget > _detectionRange) {
 					_alertLabel.DisplayQuestionMark();
 					_stateMachine.SwitchState(WanderingState);
 					return;
+				}
+				if (distanceFromTarget > closeEnoughRange) {
+					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+					MoveAndSlide();
+				}
+
+				if (_touchingPlayer) {
+					_meleeAttack.AttackIfReady(_player);
 				}
 			})
 			.Build();
