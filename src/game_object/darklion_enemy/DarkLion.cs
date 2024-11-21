@@ -112,16 +112,16 @@ public partial class DarkLion : CharacterBody2D {
 					return;
 				}
 				if (distanceFromTarget > closeEnoughRange) {
+					if (_dashCooldownTimer.TimeLeft == 0) {
+						_stateMachine.SwitchState(PreparingDashState);
+						return;
+					}
+
 					_animationPlayer.Play(MoveAnimation);
 					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
 					MoveAndSlide();
 				} else {
 					_animationPlayer.Play(IdleAnimation);
-				}
-
-				if (_dashCooldownTimer.TimeLeft == 0) {
-					_stateMachine.SwitchState(PreparingDashState);
-					return;
 				}
 
 				if (_touchingPlayer) {
