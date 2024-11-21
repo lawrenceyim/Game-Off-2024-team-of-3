@@ -13,6 +13,7 @@ public partial class DarkLion : CharacterBody2D {
 	private const int _attackDamage = 1;
 	private const int _baseHealth = 10;
 	private const float closeEnoughRange = 10f;
+	private const float _minDashRange = 400f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DashingState = "dash";
@@ -112,7 +113,8 @@ public partial class DarkLion : CharacterBody2D {
 					return;
 				}
 				if (distanceFromTarget > closeEnoughRange) {
-					if (_dashCooldownTimer.TimeLeft == 0) {
+					if (_dashCooldownTimer.TimeLeft == 0 &&
+							distanceFromTarget >= _minDashRange) {
 						_stateMachine.SwitchState(PreparingDashState);
 						return;
 					}

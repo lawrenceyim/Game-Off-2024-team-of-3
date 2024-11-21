@@ -11,7 +11,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const double _attackCooldown = .5f;
 	private const int _attackDamage = 1;
 	private const float _detectionRange = 500;
-	private const float closeEnoughRange = 10f;
+	private const float _closeEnoughRange = 10f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DeathState = "death";
@@ -86,7 +86,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 					_stateMachine.SwitchState(WanderingState);
 					return;
 				}
-				if (distanceFromTarget > closeEnoughRange) {
+				if (distanceFromTarget > _closeEnoughRange) {
 					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
 					MoveAndSlide();
 				}
