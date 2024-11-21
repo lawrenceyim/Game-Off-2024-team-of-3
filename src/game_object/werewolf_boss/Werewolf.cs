@@ -17,6 +17,7 @@ public partial class Werewolf : CharacterBody2D {
 	private const string LandingState = "landing";
 	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
+	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private AnimatedSprite2D _sprite;
 	[Export] private AlertLabel _alertLabel;
 	private StateMachine _stateMachine;
@@ -53,6 +54,7 @@ public partial class Werewolf : CharacterBody2D {
 	private void SetStateMachine() {
 		AiState wanderState = new AiState.Builder(WanderingState)
 			.SetStart(() => {
+				_animationPlayer.Play(MoveAnimation);
 				_wander.SetWanderingVelocity();
 			})
 			.SetExit(() => {
@@ -71,6 +73,7 @@ public partial class Werewolf : CharacterBody2D {
 
 		AiState pursueState = new AiState.Builder(PursuitState)
 			.SetStart(() => {
+				_animationPlayer.Play(MoveAnimation);
 				_alertLabel.DisplayExclamationMark();
 				_accelerationTimer.Start(_accelerationTime);
 			})

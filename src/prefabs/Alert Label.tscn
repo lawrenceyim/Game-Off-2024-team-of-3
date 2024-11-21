@@ -87,9 +87,10 @@ _data = {
 "indicator": SubResource("Animation_ayl1q")
 }
 
-[node name="Alert" type="Node2D" node_paths=PackedStringArray("_alertLabel")]
+[node name="Alert" type="Node2D" node_paths=PackedStringArray("_alertLabel", "_animationPlayer")]
 script = ExtResource("1_i6qrv")
 _alertLabel = NodePath("Label")
+_animationPlayer = NodePath("AnimationPlayer")
 
 [node name="Label" type="Label" parent="."]
 anchors_preset = 8
