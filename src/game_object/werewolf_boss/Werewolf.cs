@@ -18,6 +18,7 @@ public partial class Werewolf : CharacterBody2D {
 	private const string AttackingState = "attacking";
 	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
+	private const string IdleAnimation = "idle";
 	private const string MeleeAttackAnimation = "attack";
 	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private AnimatedSprite2D _sprite;
@@ -102,8 +103,11 @@ public partial class Werewolf : CharacterBody2D {
 					return;
 				}
 				if (distanceFromTarget > closeEnoughRange) {
+					_animationPlayer.Play(MoveAnimation);
 					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
 					MoveAndSlide();
+				} else {
+					_animationPlayer.Play(IdleAnimation);
 				}
 
 				if (_touchingPlayer && _meleeAttack.CanAttack()) {

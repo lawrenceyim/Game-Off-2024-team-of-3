@@ -20,6 +20,7 @@ public partial class DarkLion : CharacterBody2D {
 	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
 	private const string DashAnimation = "dash";
+	private const string IdleAnimation = "idle";
 	private const string ResetAnimation = "RESET";
 	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private Sprite2D _sprite;
@@ -98,9 +99,7 @@ public partial class DarkLion : CharacterBody2D {
 			.Build();
 
 		AiState pursueState = new AiState.Builder(PursuitState)
-			.SetStart(() => {
-				_animationPlayer.Play(MoveAnimation);
-			})
+			.SetStart(() => { })
 			.SetExit(() => { })
 			.SetUpdate((double delta) => {
 				ChangeSpriteDirection();
@@ -113,8 +112,11 @@ public partial class DarkLion : CharacterBody2D {
 					return;
 				}
 				if (distanceFromTarget > closeEnoughRange) {
+					_animationPlayer.Play(MoveAnimation);
 					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
 					MoveAndSlide();
+				} else {
+					_animationPlayer.Play(IdleAnimation);
 				}
 
 				if (_dashCooldownTimer.TimeLeft == 0) {
