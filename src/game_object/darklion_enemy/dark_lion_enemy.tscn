@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://ddikru4jh4tn8"]
+[gd_scene load_steps=12 format=3 uid="uid://ddikru4jh4tn8"]
 
 [ext_resource type="Script" path="res://game_object/darklion_enemy/DarkLion.cs" id="1_yf821"]
 [ext_resource type="Texture2D" uid="uid://bdhw02j1y7isu" path="res://game_object/darklion_enemy/DarkLion_move.png" id="2_wl5pc"]
 [ext_resource type="Texture2D" uid="uid://oi6qronqyd12" path="res://game_object/darklion_enemy/DarkLion_dash.png" id="3_svuej"]
+[ext_resource type="Texture2D" uid="uid://b0qmit8briaiq" path="res://game_object/darklion_enemy/DarkLion_idle.png" id="4_8jrxj"]
 [ext_resource type="PackedScene" uid="uid://cd6m7jcbua0x0" path="res://prefabs/Alert Label.tscn" id="4_15klr"]
 
 [sub_resource type="Animation" id="Animation_qvurc"]
@@ -236,10 +237,65 @@ tracks/4/keys = {
 "values": [0.0, 0.0523599, 0.0261804, 8.73864e-07]
 }
 
+[sub_resource type="Animation" id="Animation_7qq4e"]
+resource_name = "idle"
+length = 0.6
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_8jrxj")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:offset")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -7)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ebp4r"]
 _data = {
 "RESET": SubResource("Animation_qvurc"),
 "dash": SubResource("Animation_jlk30"),
+"idle": SubResource("Animation_7qq4e"),
 "move": SubResource("Animation_eqyf1")
 }
 

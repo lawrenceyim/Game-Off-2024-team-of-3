@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://dovgvwa4c7xqb"]
+[gd_scene load_steps=30 format=3 uid="uid://dovgvwa4c7xqb"]
 
 [ext_resource type="Texture2D" uid="uid://b4b5br62uhj2p" path="res://game_object/werewolf_boss/Werewolf_move.png" id="1_ejwmd"]
 [ext_resource type="Texture2D" uid="uid://cy8rvbfmedvqc" path="res://game_object/werewolf_boss/Werewolf_attack.png" id="1_l2jky"]
 [ext_resource type="Script" path="res://game_object/werewolf_boss/Werewolf.cs" id="1_w3hsg"]
+[ext_resource type="Texture2D" uid="uid://mi4khm03lyyj" path="res://game_object/werewolf_boss/Werewolf_idle.png" id="3_55p7b"]
 [ext_resource type="PackedScene" uid="uid://cd6m7jcbua0x0" path="res://prefabs/Alert Label.tscn" id="3_bwec1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7a8xx"]
@@ -32,6 +33,22 @@ region = Rect2(380, 0, 76, 67)
 [sub_resource type="AtlasTexture" id="AtlasTexture_wtxvl"]
 atlas = ExtResource("1_l2jky")
 region = Rect2(456, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ckb6d"]
+atlas = ExtResource("3_55p7b")
+region = Rect2(0, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nh04l"]
+atlas = ExtResource("3_55p7b")
+region = Rect2(76, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ae6cp"]
+atlas = ExtResource("3_55p7b")
+region = Rect2(152, 0, 76, 67)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2spw"]
+atlas = ExtResource("3_55p7b")
+region = Rect2(228, 0, 76, 67)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r18fh"]
 atlas = ExtResource("1_ejwmd")
@@ -91,6 +108,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_ckb6d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nh04l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ae6cp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2spw")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_r18fh")
 }, {
 "duration": 1.0,
@@ -143,34 +177,6 @@ tracks/1/keys = {
 "values": [0]
 }
 
-[sub_resource type="Animation" id="Animation_5ajo3"]
-resource_name = "move"
-length = 0.7
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"move"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6]
-}
-
 [sub_resource type="Animation" id="Animation_y3sja"]
 resource_name = "attack"
 length = 0.25
@@ -211,6 +217,34 @@ tracks/2/keys = {
 "args": [],
 "method": &"MeleeAttackFinished"
 }]
+}
+
+[sub_resource type="Animation" id="Animation_5ajo3"]
+resource_name = "move"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"move"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sqp5p"]
