@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cp0rxpjfn7ga1"]
+[gd_scene load_steps=23 format=3 uid="uid://cp0rxpjfn7ga1"]
 
 [ext_resource type="Script" path="res://game_object/player/PlayerCharacter.cs" id="1_ysqf6"]
 [ext_resource type="Texture2D" uid="uid://d4maau12k5l40" path="res://game_object/player/Hunter_idle.png" id="2_cd0sn"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dgkxjwgcdsj18" path="res://game_object/player/Hunter_move.png" id="3_bn2vs"]
 [ext_resource type="Script" path="res://game_object/player/PlayerMovement.cs" id="3_mrpve"]
 [ext_resource type="Script" path="res://game_object/player/PlayerAnimation.cs" id="6_0wnr1"]
+[ext_resource type="Texture2D" uid="uid://c7msd41kekgej" path="res://game_object/player/Hunter_weapon.png" id="7_dkbj7"]
+[ext_resource type="Script" path="res://game_object/player/PlayerGun.cs" id="8_xwht6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_07ag4"]
 atlas = ExtResource("2_cd0sn")
@@ -118,9 +120,11 @@ animation = &"move"
 position = Vector2(-0.333333, 14)
 shape = SubResource("CircleShape2D_vrk2h")
 
-[node name="Character Input" type="Node" parent="." node_paths=PackedStringArray("_playerMovement")]
+[node name="Character Input" type="Node" parent="." node_paths=PackedStringArray("_playerMovement", "_gun", "_player")]
 script = ExtResource("2_ds6w5")
 _playerMovement = NodePath("../Character Movement")
+_gun = NodePath("../HunterWeapon")
+_player = NodePath("..")
 
 [node name="Character Movement" type="Node" parent="." node_paths=PackedStringArray("_body", "_animation")]
 script = ExtResource("3_mrpve")
@@ -139,3 +143,9 @@ collision_mask = 0
 position = Vector2(-0.333333, 5)
 shape = SubResource("CapsuleShape2D_efwx0")
 debug_color = Color(0.979353, 0, 0.388737, 0.42)
+
+[node name="HunterWeapon" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-0.333333, 0)
+texture = ExtResource("7_dkbj7")
+script = ExtResource("8_xwht6")

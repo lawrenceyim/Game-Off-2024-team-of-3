@@ -3,6 +3,8 @@ using System;
 
 public partial class PlayerInputHandler : Node, IInputListener {
 	[Export] private PlayerMovement _playerMovement;
+	[Export] private PlayerGun _gun;
+	[Export] private CharacterBody2D _player;
 
 	public override void _Ready() {
 		InputManager.GetInstance().AddListener(this);
@@ -42,8 +44,8 @@ public partial class PlayerInputHandler : Node, IInputListener {
 				GD.Print("Mouse Left Button pressed at " + eventMouseButton.Position);
 			}
 		} else if (@event is InputEventMouseMotion eventMouseMotion) {
-			// GD.Print("Mouse Motion at: ", eventMouseMotion.Position);
-			// Send position to aim player weapon and reticle
+			Vector2 origin = GetViewport().GetVisibleRect().Size / 2;
+			_gun.AimGun((eventMouseMotion.Position - origin).Normalized());
 		}
 	}
 }
