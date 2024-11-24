@@ -1,0 +1,117 @@
+[gd_scene load_steps=2 format=3 uid="uid://bel3aivuk8miw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ude6"]
+bg_color = Color(0.284311, 0.227011, 0.150901, 1)
+
+[node name="SettingsScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ude6")
+
+[node name="Volume Control" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 100.0
+
+[node name="Label" type="Label" parent="Panel/Volume Control"]
+layout_mode = 2
+offset_left = 100.0
+offset_right = 365.0
+offset_bottom = 99.0
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 72
+text = "Volume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Volume HSlider" type="HSlider" parent="Panel/Volume Control"]
+custom_minimum_size = Vector2(1000, 72)
+layout_mode = 2
+offset_left = 456.0
+offset_right = 1456.0
+offset_bottom = 107.0
+size_flags_vertical = 1
+
+[node name="Volume LineEdit" type="LineEdit" parent="Panel/Volume Control"]
+layout_mode = 2
+offset_left = 1500.0
+offset_right = 1772.0
+offset_bottom = 107.0
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 72
+placeholder_text = "0"
+max_length = 3
+
+[node name="Screen Size Control" type="Control" parent="Panel"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Screen Size Label" type="Label" parent="Panel/Screen Size Control"]
+layout_mode = 2
+offset_left = 765.0
+offset_top = 100.0
+offset_right = 1154.0
+offset_bottom = 199.0
+size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 72
+text = "Screen Size"
+horizontal_alignment = 1
+
+[node name="1920 x 1080 Button" type="Button" parent="Panel/Screen Size Control"]
+layout_mode = 2
+offset_left = 146.0
+offset_top = 213.0
+offset_right = 560.0
+offset_bottom = 320.0
+theme_override_font_sizes/font_size = 72
+text = "1920 x 1080"
+
+[node name="Button2" type="Button" parent="Panel/Screen Size Control"]
+layout_mode = 2
+offset_left = 564.0
+offset_top = 213.0
+offset_right = 978.0
+offset_bottom = 320.0
+theme_override_font_sizes/font_size = 72
+text = "1920 x 1080"
+
+[node name="Button3" type="Button" parent="Panel/Screen Size Control"]
+layout_mode = 2
+offset_left = 982.0
+offset_top = 213.0
+offset_right = 1396.0
+offset_bottom = 320.0
+theme_override_font_sizes/font_size = 72
+text = "1920 x 1080"
+
+[node name="Button4" type="Button" parent="Panel/Screen Size Control"]
+layout_mode = 2
+offset_left = 1400.0
+offset_top = 213.0
+offset_right = 1814.0
+offset_bottom = 320.0
+theme_override_font_sizes/font_size = 72
+text = "1920 x 1080"
+
+[node name="Return Button" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(500, 150)
+layout_mode = 2
+offset_left = 710.0
+offset_top = 465.0
+offset_right = 1210.0
+offset_bottom = 615.0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_font_sizes/font_size = 72
+text = "Return"
