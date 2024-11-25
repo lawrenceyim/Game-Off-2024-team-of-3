@@ -35,13 +35,11 @@ public partial class PlayerInputHandler : Node, IInputListener {
 	}
 
 	public override void _Input(InputEvent @event) {
-		// Mouse in viewport coordinates.
 		if (@event is InputEventMouseButton eventMouseButton) {
 			if (eventMouseButton.ButtonIndex == MouseButton.Left &&
 				eventMouseButton.IsPressed()
 			) {
-				// Send mouse click to fire player weapon
-				GD.Print("Mouse Left Button pressed at " + eventMouseButton.Position);
+				_gun.FireGun();
 			}
 		} else if (@event is InputEventMouseMotion eventMouseMotion) {
 			Vector2 origin = GetViewport().GetVisibleRect().Size / 2;

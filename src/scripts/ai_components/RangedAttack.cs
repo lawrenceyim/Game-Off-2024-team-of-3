@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public class RangedAttack {
@@ -17,18 +18,31 @@ public class RangedAttack {
 		return _cooldownTimer.IsStopped();
 	}
 
-	public void AttackIfReady(IDamageable damageable) {
+	public void AttackIfReady(Vector2 targetPosition) {
 		if (!_cooldownTimer.IsStopped()) {
 			return;
 		}
 		_cooldownTimer.Start(_cooldown);
 		_cooldownTimer.Paused = false;
 
-		Node2D target = damageable as Node2D;
-		Vector2 movementVector = (target.Position - _host.Position).Normalized();
+		Vector2 movementVector = (targetPosition - _host.Position).Normalized();
 
 		Node2D projectile = _projectilePrefab.Instantiate<Node2D>();
 		_host.GetTree().Root.GetNode("Projectiles").AddChild(projectile);
 		(projectile as Projectile).Initialize(_host, _host.Position, movementVector);
+	}
+
+	public void AttackIfReady(float rotation) {
+		if (!_cooldownTimer.IsStopped()) {
+			return;
+		}
+		_cooldownTimer.Start(_cooldown);
+		_cooldownTimer.Paused = false;
+
+		Vector2 movementVector = new Vector2(Mathf.Cos(rotation), Mathf.Sin(rotation)).Normalized();
+		Node2D projectile = _projectilePrefab.Instantiate<Node2D>();
+		_host.GetTree().Root.GetNode("Projectiles").AddChild(projectile);
+		(projectile as Projectile).Initialize(_host, _host.Position, movementVector);
+		(projectile as Projectile).SetProjectileRotation(rotation);
 	}
 }

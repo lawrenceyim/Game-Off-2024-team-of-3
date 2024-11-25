@@ -158,7 +158,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 
 	// Called by the animation player to switch from attacking to pursuit
 	private void FinishAttackAnimation() {
-		_rangedAttack.AttackIfReady(_player);
+		_rangedAttack.AttackIfReady(_player.Position);
 		_stateMachine.SwitchState(PursuitState);
 	}
 }

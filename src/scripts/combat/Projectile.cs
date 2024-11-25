@@ -2,7 +2,6 @@ using Godot;
 
 public partial class Projectile : Node2D {
 	private const string ProjectileAnimation = "animation";
-	[Export] private AnimatedSprite2D _sprite;
 	[Export] private int _damage;
 	[Export] private float _projectileSpeed;
 	private Vector2 _velocity = Vector2.Zero;
@@ -16,6 +15,10 @@ public partial class Projectile : Node2D {
 		_lifeSpanTimer = TimerUtil.CreateTimer(this, true);
 		_lifeSpanTimer.Timeout += QueueFree;
 		_lifeSpanTimer.Start(10);
+	}
+
+	public void SetProjectileRotation(float angle) {
+		Rotation = angle;
 	}
 
 	public override void _Process(double delta) {

@@ -171,8 +171,6 @@ public partial class Werewolf : CharacterBody2D {
 				_animationPlayer.Play(JumpingAnimation);
 			})
 			.SetExit(() => {
-				// Turn invisible
-				// Turn off collision shapes 
 				_sprite.Visible = false;
 			})
 			.SetUpdate((double delta) => { })
