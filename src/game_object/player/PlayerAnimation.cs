@@ -4,6 +4,7 @@ using System;
 public partial class PlayerAnimation : Node {
 	private const string IdleAnimation = "idle";
 	private const string MoveAnimation = "move";
+	private const string DashAnimation = "dash";
 	[Export] private AnimatedSprite2D _sprite;
 
 	public override void _Ready() {
@@ -22,5 +23,9 @@ public partial class PlayerAnimation : Node {
 			_sprite.FlipH = true;
 		}
 
+	}
+
+	public void StartDashAnimation() {
+		_sprite.Play(DashAnimation);
 	}
 }

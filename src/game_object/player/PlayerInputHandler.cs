@@ -40,10 +40,16 @@ public partial class PlayerInputHandler : Node, IInputListener {
 				eventMouseButton.IsPressed()
 			) {
 				_gun.FireGun();
+			} else if (eventMouseButton.ButtonIndex == MouseButton.Right &&
+				eventMouseButton.IsPressed()
+			) {
+				_playerMovement.Dash();
 			}
 		} else if (@event is InputEventMouseMotion eventMouseMotion) {
 			Vector2 origin = GetViewport().GetVisibleRect().Size / 2;
-			_gun.AimGun((eventMouseMotion.Position - origin).Normalized());
+			Vector2 direction = (eventMouseMotion.Position - origin).Normalized();
+			_gun.AimGun(direction);
+			_playerMovement.SetDashDirection(direction);
 		}
 	}
 }

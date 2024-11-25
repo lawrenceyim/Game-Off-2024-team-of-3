@@ -5,7 +5,6 @@ public partial class PlayerGun : Sprite2D {
 	[Export] private CharacterBody2D _player;
 	[Export] private PackedScene _projectilePrefab;
 	private RangedAttack _rangedAttack;
-	private Vector2 _aimedPosition;
 
 	public override void _Ready() {
 		_rangedAttack = new RangedAttack(_player, TimerUtil.CreateTimer(this, true), _projectilePrefab, _attackCooldown);
@@ -13,7 +12,6 @@ public partial class PlayerGun : Sprite2D {
 
 	public void AimGun(Vector2 aimedPosition) {
 		Rotation = aimedPosition.Angle();
-		_aimedPosition = aimedPosition;
 	}
 
 	public void FireGun() {

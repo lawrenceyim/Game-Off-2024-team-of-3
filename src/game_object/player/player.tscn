@@ -161,7 +161,7 @@ script = ExtResource("1_ysqf6")
 z_index = 10
 y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_5lcww")
-animation = &"move"
+animation = &"dash"
 
 [node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.333333, 14)
