@@ -7,7 +7,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const float _accelerationTime = 5;
 	private const double _minWanderTime = 3f;
 	private const double _maxWanderTime = 5f;
-	private const int _baseHealth = 5;
+	private const int _baseHealth = 1;
 	private const double _attackCooldown = .5f;
 	private const int _attackDamage = 1;
 	private const float _detectionRange = 500;
@@ -101,6 +101,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 			.SetStart(() => {
 				// Play death SFX
 				// Play death animation
+				_stateMachine.GetCurrentState().onExit();
 			})
 			.SetExit(() => {
 				QueueFree();

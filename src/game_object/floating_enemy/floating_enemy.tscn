@@ -198,6 +198,7 @@ _sprite = NodePath("Sprite2D")
 _alertLabel = NodePath("Alert")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 10
 texture = ExtResource("2_881nq")
 hframes = 4
 

@@ -157,6 +157,8 @@ script = ExtResource("1_ysqf6")
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 10
+y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_5lcww")
 animation = &"move"
 
@@ -189,7 +191,8 @@ shape = SubResource("CapsuleShape2D_efwx0")
 debug_color = Color(0.979353, 0, 0.388737, 0.42)
 
 [node name="HunterWeapon" type="Sprite2D" parent="."]
-z_index = 1
+z_index = 16
+y_sort_enabled = true
 position = Vector2(-0.333333, 0)
 texture = ExtResource("7_dkbj7")
 script = ExtResource("8_xwht6")

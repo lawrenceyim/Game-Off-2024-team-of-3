@@ -7,6 +7,8 @@
 radius = 3.33333
 
 [node name="FloatingMonsterProjectile" type="Node2D"]
+z_index = 15
+y_sort_enabled = true
 scale = Vector2(3, 3)
 script = ExtResource("1_8v00r")
 _damage = 1

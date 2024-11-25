@@ -17,6 +17,7 @@ public class AiState {
 
 	public class Builder {
 		private string _stateName;
+		private Action _onSetUp;
 		private Action _onStart;
 		private Action _onExit;
 		private Action<double> _onUpdate;
@@ -24,6 +25,11 @@ public class AiState {
 
 		public Builder(string stateName) {
 			_stateName = stateName;
+		}
+
+		public Builder SetUp(Action setUp) {
+			setUp();
+			return this;
 		}
 
 		public Builder SetStart(Action onStart) {

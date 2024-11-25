@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 public partial class Werewolf : CharacterBody2D {
@@ -8,8 +9,9 @@ public partial class Werewolf : CharacterBody2D {
 	private const double _attackCooldown = 3f;
 	private const int _attackDamage = 2;
 	private const float _detectionRange = 500;
-	private const float _timeUntilLanding = 1f;
+	private const float _timeUntilLanding = 2f;
 	private const int _landingDamage = 3;
+	private const float _jumpAttackCooldown = 10f;
 	private const float closeEnoughRange = 30f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
@@ -20,21 +22,33 @@ public partial class Werewolf : CharacterBody2D {
 	private const string MoveAnimation = "move";
 	private const string IdleAnimation = "idle";
 	private const string MeleeAttackAnimation = "attack";
+	private const string JumpingAnimation = "leap";
+	private const string LandingAnimation = "land";
 	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private AnimatedSprite2D _sprite;
 	[Export] private AlertLabel _alertLabel;
+	[Export] private CollisionShape2D _hurtBoxCollisionShape;
+	[Export] private CollisionShape2D _hitBoxCollisionShape;
+	[Export] private CollisionShape2D _movementCollisionShape;
+	[Export] private Sprite2D _landingAreaOfEffectSprite;
+	[Export] private CollisionShape2D _landingAreaOfEffectCollisionShape;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private MeleeAttack _meleeAttack;
 	private Wander _wander;
 	private Health _health;
+	private Timer _jumpAttackTimer;
+	private Timer _landingTimer;
 	private bool _touchingPlayer = false;
+	private Color _landingAoESpriteColor = new Color(1, 0, 0, 0);
+	private HashSet<IDamageable> _withinAoE = new HashSet<IDamageable>();
 
 	public override void _Ready() {
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
 			_player = player;
 
 			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
+			_landingTimer = TimerUtil.CreateTimer(this, true);
 
 			SetStateMachine();
 		});
@@ -43,6 +57,12 @@ public partial class Werewolf : CharacterBody2D {
 		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
 
 		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
+
+		_jumpAttackTimer = TimerUtil.CreateTimer(this, true);
+
+
+		SetLandingAoESpriteColor();
+		_landingAreaOfEffectCollisionShape.Disabled = true;
 
 		_sprite.Play(MoveAnimation);
 	}
@@ -56,12 +76,24 @@ public partial class Werewolf : CharacterBody2D {
 		_stateMachine.SwitchState(PursuitState);
 	}
 
+	public void JumpAnimationFinished() {
+		_stateMachine.SwitchState(LandingState);
+	}
+
+	private void LandingAnimationFinished() {
+		_stateMachine.SwitchState(PursuitState);
+	}
+
 	private void ChangeSpriteDirection() {
 		if (Velocity.X > 0) {
 			_sprite.FlipH = false;
 		} else {
 			_sprite.FlipH = true;
 		}
+	}
+
+	private void SetLandingAoESpriteColor() {
+		_landingAreaOfEffectSprite.SelfModulate = _landingAoESpriteColor;
 	}
 
 	private void SetStateMachine() {
@@ -110,6 +142,11 @@ public partial class Werewolf : CharacterBody2D {
 					_animationPlayer.Play(IdleAnimation);
 				}
 
+				if (_jumpAttackTimer.IsStopped()) {
+					_stateMachine.SwitchState(JumpingState);
+					return;
+				}
+
 				if (_touchingPlayer && _meleeAttack.CanAttack()) {
 					_stateMachine.SwitchState(AttackingState);
 				}
@@ -128,29 +165,53 @@ public partial class Werewolf : CharacterBody2D {
 
 		AiState jumpingState = new AiState.Builder(JumpingState)
 			.SetStart(() => {
-				// Play jumping animation
+				_movementCollisionShape.Disabled = true;
+				_hurtBoxCollisionShape.Disabled = true;
+				_hitBoxCollisionShape.Disabled = true;
+				_animationPlayer.Play(JumpingAnimation);
 			})
 			.SetExit(() => {
 				// Turn invisible
 				// Turn off collision shapes 
-				_stateMachine.SwitchState(LandingState);
+				_sprite.Visible = false;
 			})
 			.SetUpdate((double delta) => { })
 			.SetPhysicsUpdate((double delta) => { })
 			.Build();
 
 		AiState landingState = new AiState.Builder(LandingState)
-			.SetStart(() => {
-				// pick landing location
-				// play sprite
-				// start timer for landing
+			.SetUp(() => {
+				_landingTimer.Timeout += () => {
+					_landingAoESpriteColor.A = 0;
+					SetLandingAoESpriteColor();
+					_sprite.Visible = true;
+					_animationPlayer.Play(LandingAnimation);
+					// DAMAGE ALL targets within aoe
 
-				// once timer times out, play animation for landing
-				// damage to all bodies stored in a hashset of enemies within area
-				// switch to pursuit state
+					foreach (IDamageable damageable in _withinAoE) {
+						damageable.TakeDamage(_landingDamage);
+					}
+				};
 			})
-			.SetExit(() => { })
-			.SetUpdate((double delta) => { })
+			.SetStart(() => {
+				Position = _player.Position;
+				_landingTimer.Start(_timeUntilLanding);
+				_withinAoE.Clear();
+				_landingAreaOfEffectCollisionShape.Disabled = false;
+			})
+			.SetExit(() => {
+				_jumpAttackTimer.Start(_jumpAttackCooldown);
+				_hurtBoxCollisionShape.Disabled = false;
+				_hitBoxCollisionShape.Disabled = false;
+				_movementCollisionShape.Disabled = false;
+				_landingAreaOfEffectCollisionShape.Disabled = true;
+			})
+			.SetUpdate((double delta) => {
+				if (!_landingTimer.IsStopped()) {
+					_landingAoESpriteColor.A = 1 - ((float)_landingTimer.TimeLeft / _timeUntilLanding);
+					SetLandingAoESpriteColor();
+				}
+			})
 			.SetPhysicsUpdate((double delta) => { })
 			.Build();
 
@@ -187,6 +248,18 @@ public partial class Werewolf : CharacterBody2D {
 	private void _on_hitbox_area_2d_area_exited(Area2D body) {
 		if (body.GetParent() is PlayerCharacter) {
 			_touchingPlayer = false;
+		}
+	}
+
+	private void _on_aoe_area_2d_area_entered(Area2D body) {
+		if (body.GetParent() is IDamageable damageable && damageable != this) {
+			_withinAoE.Add(damageable);
+		}
+	}
+
+	private void _on_aoe_area_2d_area_exited(Area2D body) {
+		if (body.GetParent() is IDamageable damageable && damageable != this) {
+			_withinAoE.Remove(damageable);
 		}
 	}
 }
