@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cp0rxpjfn7ga1"]
+[gd_scene load_steps=31 format=3 uid="uid://cp0rxpjfn7ga1"]
 
 [ext_resource type="Script" path="res://game_object/player/PlayerCharacter.cs" id="1_ysqf6"]
 [ext_resource type="Texture2D" uid="uid://d4maau12k5l40" path="res://game_object/player/Hunter_idle.png" id="2_cd0sn"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c7msd41kekgej" path="res://game_object/player/Hunter_weapon.png" id="7_dkbj7"]
 [ext_resource type="Script" path="res://game_object/player/PlayerGun.cs" id="8_xwht6"]
 [ext_resource type="PackedScene" path="res://game_object/player/HunterProjectile.tscn" id="10_rfevi"]
+[ext_resource type="PackedScene" uid="uid://b8wc5toliyi4j" path="res://game_object/player/vignette.tscn" id="11_lnfk1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y4cm6"]
 atlas = ExtResource("2_ppnvl")
@@ -199,3 +200,6 @@ texture = ExtResource("7_dkbj7")
 script = ExtResource("8_xwht6")
 _projectilePrefab = ExtResource("10_rfevi")
 _player = NodePath("..")
+
+[node name="Vignette" parent="." instance=ExtResource("11_lnfk1")]
+layer = 2
