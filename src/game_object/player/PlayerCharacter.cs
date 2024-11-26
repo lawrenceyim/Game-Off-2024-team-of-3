@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 
 public partial class PlayerCharacter : CharacterBody2D, IDamageable {
+	[Export] private PlayerCamera _playerCamera;
 	private static PlayerCharacter _instance;
 	private static Queue<Action<PlayerCharacter>> _waitingForInstance = new Queue<Action<PlayerCharacter>>();
-
 	private Health _health;
 	private int _baseHealth = 10;
 
@@ -36,6 +36,7 @@ public partial class PlayerCharacter : CharacterBody2D, IDamageable {
 		// Play damaged sfx
 		// Add damaged vfx
 		_health.DecreaseHealth(damage);
+		_playerCamera.AddTrauma(1);
 		GD.Print("Player damaged. Health is " + _health.GetCurrentHealth().ToString());
 	}
 

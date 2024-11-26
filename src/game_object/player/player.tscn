@@ -153,9 +153,10 @@ radius = 3.68179
 radius = 4.66667
 height = 26.0
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_playerCamera")]
 scale = Vector2(3, 3)
 script = ExtResource("1_ysqf6")
+_playerCamera = NodePath("Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("_playerCharacter")]
 script = ExtResource("2_gm243")
