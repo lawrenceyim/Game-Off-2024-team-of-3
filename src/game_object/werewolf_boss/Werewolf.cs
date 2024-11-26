@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 
-public partial class Werewolf : CharacterBody2D {
+public partial class Werewolf : CharacterBody2D, IDamageable {
 	private const float _wanderingSpeed = 200f;
 	private const double _minWanderTime = 3f;
 	private const double _maxWanderTime = 5f;
