@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class DarkLion : CharacterBody2D {
+public partial class DarkLion : CharacterBody2D, IDamageable {
 	private const float _detectionRange = 700;
 	private const float _dashSpeed = 1500f;
 	private const float _wanderingSpeed = 100f;
