@@ -1,10 +1,10 @@
 using Godot;
 
 public partial class PlayerMovement : Node {
-	private const float _dashSpeed = 1000f;
-	private const float _speed = 500f;
-	private const float _dashCooldown = 1f;
-	private const float _dashDuration = .75f;
+	private const float DashSpeed = 1000f;
+	private const float speed = 500f;
+	private const float DashCooldown = 1f;
+	private const float DashDuration = .75f;
 	[Export] private CharacterBody2D _body;
 	[Export] private PlayerAnimation _animation;
 	private float _dashAngle = 0;
@@ -23,7 +23,7 @@ public partial class PlayerMovement : Node {
 			_body.MoveAndCollide(_dashVelocity * (float)GetProcessDeltaTime());
 			_animation.StartDashAnimation();
 		} else {
-			_body.MoveAndCollide(move * _speed * (float)GetProcessDeltaTime());
+			_body.MoveAndCollide(move * speed * (float)GetProcessDeltaTime());
 			_animation.UpdateMovement(move);
 		}
 	}
@@ -34,9 +34,9 @@ public partial class PlayerMovement : Node {
 
 	public void Dash() {
 		if (_dashCooldownTimer.IsStopped()) {
-			_dashVelocity = _dashDirection * _dashSpeed;
-			_dashDurationTimer.Start(_dashDuration);
-			_dashCooldownTimer.Start(_dashCooldown);
+			_dashVelocity = _dashDirection * DashSpeed;
+			_dashDurationTimer.Start(DashDuration);
+			_dashCooldownTimer.Start(DashCooldown);
 		}
 	}
 }

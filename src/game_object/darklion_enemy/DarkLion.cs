@@ -2,18 +2,18 @@ using Godot;
 using System;
 
 public partial class DarkLion : CharacterBody2D, IDamageable {
-	private const float _detectionRange = 700;
-	private const float _dashSpeed = 1500f;
-	private const float _wanderingSpeed = 100f;
-	private const float _dashDuration = .5f;
-	private const float _dashCooldown = 5f;
-	private const double _minWanderTime = 3f;
-	private const double _maxWanderTime = 5f;
-	private const double _attackCooldown = .5f;
-	private const int _attackDamage = 1;
-	private const int _baseHealth = 10;
-	private const float closeEnoughRange = 10f;
-	private const float _minDashRange = 400f;
+	private const float DetectionRange = 700;
+	private const float DashSpeed = 1500f;
+	private const float WanderingSpeed = 100f;
+	private const float DashDuration = .5f;
+	private const float DashCooldown = 5f;
+	private const double MinWanderTime = 3f;
+	private const double MaxWanderTime = 5f;
+	private const double ttackCooldown = .5f;
+	private const int AttackDamage = 1;
+	private const int BaseHealth = 10;
+	private const float CloseEnoughRange = 10f;
+	private const float MinDashRange = 400f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DashingState = "dash";
@@ -47,14 +47,14 @@ public partial class DarkLion : CharacterBody2D, IDamageable {
 				_stateMachine.SwitchState(PursuitState);
 			};
 
-			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
+			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), MinWanderTime, MaxWanderTime, WanderingSpeed);
 
 			SetStateMachine();
 		});
 
-		_health = new Health(_baseHealth);
+		_health = new Health(BaseHealth);
 		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
-		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
+		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), ttackCooldown, AttackDamage);
 
 		_animationPlayer.Play(MoveAnimation);
 	}
@@ -91,7 +91,7 @@ public partial class DarkLion : CharacterBody2D, IDamageable {
 			.SetPhysicsUpdate((double delta) => {
 				MoveAndSlide();
 
-				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
+				if (Position.DistanceTo(_player.Position) <= DetectionRange) {
 					_alertLabel.DisplayExclamationMark();
 					_stateMachine.SwitchState(PursuitState);
 					return;
@@ -107,20 +107,20 @@ public partial class DarkLion : CharacterBody2D, IDamageable {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				float distanceFromTarget = Position.DistanceTo(_player.Position);
-				if (distanceFromTarget > _detectionRange) {
+				if (distanceFromTarget > DetectionRange) {
 					_alertLabel.DisplayQuestionMark();
 					_stateMachine.SwitchState(WanderingState);
 					return;
 				}
-				if (distanceFromTarget > closeEnoughRange) {
+				if (distanceFromTarget > CloseEnoughRange) {
 					if (_dashCooldownTimer.TimeLeft == 0 &&
-							distanceFromTarget >= _minDashRange) {
+							distanceFromTarget >= MinDashRange) {
 						_stateMachine.SwitchState(PreparingDashState);
 						return;
 					}
 
 					_animationPlayer.Play(MoveAnimation);
-					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+					Velocity = (_player.Position - Position).Normalized() * WanderingSpeed;
 					MoveAndSlide();
 				} else {
 					_animationPlayer.Play(IdleAnimation);
@@ -135,7 +135,7 @@ public partial class DarkLion : CharacterBody2D, IDamageable {
 		AiState preparingDashState = new AiState.Builder(PreparingDashState)
 			.SetStart(() => {
 				_animationPlayer.Play(DashAnimation);
-				Velocity = (_player.Position - Position).Normalized() * _dashSpeed;
+				Velocity = (_player.Position - Position).Normalized() * DashSpeed;
 				ChangeSpriteDirection();
 			})
 			.SetExit(() => { })
@@ -149,8 +149,8 @@ public partial class DarkLion : CharacterBody2D, IDamageable {
 
 		AiState dashingState = new AiState.Builder(DashingState)
 			.SetStart(() => {
-				_dashCooldownTimer.Start(_dashCooldown);
-				_dashDurationTimer.Start(_dashDuration);
+				_dashCooldownTimer.Start(DashCooldown);
+				_dashDurationTimer.Start(DashDuration);
 			})
 			.SetExit(() => { })
 			.SetUpdate((double delta) => { })

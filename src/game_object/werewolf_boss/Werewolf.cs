@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Werewolf : CharacterBody2D, IDamageable {
-	private const float _wanderingSpeed = 200f;
-	private const double _minWanderTime = 3f;
-	private const double _maxWanderTime = 5f;
-	private const int _baseHealth = 15;
-	private const double _attackCooldown = 3f;
-	private const int _attackDamage = 2;
-	private const float _detectionRange = 500;
-	private const float _timeUntilLanding = 2f;
-	private const int _landingDamage = 3;
-	private const float _jumpAttackCooldown = 10f;
+	private const float WanderingSpeed = 200f;
+	private const double MinWanderTime = 3f;
+	private const double MaxWanderTime = 5f;
+	private const int BaseHealth = 15;
+	private const double AttackCooldown = 3f;
+	private const int AttackDamage = 2;
+	private const float DetectionRange = 500;
+	private const float TimeUntilLanding = 2f;
+	private const int LandingDamage = 3;
+	private const float JumpAttackCooldown = 10f;
 	private const float closeEnoughRange = 30f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
@@ -47,16 +47,16 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
 			_player = player;
 
-			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
+			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), MinWanderTime, MaxWanderTime, WanderingSpeed);
 			_landingTimer = TimerUtil.CreateTimer(this, true);
 
 			SetStateMachine();
 		});
 
-		_health = new Health(_baseHealth);
+		_health = new Health(BaseHealth);
 		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
 
-		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
+		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), AttackCooldown, AttackDamage);
 
 		_jumpAttackTimer = TimerUtil.CreateTimer(this, true);
 
@@ -111,7 +111,7 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 			.SetPhysicsUpdate((double delta) => {
 				MoveAndSlide();
 
-				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
+				if (Position.DistanceTo(_player.Position) <= DetectionRange) {
 					_stateMachine.SwitchState(PursuitState);
 					return;
 				}
@@ -129,14 +129,14 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				float distanceFromTarget = Position.DistanceTo(_player.Position);
-				if (distanceFromTarget > _detectionRange) {
+				if (distanceFromTarget > DetectionRange) {
 					_alertLabel.DisplayQuestionMark();
 					_stateMachine.SwitchState(WanderingState);
 					return;
 				}
 				if (distanceFromTarget > closeEnoughRange) {
 					_animationPlayer.Play(MoveAnimation);
-					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+					Velocity = (_player.Position - Position).Normalized() * WanderingSpeed;
 					MoveAndSlide();
 				} else {
 					_animationPlayer.Play(IdleAnimation);
@@ -187,18 +187,18 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 					// DAMAGE ALL targets within aoe
 
 					foreach (IDamageable damageable in _withinAoE) {
-						damageable.TakeDamage(_landingDamage);
+						damageable.TakeDamage(LandingDamage);
 					}
 				};
 			})
 			.SetStart(() => {
 				Position = _player.Position;
-				_landingTimer.Start(_timeUntilLanding);
+				_landingTimer.Start(TimeUntilLanding);
 				_withinAoE.Clear();
 				_landingAreaOfEffectCollisionShape.Disabled = false;
 			})
 			.SetExit(() => {
-				_jumpAttackTimer.Start(_jumpAttackCooldown);
+				_jumpAttackTimer.Start(JumpAttackCooldown);
 				_hurtBoxCollisionShape.Disabled = false;
 				_hitBoxCollisionShape.Disabled = false;
 				_movementCollisionShape.Disabled = false;
@@ -206,7 +206,7 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 			})
 			.SetUpdate((double delta) => {
 				if (!_landingTimer.IsStopped()) {
-					_landingAoESpriteColor.A = 1 - ((float)_landingTimer.TimeLeft / _timeUntilLanding);
+					_landingAoESpriteColor.A = 1 - ((float)_landingTimer.TimeLeft / TimeUntilLanding);
 					SetLandingAoESpriteColor();
 				}
 			})

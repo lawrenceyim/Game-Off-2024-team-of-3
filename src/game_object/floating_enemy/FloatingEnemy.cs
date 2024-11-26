@@ -1,14 +1,14 @@
 using Godot;
 
 public partial class FloatingEnemy : CharacterBody2D, IDamageable {
-	private const float _wanderingSpeed = 100f;
-	private const double _minWanderTime = 3f;
-	private const double _maxWanderTime = 5f;
-	private const int _baseHealth = 1;
-	private const double _meleeAttackCooldown = .5f;
-	private const double _rangedAttackCooldown = 5f;
-	private const int _attackDamage = 1;
-	private const float closeEnoughRange = 10f;
+	private const float WanderingSpeed = 100f;
+	private const double MinWanderTime = 3f;
+	private const double MaxWanderTime = 5f;
+	private const int BaseHealth = 1;
+	private const double MeleeAttackCooldown = .5f;
+	private const double RangedAttackCooldown = 5f;
+	private const int AttackDamage = 1;
+	private const float CloseEnoughRange = 10f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string AttackState = "attack";
@@ -34,16 +34,16 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		PlayerCharacter.GetInstanceWithCallback((PlayerCharacter player) => {
 			_player = player;
 
-			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
+			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), MinWanderTime, MaxWanderTime, WanderingSpeed);
 
 			SetStateMachine();
 		});
 
-		_health = new Health(_baseHealth);
+		_health = new Health(BaseHealth);
 		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
 
-		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _meleeAttackCooldown, _attackDamage);
-		_rangedAttack = new RangedAttack(this, TimerUtil.CreateTimer(this, true), _projectilePrefab, _rangedAttackCooldown);
+		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), MeleeAttackCooldown, AttackDamage);
+		_rangedAttack = new RangedAttack(this, TimerUtil.CreateTimer(this, true), _projectilePrefab, RangedAttackCooldown);
 
 		_animationPlayer.Play(MoveAnimation);
 	}
@@ -89,8 +89,8 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 					_stateMachine.SwitchState(WanderingState);
 					return;
 				}
-				if (distanceFromTarget > closeEnoughRange) {
-					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+				if (distanceFromTarget > CloseEnoughRange) {
+					Velocity = (_player.Position - Position).Normalized() * WanderingSpeed;
 					MoveAndSlide();
 				}
 

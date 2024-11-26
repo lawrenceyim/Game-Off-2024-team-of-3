@@ -2,16 +2,16 @@ using System;
 using Godot;
 
 public partial class BatEnemy : CharacterBody2D, IDamageable {
-	private const float _wanderingSpeed = 100f;
-	private const float _maxSpeed = 500f;
-	private const float _accelerationTime = 5;
-	private const double _minWanderTime = 3f;
-	private const double _maxWanderTime = 5f;
-	private const int _baseHealth = 1;
-	private const double _attackCooldown = .5f;
-	private const int _attackDamage = 1;
-	private const float _detectionRange = 500;
-	private const float _closeEnoughRange = 10f;
+	private const float WanderingSpeed = 100f;
+	private const float MaxSpeed = 500f;
+	private const float AccelerationTime = 5;
+	private const double MinWanderTime = 3f;
+	private const double MaxWanderTime = 5f;
+	private const int BaseHealth = 1;
+	private const double AttackCooldown = .5f;
+	private const int AttackDamage = 1;
+	private const float DetectionRange = 500;
+	private const float CloseEnoughRange = 10f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DeathState = "death";
@@ -32,15 +32,15 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 			_player = player;
 
 			_accelerationTimer = TimerUtil.CreateTimer(this, true);
-			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), _minWanderTime, _maxWanderTime, _wanderingSpeed);
+			_wander = new Wander(this, TimerUtil.CreateTimer(this, true), MinWanderTime, MaxWanderTime, WanderingSpeed);
 
 			SetStateMachine();
 		});
 
-		_health = new Health(_baseHealth);
+		_health = new Health(BaseHealth);
 		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
 
-		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), _attackCooldown, _attackDamage);
+		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), AttackCooldown, AttackDamage);
 
 		_sprite.Play(MoveAnimation);
 	}
@@ -61,7 +61,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 				MoveAndSlide();
 			})
 			.SetPhysicsUpdate((double delta) => {
-				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
+				if (Position.DistanceTo(_player.Position) <= DetectionRange) {
 					_stateMachine.SwitchState(PursuitState);
 					return;
 				}
@@ -71,23 +71,23 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 		AiState pursueState = new AiState.Builder(PursuitState)
 			.SetStart(() => {
 				_alertLabel.DisplayExclamationMark();
-				_accelerationTimer.Start(_accelerationTime);
+				_accelerationTimer.Start(AccelerationTime);
 			})
 			.SetExit(() => { })
 			.SetUpdate((double delta) => { })
 			.SetPhysicsUpdate((double delta) => {
 				if (_accelerationTimer.TimeLeft > 0) {
-					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / _accelerationTime)) * _maxSpeed, _wanderingSpeed);
+					_speed = Math.Max((1 - ((float)_accelerationTimer.TimeLeft / AccelerationTime)) * MaxSpeed, WanderingSpeed);
 				}
 
 				float distanceFromTarget = Position.DistanceTo(_player.Position);
-				if (distanceFromTarget > _detectionRange) {
+				if (distanceFromTarget > DetectionRange) {
 					_alertLabel.DisplayQuestionMark();
 					_stateMachine.SwitchState(WanderingState);
 					return;
 				}
-				if (distanceFromTarget > _closeEnoughRange) {
-					Velocity = (_player.Position - Position).Normalized() * _wanderingSpeed;
+				if (distanceFromTarget > CloseEnoughRange) {
+					Velocity = (_player.Position - Position).Normalized() * WanderingSpeed;
 					MoveAndSlide();
 				}
 
