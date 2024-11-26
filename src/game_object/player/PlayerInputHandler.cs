@@ -5,6 +5,7 @@ public partial class PlayerInputHandler : Node, IInputListener {
 	[Export] private PlayerMovement _playerMovement;
 	[Export] private PlayerGun _gun;
 	[Export] private CharacterBody2D _player;
+	[Export] private PlayerCamera _camera;
 
 	public override void _Ready() {
 		InputManager.GetInstance().AddListener(this);
@@ -47,6 +48,7 @@ public partial class PlayerInputHandler : Node, IInputListener {
 			}
 		} else if (@event is InputEventMouseMotion eventMouseMotion) {
 			Vector2 origin = GetViewport().GetVisibleRect().Size / 2;
+			_camera.SetAimedPosition(eventMouseMotion.Position);
 			Vector2 direction = (eventMouseMotion.Position - origin).Normalized();
 			_gun.AimGun(direction);
 			_playerMovement.SetDashDirection(direction);
