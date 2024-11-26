@@ -201,17 +201,16 @@ debug_color = Color(0.979353, 0, 0.388737, 0.42)
 [node name="HunterWeapon" type="Sprite2D" parent="." node_paths=PackedStringArray("_player")]
 z_index = 16
 y_sort_enabled = true
-position = Vector2(1.66667, 3.33333)
+position = Vector2(5, 1.66667)
 texture = ExtResource("7_dkbj7")
-offset = Vector2(3, 0)
 region_enabled = true
-region_rect = Rect2(26, 34, 22, 4)
+region_rect = Rect2(26, 28, 20, 11)
 script = ExtResource("8_xwht6")
 _player = NodePath("..")
 _projectilePrefab = ExtResource("10_rfevi")
 
 [node name="ShootingPoint" type="Marker2D" parent="HunterWeapon"]
-position = Vector2(12.6667, -1.66667)
+position = Vector2(10.6667, 1)
 
 [node name="Vignette" parent="." instance=ExtResource("11_lnfk1")]
 layer = 2
