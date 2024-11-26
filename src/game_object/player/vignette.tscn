@@ -1,6 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8wc5toliyi4j"]
+[gd_scene load_steps=6 format=3 uid="uid://bhp2g3d5q7n8"]
 
 [ext_resource type="Shader" path="res://vfx/shaders/vignette.gdshader" id="1_ud7sn"]
+
+[sub_resource type="Animation" id="Animation_obwte"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/vignette_intensity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.4]
+}
 
 [sub_resource type="Animation" id="Animation_au5xk"]
 resource_name = "hit"
@@ -17,21 +32,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 2.6, 1),
 "update": 0,
 "values": [0.7, 3.0, 0.7]
-}
-
-[sub_resource type="Animation" id="Animation_obwte"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:material:shader_parameter/vignette_intensity")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.4]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4kxag"]

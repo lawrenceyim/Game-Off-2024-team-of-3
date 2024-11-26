@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 
 public partial class PlayerCharacter : CharacterBody2D, IDamageable {
+	private const string OnHitAnimation = "hit";
+	[Export] private AnimationPlayer _onHitAnimationPlayer;
 	[Export] private PlayerCamera _playerCamera;
 	private static PlayerCharacter _instance;
 	private static Queue<Action<PlayerCharacter>> _waitingForInstance = new Queue<Action<PlayerCharacter>>();
@@ -37,6 +39,7 @@ public partial class PlayerCharacter : CharacterBody2D, IDamageable {
 		// Add damaged vfx
 		_health.DecreaseHealth(damage);
 		_playerCamera.AddTrauma(1);
+		_onHitAnimationPlayer.Play(OnHitAnimation);
 		GD.Print("Player damaged. Health is " + _health.GetCurrentHealth().ToString());
 	}
 

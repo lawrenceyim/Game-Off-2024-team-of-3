@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://c7msd41kekgej" path="res://game_object/player/Hunter_weapon.png" id="7_dkbj7"]
 [ext_resource type="Script" path="res://game_object/player/PlayerGun.cs" id="8_xwht6"]
 [ext_resource type="PackedScene" uid="uid://bmlgnia61lolb" path="res://game_object/player/HunterProjectile.tscn" id="10_rfevi"]
-[ext_resource type="PackedScene" path="res://game_object/player/vignette.tscn" id="11_lnfk1"]
+[ext_resource type="PackedScene" uid="uid://bhp2g3d5q7n8" path="res://game_object/player/vignette.tscn" id="11_lnfk1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y4cm6"]
 atlas = ExtResource("2_ppnvl")
@@ -153,9 +153,10 @@ radius = 3.68179
 radius = 4.66667
 height = 26.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_playerCamera")]
+[node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_onHitAnimationPlayer", "_playerCamera")]
 scale = Vector2(3, 3)
 script = ExtResource("1_ysqf6")
+_onHitAnimationPlayer = NodePath("Vignette/AnimationPlayer")
 _playerCamera = NodePath("Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("_playerCharacter")]
@@ -208,3 +209,5 @@ _projectilePrefab = ExtResource("10_rfevi")
 
 [node name="Vignette" parent="." instance=ExtResource("11_lnfk1")]
 layer = 2
+
+[editable path="Vignette"]
