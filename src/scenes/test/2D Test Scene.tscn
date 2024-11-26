@@ -5,3 +5,4 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="Node2D" parent="." instance=ExtResource("1_5ml4d")]
+position = Vector2(491, 234)
