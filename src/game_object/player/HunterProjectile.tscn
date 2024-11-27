@@ -15,11 +15,9 @@ _damage = 1
 _projectileSpeed = 1000.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1.5, 0)
 texture = ExtResource("2_hd4jw")
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2(1.5, 0)
 collision_layer = 0
 collision_mask = 2
 
