@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://ddf3kyq1ld15w"]
+
+[ext_resource type="Script" path="res://scripts/ai_components/HitFlash.cs" id="1_xljt5"]
+[ext_resource type="Shader" path="res://vfx/shaders/hitflash.gdshader" id="2_o4x65"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ce414"]
+resource_local_to_scene = true
+shader = ExtResource("2_o4x65")
+shader_parameter/lerp_percent = null
+
+[node name="Hit Flash Node" type="Node"]
+script = ExtResource("1_xljt5")
+_shaderMaterial = SubResource("ShaderMaterial_ce414")

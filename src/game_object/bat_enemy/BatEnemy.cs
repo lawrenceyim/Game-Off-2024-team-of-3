@@ -7,7 +7,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const float AccelerationTime = 5;
 	private const double MinWanderTime = 3f;
 	private const double MaxWanderTime = 5f;
-	private const int BaseHealth = 1;
+	private const int BaseHealth = 2;
 	private const double AttackCooldown = .5f;
 	private const int AttackDamage = 1;
 	private const float DetectionRange = 500;
@@ -18,6 +18,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const string MoveAnimation = "move";
 	[Export] private AnimatedSprite2D _sprite;
 	[Export] private AlertLabel _alertLabel;
+	[Export] private HitFlash _hitFlash;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Timer _accelerationTimer;
@@ -46,6 +47,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	}
 
 	public void TakeDamage(int damage) {
+		_hitFlash.DisplayHitFlash();
 		_health.DecreaseHealth(damage);
 	}
 
