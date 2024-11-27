@@ -31,7 +31,7 @@ public class RangedAttack {
 
 		Node2D projectile = _projectilePrefab.Instantiate<Node2D>();
 		_host.GetTree().Root.GetNode("Projectiles").AddChild(projectile);
-		(projectile as Projectile).Initialize(_host, _spawnPosition.Position, movementVector);
+		(projectile as Projectile).Initialize(_host, _spawnPosition.GlobalPosition, movementVector);
 	}
 
 	public void AttackIfReady(float rotation) {
@@ -44,7 +44,7 @@ public class RangedAttack {
 		Vector2 movementVector = new Vector2(Mathf.Cos(rotation), Mathf.Sin(rotation)).Normalized();
 		Node2D projectile = _projectilePrefab.Instantiate<Node2D>();
 		_host.GetTree().Root.GetNode("Projectiles").AddChild(projectile);
-		(projectile as Projectile).Initialize(_host, _spawnPosition.Position, movementVector);
+		(projectile as Projectile).Initialize(_host, _spawnPosition.GlobalPosition, movementVector);
 		(projectile as Projectile).SetProjectileRotation(rotation);
 	}
 }
