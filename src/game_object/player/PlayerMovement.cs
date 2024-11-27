@@ -26,14 +26,11 @@ public partial class PlayerMovement : Node {
 			_body.MoveAndCollide(move * speed * (float)GetProcessDeltaTime());
 			_animation.UpdateMovement(move);
 		}
-	}
-
-	public void SetDashDirection(Vector2 direction) {
-		_dashDirection = direction;
+		_dashDirection = move;
 	}
 
 	public void Dash() {
-		if (_dashCooldownTimer.IsStopped()) {
+		if (_dashCooldownTimer.IsStopped() && !_dashDirection.IsZeroApprox()) {
 			_dashVelocity = _dashDirection * DashSpeed;
 			_dashDurationTimer.Start(DashDuration);
 			_dashCooldownTimer.Start(DashCooldown);

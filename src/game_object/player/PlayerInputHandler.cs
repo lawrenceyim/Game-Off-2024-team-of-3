@@ -51,7 +51,6 @@ public partial class PlayerInputHandler : Node, IInputListener {
 			_camera.SetAimedPosition(eventMouseMotion.Position);
 			Vector2 direction = (eventMouseMotion.Position - origin).Normalized();
 			_gun.AimGun(direction);
-			_playerMovement.SetDashDirection(direction);
 		}
 	}
 }
