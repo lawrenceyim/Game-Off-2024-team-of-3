@@ -8,7 +8,8 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const double MeleeAttackCooldown = .5f;
 	private const double RangedAttackCooldown = 5f;
 	private const int AttackDamage = 1;
-	private const float CloseEnoughRange = 10f;
+	private const float DetectionRange = 1000;
+	private const float CloseEnoughRange = 500f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string AttackState = "attack";
@@ -26,7 +27,6 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private RangedAttack _rangedAttack;
 	private Wander _wander;
 	private Health _health;
-	private float _detectionRange = 1000;
 	private float _speed;
 	private bool _touchingPlayer = false;
 
@@ -67,7 +67,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			.SetPhysicsUpdate((double delta) => {
 				MoveAndSlide();
 
-				if (Position.DistanceTo(_player.Position) <= _detectionRange) {
+				if (Position.DistanceTo(_player.Position) <= DetectionRange) {
 					_alertLabel.DisplayExclamationMark();
 					_stateMachine.SwitchState(PursuitState);
 					return;
@@ -85,7 +85,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				float distanceFromTarget = Position.DistanceTo(_player.Position);
-				if (distanceFromTarget > _detectionRange) {
+				if (distanceFromTarget > DetectionRange) {
 					_stateMachine.SwitchState(WanderingState);
 					return;
 				}
