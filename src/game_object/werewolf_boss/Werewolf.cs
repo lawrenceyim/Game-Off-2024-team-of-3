@@ -8,12 +8,10 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 	private const int BaseHealth = 15;
 	private const double AttackCooldown = 3f;
 	private const int AttackDamage = 2;
-	private const float DetectionRange = 500;
 	private const float TimeUntilLanding = 2f;
 	private const int LandingDamage = 3;
 	private const float JumpAttackCooldown = 10f;
 	private const float closeEnoughRange = 30f;
-	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string JumpingState = "jumping";
 	private const string LandingState = "landing";
@@ -97,31 +95,9 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 	}
 
 	private void SetStateMachine() {
-		AiState wanderState = new AiState.Builder(WanderingState)
-			.SetStart(() => {
-				_animationPlayer.Play(MoveAnimation);
-				_wander.SetWanderingVelocity();
-			})
-			.SetExit(() => {
-				_wander.StopWandering();
-			})
-			.SetUpdate((double delta) => {
-				ChangeSpriteDirection();
-			})
-			.SetPhysicsUpdate((double delta) => {
-				MoveAndSlide();
-
-				if (Position.DistanceTo(_player.Position) <= DetectionRange) {
-					_stateMachine.SwitchState(PursuitState);
-					return;
-				}
-			})
-			.Build();
-
 		AiState pursueState = new AiState.Builder(PursuitState)
 			.SetStart(() => {
 				_animationPlayer.Play(MoveAnimation);
-				_alertLabel.DisplayExclamationMark();
 			})
 			.SetExit(() => { })
 			.SetUpdate((double delta) => {
@@ -129,11 +105,6 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 			})
 			.SetPhysicsUpdate((double delta) => {
 				float distanceFromTarget = Position.DistanceTo(_player.Position);
-				if (distanceFromTarget > DetectionRange) {
-					_alertLabel.DisplayQuestionMark();
-					_stateMachine.SwitchState(WanderingState);
-					return;
-				}
 				if (distanceFromTarget > closeEnoughRange) {
 					_animationPlayer.Play(MoveAnimation);
 					Velocity = (_player.Position - Position).Normalized() * WanderingSpeed;
@@ -225,8 +196,7 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 			.SetPhysicsUpdate((double delta) => { })
 			.Build();
 
-		_stateMachine = new StateMachine.Builder(WanderingState)
-			.AddState(wanderState)
+		_stateMachine = new StateMachine.Builder(PursuitState)
 			.AddState(pursueState)
 			.AddState(attackingState)
 			.AddState(deathState)
