@@ -49,7 +49,8 @@ public partial class PlayerInputHandler : Node, IInputListener {
 		} else if (@event is InputEventMouseMotion eventMouseMotion) {
 			Vector2 origin = GetViewport().GetVisibleRect().Size / 2;
 			_camera.SetAimedPosition(eventMouseMotion.Position);
-			Vector2 direction = (eventMouseMotion.Position - origin).Normalized();
+			Vector2 cameraOffset = _camera.GlobalPosition - _player.GlobalPosition;
+			Vector2 direction = (eventMouseMotion.Position - origin + cameraOffset).Normalized();
 			_gun.AimGun(direction);
 		}
 	}
