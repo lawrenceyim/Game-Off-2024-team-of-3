@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cpjewj8mtirtj"
+path="res://.godot/imported/Hunter Combat 2 M 11-21-24.wav-73c15f3f1a715c7d41176c96a90f3bd6.sample"
+
+[deps]
+
+source_file="res://assets/audio/Hunter Combat 2 M 11-21-24.wav"
+dest_files=["res://.godot/imported/Hunter Combat 2 M 11-21-24.wav-73c15f3f1a715c7d41176c96a90f3bd6.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -562,7 +562,7 @@ height = 64.6667
 [sub_resource type="CircleShape2D" id="CircleShape2D_x6tg0"]
 radius = 250.0
 
-[sub_resource type="Shader" id="Shader_8uqtd"]
+[sub_resource type="Shader" id="Shader_e315c"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -577,10 +577,10 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bmdrw"]
 resource_local_to_scene = true
-shader = SubResource("Shader_8uqtd")
+shader = SubResource("Shader_e315c")
 shader_parameter/lerp_percent = null
 
-[node name="WerewolfBoss" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hurtBoxCollisionShape", "_hitBoxCollisionShape", "_movementCollisionShape", "_landingAreaOfEffectSprite", "_landingAreaOfEffectCollisionShape", "_hitFlash")]
+[node name="WerewolfBoss" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hurtBoxCollisionShape", "_hitBoxCollisionShape", "_movementCollisionShape", "_landingAreaOfEffectSprite", "_landingAreaOfEffectCollisionShape")]
 scale = Vector2(3, 3)
 collision_layer = 4
 collision_mask = 4
@@ -593,7 +593,6 @@ _hitBoxCollisionShape = NodePath("Hitbox Area2D/CollisionShape2D")
 _movementCollisionShape = NodePath("CollisionShape2D")
 _landingAreaOfEffectSprite = NodePath("AoE Sprite2D")
 _landingAreaOfEffectCollisionShape = NodePath("AoE Sprite2D/AoE Area2D/CollisionShape2D")
-_hitFlash = NodePath("Hit Flash Node")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 10

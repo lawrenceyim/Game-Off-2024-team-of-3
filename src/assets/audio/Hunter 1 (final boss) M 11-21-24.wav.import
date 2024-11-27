@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bs0f30e5ueeyi"
+path="res://.godot/imported/Hunter 1 (final boss) M 11-21-24.wav-e490e84e2aa23546646a048b5b5af31f.sample"
+
+[deps]
+
+source_file="res://assets/audio/Hunter 1 (final boss) M 11-21-24.wav"
+dest_files=["res://.godot/imported/Hunter 1 (final boss) M 11-21-24.wav-e490e84e2aa23546646a048b5b5af31f.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

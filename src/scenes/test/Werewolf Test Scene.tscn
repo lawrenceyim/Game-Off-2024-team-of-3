@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://c1p8f2neanb4i"]
+[gd_scene load_steps=3 format=3 uid="uid://50lph0t1ec5y"]
 
 [ext_resource type="PackedScene" uid="uid://dovgvwa4c7xqb" path="res://game_object/werewolf_boss/werewolf_boss.tscn" id="1_a27qn"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_hg74k"]

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://djx4f6765t531"
+path="res://.godot/imported/Hunter Combat 1 M 11-21-24.wav-f53e1a191b91cd56957fe297b750505f.sample"
+
+[deps]
+
+source_file="res://assets/audio/Hunter Combat 1 M 11-21-24.wav"
+dest_files=["res://.godot/imported/Hunter Combat 1 M 11-21-24.wav-f53e1a191b91cd56957fe297b750505f.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

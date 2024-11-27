@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b4cynss0yh520"
+path="res://.godot/imported/hunter banjo (ending) M 11-21-24.wav-8290526e5827a56e0d8e220ad3badeab.sample"
+
+[deps]
+
+source_file="res://assets/audio/hunter banjo (ending) M 11-21-24.wav"
+dest_files=["res://.godot/imported/hunter banjo (ending) M 11-21-24.wav-8290526e5827a56e0d8e220ad3badeab.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
