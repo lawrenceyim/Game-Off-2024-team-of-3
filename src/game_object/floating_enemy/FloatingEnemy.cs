@@ -97,6 +97,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 				}
 
 				if (_rangedAttack.CanAttack()) {
+					ChangeSpriteDirection();
 					_stateMachine.SwitchState(AttackState);
 					return;
 				}
