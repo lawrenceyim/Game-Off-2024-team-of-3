@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://dovgvwa4c7xqb"]
+[gd_scene load_steps=55 format=3 uid="uid://dovgvwa4c7xqb"]
 
 [ext_resource type="Texture2D" uid="uid://b4b5br62uhj2p" path="res://game_object/werewolf_boss/Werewolf_move.png" id="1_ejwmd"]
 [ext_resource type="Texture2D" uid="uid://cy8rvbfmedvqc" path="res://game_object/werewolf_boss/Werewolf_attack.png" id="1_l2jky"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://2etj6l4tocsb" path="res://game_object/werewolf_boss/Werewolf_land.png" id="4_gv8ng"]
 [ext_resource type="Texture2D" uid="uid://csh3n14jq3dsf" path="res://game_object/werewolf_boss/Werewolf_leap.png" id="5_6sxi8"]
 [ext_resource type="Texture2D" uid="uid://lhqt4xkgov60" path="res://game_object/werewolf_boss/AoE Circle.png" id="8_wjbuw"]
+[ext_resource type="PackedScene" uid="uid://ddf3kyq1ld15w" path="res://prefabs/HitFlash.tscn" id="9_ivnp2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7a8xx"]
 atlas = ExtResource("1_l2jky")
@@ -561,7 +562,25 @@ height = 64.6667
 [sub_resource type="CircleShape2D" id="CircleShape2D_x6tg0"]
 radius = 250.0
 
-[node name="WerewolfBoss" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hurtBoxCollisionShape", "_hitBoxCollisionShape", "_movementCollisionShape", "_landingAreaOfEffectSprite", "_landingAreaOfEffectCollisionShape")]
+[sub_resource type="Shader" id="Shader_8uqtd"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float lerp_percent : hint_range(0.0, 1.0);
+
+void fragment() {
+	vec4 texture_color = texture(TEXTURE, UV);
+	vec4 final_color = mix(texture_color, vec4(1.0, 1.0, 1.0, texture_color.a), lerp_percent);
+	COLOR = final_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bmdrw"]
+resource_local_to_scene = true
+shader = SubResource("Shader_8uqtd")
+shader_parameter/lerp_percent = null
+
+[node name="WerewolfBoss" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hurtBoxCollisionShape", "_hitBoxCollisionShape", "_movementCollisionShape", "_landingAreaOfEffectSprite", "_landingAreaOfEffectCollisionShape", "_hitFlash")]
 scale = Vector2(3, 3)
 collision_layer = 4
 collision_mask = 4
@@ -574,6 +593,7 @@ _hitBoxCollisionShape = NodePath("Hitbox Area2D/CollisionShape2D")
 _movementCollisionShape = NodePath("CollisionShape2D")
 _landingAreaOfEffectSprite = NodePath("AoE Sprite2D")
 _landingAreaOfEffectCollisionShape = NodePath("AoE Sprite2D/AoE Area2D/CollisionShape2D")
+_hitFlash = NodePath("Hit Flash Node")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 10
@@ -624,6 +644,10 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AoE Sprite2D/AoE Area2D"]
 position = Vector2(0, -0.333336)
 shape = SubResource("CircleShape2D_x6tg0")
+
+[node name="Hit Flash Node" parent="." node_paths=PackedStringArray("_sprite") instance=ExtResource("9_ivnp2")]
+_shaderMaterial = SubResource("ShaderMaterial_bmdrw")
+_sprite = NodePath("../AnimatedSprite2D")
 
 [connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
 [connection signal="area_exited" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_exited"]

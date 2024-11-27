@@ -26,6 +26,7 @@ public partial class DarkLion : CharacterBody2D, IDamageable {
 	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private Sprite2D _sprite;
 	[Export] private AlertLabel _alertLabel;
+	[Export] private HitFlash _hitFlash;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private Timer _dashCooldownTimer;
@@ -60,6 +61,7 @@ public partial class DarkLion : CharacterBody2D, IDamageable {
 	}
 
 	public void TakeDamage(int damage) {
+		_hitFlash.DisplayHitFlash();
 		_health.DecreaseHealth(damage);
 	}
 

@@ -30,6 +30,7 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 	[Export] private CollisionShape2D _movementCollisionShape;
 	[Export] private Sprite2D _landingAreaOfEffectSprite;
 	[Export] private CollisionShape2D _landingAreaOfEffectCollisionShape;
+	[Export] private HitFlash _hitFlash;
 	private StateMachine _stateMachine;
 	private PlayerCharacter _player;
 	private MeleeAttack _meleeAttack;
@@ -58,7 +59,6 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 
 		_jumpAttackTimer = TimerUtil.CreateTimer(this, true);
 
-
 		SetLandingAoESpriteColor();
 		_landingAreaOfEffectCollisionShape.Disabled = true;
 
@@ -66,10 +66,10 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 	}
 
 	public void TakeDamage(int damage) {
+		_hitFlash.DisplayHitFlash();
 		_health.DecreaseHealth(damage);
 	}
 
-	// Called when melee attack animation finishes
 	public void MeleeAttackFinished() {
 		_stateMachine.SwitchState(PursuitState);
 	}

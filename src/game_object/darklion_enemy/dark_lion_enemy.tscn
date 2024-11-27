@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://ddikru4jh4tn8"]
+[gd_scene load_steps=15 format=3 uid="uid://ddikru4jh4tn8"]
 
 [ext_resource type="Script" path="res://game_object/darklion_enemy/DarkLion.cs" id="1_yf821"]
 [ext_resource type="Texture2D" uid="uid://bdhw02j1y7isu" path="res://game_object/darklion_enemy/DarkLion_move.png" id="2_wl5pc"]
 [ext_resource type="Texture2D" uid="uid://oi6qronqyd12" path="res://game_object/darklion_enemy/DarkLion_dash.png" id="3_svuej"]
 [ext_resource type="Texture2D" uid="uid://b0qmit8briaiq" path="res://game_object/darklion_enemy/DarkLion_idle.png" id="4_8jrxj"]
 [ext_resource type="PackedScene" uid="uid://cd6m7jcbua0x0" path="res://prefabs/Alert Label.tscn" id="4_15klr"]
+[ext_resource type="PackedScene" uid="uid://ddf3kyq1ld15w" path="res://prefabs/HitFlash.tscn" id="6_vc33p"]
 
 [sub_resource type="Animation" id="Animation_qvurc"]
 length = 0.001
@@ -302,7 +303,25 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_v6qa1"]
 radius = 19.0
 
-[node name="DarkLionEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel")]
+[sub_resource type="Shader" id="Shader_p5gg6"]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+
+uniform float lerp_percent : hint_range(0.0, 1.0);
+
+void fragment() {
+	vec4 texture_color = texture(TEXTURE, UV);
+	vec4 final_color = mix(texture_color, vec4(1.0, 1.0, 1.0, texture_color.a), lerp_percent);
+	COLOR = final_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1arw6"]
+resource_local_to_scene = true
+shader = SubResource("Shader_p5gg6")
+shader_parameter/lerp_percent = null
+
+[node name="DarkLionEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hitFlash")]
 scale = Vector2(3, 3)
 collision_layer = 4
 collision_mask = 4
@@ -310,6 +329,7 @@ script = ExtResource("1_yf821")
 _animationPlayer = NodePath("AnimationPlayer")
 _sprite = NodePath("Sprite2D")
 _alertLabel = NodePath("Alert")
+_hitFlash = NodePath("Hit Flash Node")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 10
@@ -345,6 +365,10 @@ shape = SubResource("CircleShape2D_v6qa1")
 
 [node name="Alert" parent="." instance=ExtResource("4_15klr")]
 position = Vector2(1, -40.3333)
+
+[node name="Hit Flash Node" parent="." node_paths=PackedStringArray("_sprite") instance=ExtResource("6_vc33p")]
+_shaderMaterial = SubResource("ShaderMaterial_1arw6")
+_sprite = NodePath("../Sprite2D")
 
 [connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
 [connection signal="area_exited" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_exited"]
