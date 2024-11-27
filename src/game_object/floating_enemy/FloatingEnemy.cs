@@ -44,7 +44,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 		_health.ZeroHealthEvent += (_, _) => _stateMachine.SwitchState(DeathState);
 
 		_meleeAttack = new MeleeAttack(TimerUtil.CreateTimer(this, true), MeleeAttackCooldown, AttackDamage);
-		_rangedAttack = new RangedAttack(this, TimerUtil.CreateTimer(this, true), _projectilePrefab, RangedAttackCooldown);
+		_rangedAttack = new RangedAttack(this, this, TimerUtil.CreateTimer(this, true), _projectilePrefab, RangedAttackCooldown);
 
 		_animationPlayer.Play(MoveAnimation);
 	}
