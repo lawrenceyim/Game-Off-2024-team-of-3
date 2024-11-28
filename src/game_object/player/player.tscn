@@ -197,7 +197,7 @@ position = Vector2(-0.333333, 5)
 shape = SubResource("CapsuleShape2D_efwx0")
 debug_color = Color(0.979353, 0, 0.388737, 0.42)
 
-[node name="HunterWeapon" type="Sprite2D" parent="." node_paths=PackedStringArray("_player")]
+[node name="HunterWeapon" type="Sprite2D" parent="." node_paths=PackedStringArray("_player", "_bulletSpawnPosition")]
 z_index = 16
 y_sort_enabled = true
 position = Vector2(-2.39909e-06, 2.83122e-07)
@@ -207,6 +207,7 @@ region_rect = Rect2(26, 28, 20, 11)
 script = ExtResource("8_xwht6")
 _player = NodePath("..")
 _projectilePrefab = ExtResource("10_rfevi")
+_bulletSpawnPosition = NodePath("ShootingPoint")
 
 [node name="ShootingPoint" type="Marker2D" parent="HunterWeapon"]
 position = Vector2(10, 0.999997)
