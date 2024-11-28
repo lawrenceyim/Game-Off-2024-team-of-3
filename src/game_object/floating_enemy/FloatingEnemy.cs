@@ -121,6 +121,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 			.SetStart(() => {
 				// Play death SFX
 				// Play death animation
+				_stateMachine.GetCurrentState().onExit();
 			})
 			.SetExit(() => {
 				QueueFree();
