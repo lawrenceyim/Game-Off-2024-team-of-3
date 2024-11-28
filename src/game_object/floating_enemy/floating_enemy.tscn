@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dkqxnp3rgn3mj"]
+[gd_scene load_steps=15 format=3 uid="uid://dkqxnp3rgn3mj"]
 
 [ext_resource type="Script" path="res://game_object/floating_enemy/FloatingEnemy.cs" id="1_4wsbe"]
 [ext_resource type="PackedScene" uid="uid://d1kmpkjchb7f6" path="res://game_object/floating_enemy/FloatingMonsterProjectile.tscn" id="2_8sgm4"]
@@ -56,6 +56,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_7pxa5"]
@@ -179,16 +191,32 @@ tracks/3/keys = {
 "values": [0.0174533, -0.0174533, 0.00872665]
 }
 
+[sub_resource type="Animation" id="Animation_sxexb"]
+resource_name = "die"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q235n"]
 _data = {
 "RESET": SubResource("Animation_5w1ji"),
 "attack": SubResource("Animation_7pxa5"),
+"die": SubResource("Animation_sxexb"),
 "move": SubResource("Animation_cwkw0")
 }
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ihmf"]
 
-[sub_resource type="Shader" id="Shader_y571u"]
+[sub_resource type="Shader" id="Shader_mojpl"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -203,7 +231,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gb6kg"]
 resource_local_to_scene = true
-shader = SubResource("Shader_y571u")
+shader = SubResource("Shader_mojpl")
 shader_parameter/lerp_percent = null
 
 [node name="FloatingEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hitFlash")]

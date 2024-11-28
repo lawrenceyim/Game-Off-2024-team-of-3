@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://26cf244jidne"]
+[gd_scene load_steps=17 format=3 uid="uid://26cf244jidne"]
 
 [ext_resource type="Script" path="res://game_object/bat_enemy/BatEnemy.cs" id="1_87655"]
 [ext_resource type="Texture2D" uid="uid://ccx10lguvpbd5" path="res://game_object/bat_enemy/Bat_move.png" id="2_yabgy"]
@@ -41,7 +41,7 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7i6a5"]
 
-[sub_resource type="Shader" id="Shader_ayn3a"]
+[sub_resource type="Shader" id="Shader_3f1mx"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -56,8 +56,45 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iktfg"]
 resource_local_to_scene = true
-shader = SubResource("Shader_ayn3a")
+shader = SubResource("Shader_3f1mx")
 shader_parameter/lerp_percent = null
+
+[sub_resource type="Animation" id="Animation_vinwr"]
+resource_name = "die"
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_x8r5v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ofsuq"]
+_data = {
+"RESET": SubResource("Animation_x8r5v"),
+"die": SubResource("Animation_vinwr")
+}
 
 [node name="BatEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_sprite", "_alertLabel", "_hitFlash")]
 scale = Vector2(3, 3)
@@ -100,6 +137,11 @@ position = Vector2(0.666667, -20.3333)
 [node name="Hit Flash Node" parent="." node_paths=PackedStringArray("_sprite") instance=ExtResource("4_7dmyi")]
 _shaderMaterial = SubResource("ShaderMaterial_iktfg")
 _sprite = NodePath("../AnimatedSprite2D")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ofsuq")
+}
 
 [connection signal="area_entered" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_entered"]
 [connection signal="area_exited" from="Hitbox Area2D" to="." method="_on_hitbox_area_2d_area_exited"]

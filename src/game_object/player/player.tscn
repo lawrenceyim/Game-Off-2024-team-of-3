@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://cp0rxpjfn7ga1"]
+[gd_scene load_steps=38 format=3 uid="uid://cp0rxpjfn7ga1"]
 
 [ext_resource type="Script" path="res://game_object/player/PlayerCharacter.cs" id="1_ysqf6"]
 [ext_resource type="Texture2D" uid="uid://d4maau12k5l40" path="res://game_object/player/Hunter_idle.png" id="2_cd0sn"]
@@ -156,6 +156,66 @@ radius = 3.68179
 radius = 4.66667
 height = 26.0
 
+[sub_resource type="Animation" id="Animation_xjgey"]
+resource_name = "die"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HunterWeapon:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_w77vj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HunterWeapon:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_321k4"]
+_data = {
+"RESET": SubResource("Animation_w77vj"),
+"die": SubResource("Animation_xjgey")
+}
+
 [node name="CharacterBody2D" type="CharacterBody2D" node_paths=PackedStringArray("_onHitAnimationPlayer", "_playerCamera")]
 scale = Vector2(3, 3)
 script = ExtResource("1_ysqf6")
@@ -229,5 +289,10 @@ layer = 2
 
 [node name="Move AudioStreamPlayerD2" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_hv7ow")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_321k4")
+}
 
 [editable path="Vignette"]
