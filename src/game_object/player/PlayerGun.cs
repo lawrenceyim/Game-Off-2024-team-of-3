@@ -15,6 +15,10 @@ public partial class PlayerGun : Sprite2D {
 		Rotation = aimedPosition.Angle();
 	}
 
+	public void FlipGunSpriteVertically(bool flip) {
+		FlipV = flip;
+	}
+
 	public void FireGun() {
 		if (_rangedAttack.CanAttack()) {
 			_rangedAttack.AttackIfReady(Rotation);

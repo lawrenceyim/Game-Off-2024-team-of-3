@@ -6,6 +6,7 @@ public partial class PlayerAnimation : Node {
 	private const string MoveAnimation = "move";
 	private const string DashAnimation = "dash";
 	[Export] private AnimatedSprite2D _sprite;
+	[Export] private PlayerGun _gun;
 
 	public override void _Ready() {
 	}
@@ -22,7 +23,7 @@ public partial class PlayerAnimation : Node {
 		} else if (movement.X < 0) {
 			_sprite.FlipH = true;
 		}
-
+		_gun.FlipGunSpriteVertically(_sprite.FlipH);
 	}
 
 	public void StartDashAnimation() {

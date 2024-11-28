@@ -184,9 +184,10 @@ script = ExtResource("3_mrpve")
 _body = NodePath("..")
 _animation = NodePath("../Player Animation")
 
-[node name="Player Animation" type="Node" parent="." node_paths=PackedStringArray("_sprite")]
+[node name="Player Animation" type="Node" parent="." node_paths=PackedStringArray("_sprite", "_gun")]
 script = ExtResource("6_0wnr1")
 _sprite = NodePath("../AnimatedSprite2D")
+_gun = NodePath("../HunterWeapon")
 
 [node name="Hurtbox Area2D" type="Area2D" parent="."]
 collision_layer = 2
