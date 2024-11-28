@@ -7,6 +7,9 @@ public partial class PlayerMovement : Node {
 	private const float DashDuration = .75f;
 	[Export] private CharacterBody2D _body;
 	[Export] private PlayerAnimation _animation;
+	[Export] private AudioStreamPlayer2D _movementAudioPlayer;
+	[Export] private AudioStream _runningAudio;
+	[Export] private AudioStream _dashingAudio;
 	private float _dashAngle = 0;
 	private Timer _dashCooldownTimer;
 	private Timer _dashDurationTimer;
@@ -25,6 +28,13 @@ public partial class PlayerMovement : Node {
 		} else {
 			_body.MoveAndCollide(move * speed * (float)GetProcessDeltaTime());
 			_animation.UpdateMovement(move);
+			if (_movementAudioPlayer.Stream != _runningAudio) {
+				_movementAudioPlayer.Stream = _runningAudio;
+				_movementAudioPlayer.Stop();
+			}
+			if (!_movementAudioPlayer.Playing) {
+				_movementAudioPlayer.Play();
+			}
 		}
 		_dashDirection = move;
 	}
@@ -34,6 +44,11 @@ public partial class PlayerMovement : Node {
 			_dashVelocity = _dashDirection * DashSpeed;
 			_dashDurationTimer.Start(DashDuration);
 			_dashCooldownTimer.Start(DashCooldown);
+
+			if (_movementAudioPlayer.Stream != _dashingAudio) {
+				_movementAudioPlayer.Stream = _dashingAudio;
+				_movementAudioPlayer.Play();
+			}
 		}
 	}
 }

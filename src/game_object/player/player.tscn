@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cp0rxpjfn7ga1"]
+[gd_scene load_steps=35 format=3 uid="uid://cp0rxpjfn7ga1"]
 
 [ext_resource type="Script" path="res://game_object/player/PlayerCharacter.cs" id="1_ysqf6"]
 [ext_resource type="Texture2D" uid="uid://d4maau12k5l40" path="res://game_object/player/Hunter_idle.png" id="2_cd0sn"]
@@ -10,8 +10,11 @@
 [ext_resource type="Script" path="res://game_object/player/PlayerAnimation.cs" id="6_0wnr1"]
 [ext_resource type="Texture2D" uid="uid://c7msd41kekgej" path="res://game_object/player/Hunter_weapon.png" id="7_dkbj7"]
 [ext_resource type="Script" path="res://game_object/player/PlayerGun.cs" id="8_xwht6"]
+[ext_resource type="AudioStream" uid="uid://brb00r6b4dlkh" path="res://assets/sfx/Player_dash_1.wav" id="9_pq3y6"]
 [ext_resource type="PackedScene" uid="uid://bmlgnia61lolb" path="res://game_object/player/HunterProjectile.tscn" id="10_rfevi"]
 [ext_resource type="PackedScene" uid="uid://bhp2g3d5q7n8" path="res://game_object/player/vignette.tscn" id="11_lnfk1"]
+[ext_resource type="AudioStream" uid="uid://devetf5wi4v6s" path="res://assets/sfx/Player_shoot.wav" id="13_kfjoh"]
+[ext_resource type="AudioStream" uid="uid://cm5wv4dudb5yv" path="res://assets/sfx/Player_run.wav" id="14_hv7ow"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y4cm6"]
 atlas = ExtResource("2_ppnvl")
@@ -179,10 +182,13 @@ _gun = NodePath("../HunterWeapon")
 _player = NodePath("..")
 _camera = NodePath("../Camera2D")
 
-[node name="Character Movement" type="Node" parent="." node_paths=PackedStringArray("_body", "_animation")]
+[node name="Character Movement" type="Node" parent="." node_paths=PackedStringArray("_body", "_animation", "_movementAudioPlayer")]
 script = ExtResource("3_mrpve")
 _body = NodePath("..")
 _animation = NodePath("../Player Animation")
+_movementAudioPlayer = NodePath("../Move AudioStreamPlayerD2")
+_runningAudio = ExtResource("14_hv7ow")
+_dashingAudio = ExtResource("9_pq3y6")
 
 [node name="Player Animation" type="Node" parent="." node_paths=PackedStringArray("_sprite", "_gun")]
 script = ExtResource("6_0wnr1")
@@ -198,7 +204,7 @@ position = Vector2(-0.333333, 5)
 shape = SubResource("CapsuleShape2D_efwx0")
 debug_color = Color(0.979353, 0, 0.388737, 0.42)
 
-[node name="HunterWeapon" type="Sprite2D" parent="." node_paths=PackedStringArray("_player", "_bulletSpawnPosition")]
+[node name="HunterWeapon" type="Sprite2D" parent="." node_paths=PackedStringArray("_player", "_gunAudioPlayer", "_bulletSpawnPosition")]
 z_index = 16
 y_sort_enabled = true
 position = Vector2(-2.39909e-06, 2.83122e-07)
@@ -207,13 +213,21 @@ region_enabled = true
 region_rect = Rect2(26, 28, 20, 11)
 script = ExtResource("8_xwht6")
 _player = NodePath("..")
+_gunAudioPlayer = NodePath("Gun AudioStreamPlayer2D")
 _projectilePrefab = ExtResource("10_rfevi")
 _bulletSpawnPosition = NodePath("ShootingPoint")
 
 [node name="ShootingPoint" type="Marker2D" parent="HunterWeapon"]
 position = Vector2(10, 0.999997)
 
+[node name="Gun AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="HunterWeapon"]
+position = Vector2(2.39909e-06, -2.83122e-07)
+stream = ExtResource("13_kfjoh")
+
 [node name="Vignette" parent="." instance=ExtResource("11_lnfk1")]
 layer = 2
+
+[node name="Move AudioStreamPlayerD2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("14_hv7ow")
 
 [editable path="Vignette"]
