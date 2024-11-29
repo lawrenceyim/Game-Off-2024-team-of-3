@@ -18,7 +18,7 @@ public partial class FinalBoss : CharacterBody2D, IDamageable {
 	private const string IdleAnimation = "idle";
 	private const string AttackAnimation1 = "attack1";
 	private const string AttackAnimation2 = "attack2";
-	private const string ResetAnimation = "RESET";
+	private const string DeathAnimation = "die";
 	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private AnimatedSprite2D _sprite;
 	[Export] private HitFlash _hitFlash;
@@ -45,8 +45,14 @@ public partial class FinalBoss : CharacterBody2D, IDamageable {
 	}
 
 	public void TakeDamage(int damage) {
-		_hitFlash.DisplayHitFlash();
 		_health.DecreaseHealth(damage);
+		if (!_health.IsHealthZero()) {
+			_hitFlash.DisplayHitFlash();
+		}
+	}
+
+	public void DeathAnimationFinished() {
+		QueueFree();
 	}
 
 	private void OnAttackAnimationFinished() {
@@ -111,9 +117,7 @@ public partial class FinalBoss : CharacterBody2D, IDamageable {
 					_stateMachine.SwitchState(PursuitState);
 					return;
 				}
-				// Play death SFX
-				// Play death animation
-				QueueFree();
+				_animationPlayer.Play(DeathAnimation);
 			})
 			.SetExit(() => { })
 			.SetUpdate((double delta) => { })
