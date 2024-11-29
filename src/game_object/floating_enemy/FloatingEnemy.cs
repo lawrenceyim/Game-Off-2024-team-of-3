@@ -153,6 +153,14 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	}
 
 	private void ChangeSpriteDirection() {
+		if (_stateMachine.GetCurrentStateName().Equals(PursuitState)) {
+			if (_player.GlobalPosition.X > GlobalPosition.X) {
+				_sprite.FlipH = false;
+			} else {
+				_sprite.FlipH = true;
+			}
+			return;
+		}
 		if (Velocity.X > 0) {
 			_sprite.FlipH = false;
 		} else {
