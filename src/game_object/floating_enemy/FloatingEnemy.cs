@@ -1,14 +1,14 @@
 using Godot;
 
 public partial class FloatingEnemy : CharacterBody2D, IDamageable {
-	private const float WanderingSpeed = 100f;
+	private const float WanderingSpeed = 150f;
 	private const double MinWanderTime = 3f;
 	private const double MaxWanderTime = 5f;
-	private const int BaseHealth = 1;
+	private const int BaseHealth = 5;
 	private const double MeleeAttackCooldown = .5f;
-	private const double RangedAttackCooldown = 5f;
+	private const double RangedAttackCooldown = 1f;
 	private const int AttackDamage = 1;
-	private const float DetectionRange = 1000;
+	private const float DetectionRange = 1200;
 	private const float CloseEnoughRange = 500f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";

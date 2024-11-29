@@ -2,11 +2,11 @@ using Godot;
 using System;
 
 public partial class DarkLion : CharacterBody2D, IDamageable {
-	private const float DetectionRange = 700;
+	private const float DetectionRange = 1000;
 	private const float DashSpeed = 1500f;
-	private const float WanderingSpeed = 100f;
+	private const float WanderingSpeed = 270f;
 	private const float DashDuration = .5f;
-	private const float DashCooldown = 5f;
+	private const float DashCooldown = 2f;
 	private const double MinWanderTime = 3f;
 	private const double MaxWanderTime = 5f;
 	private const double ttackCooldown = .5f;

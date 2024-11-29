@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using Godot;
 
 public partial class Werewolf : CharacterBody2D, IDamageable {
-	private const float WanderingSpeed = 200f;
+	private const float WanderingSpeed = 350f;
 	private const double MinWanderTime = 3f;
 	private const double MaxWanderTime = 5f;
 	private const int BaseHealth = 15;
-	private const double AttackCooldown = 3f;
+	private const double AttackCooldown = 1f;
 	private const int AttackDamage = 2;
-	private const float TimeUntilLanding = 2f;
+	private const float TimeUntilLanding = 1f;
 	private const int LandingDamage = 3;
-	private const float JumpAttackCooldown = 10f;
-	private const float closeEnoughRange = 30f;
+	private const float JumpAttackCooldown = 6f;
+	private const float closeEnoughRange = 60f;
 	private const string PursuitState = "pursue";
 	private const string JumpingState = "jumping";
 	private const string LandingState = "landing";

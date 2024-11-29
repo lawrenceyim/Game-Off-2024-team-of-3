@@ -1,10 +1,11 @@
-[gd_scene load_steps=38 format=3 uid="uid://cp0rxpjfn7ga1"]
+[gd_scene load_steps=42 format=3 uid="uid://cp0rxpjfn7ga1"]
 
 [ext_resource type="Script" path="res://game_object/player/PlayerCharacter.cs" id="1_ysqf6"]
 [ext_resource type="Texture2D" uid="uid://d4maau12k5l40" path="res://game_object/player/Hunter_idle.png" id="2_cd0sn"]
 [ext_resource type="Script" path="res://game_object/player/PlayerInputHandler.cs" id="2_ds6w5"]
 [ext_resource type="Script" path="res://game_object/player/game_camera/PlayerCamera.cs" id="2_gm243"]
 [ext_resource type="Texture2D" uid="uid://dbakg8j4dpi5r" path="res://game_object/player/Hunter_dash.png" id="2_ppnvl"]
+[ext_resource type="Shader" path="res://vfx/shaders/dissolve.gdshader" id="3_bbmek"]
 [ext_resource type="Texture2D" uid="uid://dgkxjwgcdsj18" path="res://game_object/player/Hunter_move.png" id="3_bn2vs"]
 [ext_resource type="Script" path="res://game_object/player/PlayerMovement.cs" id="3_mrpve"]
 [ext_resource type="Script" path="res://game_object/player/PlayerAnimation.cs" id="6_0wnr1"]
@@ -15,6 +16,18 @@
 [ext_resource type="PackedScene" uid="uid://bhp2g3d5q7n8" path="res://game_object/player/vignette.tscn" id="11_lnfk1"]
 [ext_resource type="AudioStream" uid="uid://devetf5wi4v6s" path="res://assets/sfx/Player_shoot.wav" id="13_kfjoh"]
 [ext_resource type="AudioStream" uid="uid://cm5wv4dudb5yv" path="res://assets/sfx/Player_run.wav" id="14_hv7ow"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1qs0d"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xpfqb"]
+noise = SubResource("FastNoiseLite_1qs0d")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_23as5"]
+shader = ExtResource("3_bbmek")
+shader_parameter/dissolve_value = 1.0
+shader_parameter/burn_size = 0.04
+shader_parameter/burn_color = null
+shader_parameter/dissolve_texture = SubResource("NoiseTexture2D_xpfqb")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y4cm6"]
 atlas = ExtResource("2_ppnvl")
@@ -228,6 +241,7 @@ script = ExtResource("2_gm243")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 10
 y_sort_enabled = true
+material = SubResource("ShaderMaterial_23as5")
 sprite_frames = SubResource("SpriteFrames_5lcww")
 animation = &"idle"
 

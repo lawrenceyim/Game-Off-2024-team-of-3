@@ -3,13 +3,13 @@ using System;
 
 public partial class FinalBoss : CharacterBody2D, IDamageable {
 	private const float Phase1Speed = 200f;
-	private const float Phase2Speed = 400f;
+	private const float Phase2Speed = 350f;
 	private const int BaseHealth = 5;
-	private const double MeleeAttack1Cooldown = 3f;
-	private const double MeleeAttack2Cooldown = 2f;
+	private const double MeleeAttack1Cooldown = 1f;
+	private const double MeleeAttack2Cooldown = 1f;
 	private const int Attack1Damage = 1;
 	private const int Attack2Damage = 2;
-	private const float CloseEnoughRange = 20f;
+	private const float CloseEnoughRange = 50f;
 	private const string PursuitState = "pursue";
 	private const string AttackState1 = "attack1";
 	private const string AttackState2 = "attack2";

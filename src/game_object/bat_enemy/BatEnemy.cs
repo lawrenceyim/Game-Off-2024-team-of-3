@@ -2,7 +2,7 @@ using System;
 using Godot;
 
 public partial class BatEnemy : CharacterBody2D, IDamageable {
-	private const float WanderingSpeed = 100f;
+	private const float WanderingSpeed = 300f;
 	private const float MaxSpeed = 500f;
 	private const float AccelerationTime = 5;
 	private const double MinWanderTime = 3f;
@@ -10,8 +10,8 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const int BaseHealth = 2;
 	private const double AttackCooldown = .5f;
 	private const int AttackDamage = 1;
-	private const float DetectionRange = 500;
-	private const float CloseEnoughRange = 10f;
+	private const float DetectionRange = 1000;
+	private const float CloseEnoughRange = 40f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DeathState = "death";

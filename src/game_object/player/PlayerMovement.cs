@@ -2,7 +2,7 @@ using Godot;
 
 public partial class PlayerMovement : Node {
 	private const float DashSpeed = 750f;
-	private const float speed = 500f;
+	private const float speed = 300f;
 	private const float DashCooldown = 1f;
 	private const float DashDuration = .75f;
 	[Export] private CharacterBody2D _body;

@@ -375,6 +375,21 @@ tracks/3/keys = {
 "values": [Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_ma5wf"]
+resource_name = "die"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_wbeio"]
 resource_name = "idle"
 length = 0.5
@@ -557,21 +572,6 @@ tracks/2/keys = {
 "values": [Vector2(3, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_ma5wf"]
-resource_name = "die"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sqp5p"]
 _data = {
 "RESET": SubResource("Animation_is54g"),
@@ -590,7 +590,7 @@ height = 64.6667
 [sub_resource type="CircleShape2D" id="CircleShape2D_x6tg0"]
 radius = 250.0
 
-[sub_resource type="Shader" id="Shader_lgkco"]
+[sub_resource type="Shader" id="Shader_lehpe"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -605,7 +605,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bmdrw"]
 resource_local_to_scene = true
-shader = SubResource("Shader_lgkco")
+shader = SubResource("Shader_lehpe")
 shader_parameter/lerp_percent = null
 
 [node name="WerewolfBoss" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hurtBoxCollisionShape", "_hitBoxCollisionShape", "_movementCollisionShape", "_landingAreaOfEffectSprite", "_landingAreaOfEffectCollisionShape", "_hitFlash")]
@@ -661,6 +661,7 @@ position = Vector2(-1.66667, 0.666667)
 shape = SubResource("CapsuleShape2D_ffsqr")
 
 [node name="AoE Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
 z_index = 5
 scale = Vector2(0.33, 0.33)
 texture = ExtResource("8_wjbuw")

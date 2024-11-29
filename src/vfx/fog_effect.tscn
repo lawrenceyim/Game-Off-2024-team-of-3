@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://brli2lq6jvaqg"]
+[gd_scene load_steps=7 format=3 uid="uid://brli2lq6jvaqg"]
 
 [ext_resource type="Shader" path="res://vfx/shaders/fog.gdshader" id="1_f7sn0"]
 
@@ -21,6 +21,18 @@ shader_parameter/density = 0.05
 shader_parameter/speed = Vector2(0.01, 0.01)
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_uuytu")
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sejcf"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1920, -100, 1)
+direction = Vector3(1, 1, 0)
+spread = 10.0
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+color = Color(50, 50, 50, 1)
+
 [node name="FogEffect" type="ParallaxBackground"]
 layer = 1
 
@@ -32,3 +44,12 @@ material = SubResource("ShaderMaterial_0wk55")
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
+
+[node name="Wisps" type="GPUParticles2D" parent="ParallaxLayer"]
+z_index = 10
+amount = 80
+process_material = SubResource("ParticleProcessMaterial_sejcf")
+lifetime = 60.0
+preprocess = 2.0
+speed_scale = 2.0
+randomness = 0.1
