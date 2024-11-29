@@ -41,7 +41,7 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7i6a5"]
 
-[sub_resource type="Shader" id="Shader_3f1mx"]
+[sub_resource type="Shader" id="Shader_qweph"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -56,8 +56,23 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iktfg"]
 resource_local_to_scene = true
-shader = SubResource("Shader_3f1mx")
+shader = SubResource("Shader_qweph")
 shader_parameter/lerp_percent = null
+
+[sub_resource type="Animation" id="Animation_x8r5v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_vinwr"]
 resource_name = "die"
@@ -73,21 +88,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_x8r5v"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ofsuq"]

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ct3slqmvyqo8l"]
+
+[ext_resource type="PackedScene" uid="uid://7u7mu36ttwt7" path="res://game_object/mushroom_enemy/mushroom_enemy.tscn" id="1_q3s0f"]
+[ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_0eps6"]
+
+[node name="MushroomTestScene" type="Node"]
+
+[node name="MushroomEnemy" parent="." instance=ExtResource("1_q3s0f")]
+position = Vector2(177, 72)
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_0eps6")]
+position = Vector2(525, 215)

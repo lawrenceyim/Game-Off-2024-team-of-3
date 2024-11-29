@@ -137,6 +137,21 @@ tracks/4/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_sxexb"]
+resource_name = "die"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_cwkw0"]
 resource_name = "move"
 length = 0.7
@@ -191,21 +206,6 @@ tracks/3/keys = {
 "values": [0.0174533, -0.0174533, 0.00872665]
 }
 
-[sub_resource type="Animation" id="Animation_sxexb"]
-resource_name = "die"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q235n"]
 _data = {
 "RESET": SubResource("Animation_5w1ji"),
@@ -216,7 +216,7 @@ _data = {
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ihmf"]
 
-[sub_resource type="Shader" id="Shader_mojpl"]
+[sub_resource type="Shader" id="Shader_ria2r"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -231,7 +231,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gb6kg"]
 resource_local_to_scene = true
-shader = SubResource("Shader_mojpl")
+shader = SubResource("Shader_ria2r")
 shader_parameter/lerp_percent = null
 
 [node name="FloatingEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hitFlash")]
