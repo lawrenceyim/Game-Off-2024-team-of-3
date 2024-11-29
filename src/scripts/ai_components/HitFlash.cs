@@ -9,10 +9,12 @@ public partial class HitFlash : Node {
 	private Tween _tween;
 
 	public override void _Ready() {
-		_sprite.Material = _shaderMaterial;
+
 	}
 
 	public void DisplayHitFlash() {
+		_sprite.Material = _shaderMaterial;
+
 		if (_tween != null && _tween.IsValid()) {
 			_tween.Kill();
 		}
@@ -21,6 +23,10 @@ public partial class HitFlash : Node {
 		_tween = CreateTween();
 		_tween.TweenProperty(_sprite.Material, "shader_parameter/lerp_percent", TweenFinalValue, EffectDuration)
 			.SetEase(Tween.EaseType.In).SetTrans(Tween.TransitionType.Cubic);
+		_tween.Finished += () => FlashHitEffectEnded();
+	}
 
+	public void FlashHitEffectEnded() {
+		_sprite.Material = null;
 	}
 }
