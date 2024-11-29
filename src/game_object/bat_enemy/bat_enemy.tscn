@@ -41,7 +41,7 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7i6a5"]
 
-[sub_resource type="Shader" id="Shader_qweph"]
+[sub_resource type="Shader" id="Shader_vhe3b"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -56,7 +56,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iktfg"]
 resource_local_to_scene = true
-shader = SubResource("Shader_qweph")
+shader = SubResource("Shader_vhe3b")
 shader_parameter/lerp_percent = null
 
 [sub_resource type="Animation" id="Animation_x8r5v"]
@@ -89,6 +89,20 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"DeathAnimationFinished"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ofsuq"]
 _data = {
@@ -96,16 +110,17 @@ _data = {
 "die": SubResource("Animation_vinwr")
 }
 
-[node name="BatEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_sprite", "_alertLabel", "_hitFlash")]
+[node name="BatEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_sprite", "_animationPlayer", "_alertLabel", "_hitFlash")]
 scale = Vector2(3, 3)
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("1_87655")
 _sprite = NodePath("AnimatedSprite2D")
+_animationPlayer = NodePath("AnimationPlayer")
 _alertLabel = NodePath("Alert")
 _hitFlash = NodePath("Hit Flash Node")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_wr3yr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -119,7 +134,7 @@ visible = false
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
+[node name="Hurtbox CollisionShape2D" type="CollisionShape2D" parent="Hurtbox Area2D"]
 shape = SubResource("CircleShape2D_q1fxa")
 debug_color = Color(0.956643, 5.77569e-07, 0.536835, 0.42)
 
@@ -128,7 +143,7 @@ visible = false
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
+[node name="Hitbox CollisionShape2D" type="CollisionShape2D" parent="Hitbox Area2D"]
 shape = SubResource("CircleShape2D_7i6a5")
 
 [node name="Alert" parent="." instance=ExtResource("3_8x76j")]

@@ -16,7 +16,9 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	private const string PursuitState = "pursue";
 	private const string DeathState = "death";
 	private const string MoveAnimation = "move";
+	private const string DeathAnimation = "die";
 	[Export] private AnimatedSprite2D _sprite;
+	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private AlertLabel _alertLabel;
 	[Export] private HitFlash _hitFlash;
 	private StateMachine _stateMachine;
@@ -47,8 +49,14 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 	}
 
 	public void TakeDamage(int damage) {
-		_hitFlash.DisplayHitFlash();
 		_health.DecreaseHealth(damage);
+		if (!_health.IsHealthZero()) {
+			_hitFlash.DisplayHitFlash();
+		}
+	}
+
+	public void DeathAnimationFinished() {
+		QueueFree();
 	}
 
 	private void SetStateMachine() {
@@ -101,9 +109,7 @@ public partial class BatEnemy : CharacterBody2D, IDamageable {
 
 		AiState deathState = new AiState.Builder(DeathState)
 			.SetStart(() => {
-				// Play death SFX
-				// Play death animation
-				_stateMachine.GetCurrentState().onExit();
+				_animationPlayer.Play(DeathAnimation);
 			})
 			.SetExit(() => {
 				QueueFree();

@@ -27,4 +27,8 @@ public class Health {
 	public int GetCurrentHealth() {
 		return _currentHealth;
 	}
+
+	public bool IsHealthZero() {
+		return _currentHealth == 0;
+	}
 }

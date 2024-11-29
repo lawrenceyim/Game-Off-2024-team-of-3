@@ -151,6 +151,20 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"DeathAnimationFinished"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_cwkw0"]
 resource_name = "move"
@@ -216,7 +230,7 @@ _data = {
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ihmf"]
 
-[sub_resource type="Shader" id="Shader_ria2r"]
+[sub_resource type="Shader" id="Shader_of7up"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -231,7 +245,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gb6kg"]
 resource_local_to_scene = true
-shader = SubResource("Shader_ria2r")
+shader = SubResource("Shader_of7up")
 shader_parameter/lerp_percent = null
 
 [node name="FloatingEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hitFlash")]
