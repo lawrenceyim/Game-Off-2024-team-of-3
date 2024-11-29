@@ -22,6 +22,7 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 	private const string MeleeAttackAnimation = "attack";
 	private const string JumpingAnimation = "leap";
 	private const string LandingAnimation = "land";
+	private const string DeathAnimation = "die";
 	[Export] private AnimationPlayer _animationPlayer;
 	[Export] private AnimatedSprite2D _sprite;
 	[Export] private AlertLabel _alertLabel;
@@ -66,8 +67,14 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 	}
 
 	public void TakeDamage(int damage) {
-		_hitFlash.DisplayHitFlash();
 		_health.DecreaseHealth(damage);
+		if (!_health.IsHealthZero()) {
+			_hitFlash.DisplayHitFlash();
+		}
+	}
+
+	public void DeathAnimationFinished() {
+		QueueFree();
 	}
 
 	public void MeleeAttackFinished() {
@@ -186,13 +193,9 @@ public partial class Werewolf : CharacterBody2D, IDamageable {
 
 		AiState deathState = new AiState.Builder(DeathState)
 			.SetStart(() => {
-				// Play death SFX
-				// Play death animation
-				_stateMachine.GetCurrentState().onExit();
+				_animationPlayer.Play(DeathAnimation);
 			})
-			.SetExit(() => {
-				QueueFree();
-			})
+			.SetExit(() => { })
 			.SetUpdate((double delta) => { })
 			.SetPhysicsUpdate((double delta) => { })
 			.Build();

@@ -389,6 +389,20 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"DeathAnimationFinished"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_wbeio"]
 resource_name = "idle"
@@ -590,7 +604,7 @@ height = 64.6667
 [sub_resource type="CircleShape2D" id="CircleShape2D_x6tg0"]
 radius = 250.0
 
-[sub_resource type="Shader" id="Shader_lehpe"]
+[sub_resource type="Shader" id="Shader_k654p"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -605,7 +619,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bmdrw"]
 resource_local_to_scene = true
-shader = SubResource("Shader_lehpe")
+shader = SubResource("Shader_k654p")
 shader_parameter/lerp_percent = null
 
 [node name="WerewolfBoss" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hurtBoxCollisionShape", "_hitBoxCollisionShape", "_movementCollisionShape", "_landingAreaOfEffectSprite", "_landingAreaOfEffectCollisionShape", "_hitFlash")]
