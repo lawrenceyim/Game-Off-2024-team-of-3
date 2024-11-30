@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://uhbgouejxh8"]
+[gd_scene load_steps=17 format=3 uid="uid://uhbgouejxh8"]
 
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="1_woenx"]
 [ext_resource type="Texture2D" uid="uid://b3us2us16n644" path="res://scenes/rooms/First Boss Room.png" id="2_dskho"]
@@ -6,6 +6,59 @@
 [ext_resource type="PackedScene" uid="uid://brli2lq6jvaqg" path="res://vfx/fog_effect.tscn" id="4_e4wji"]
 [ext_resource type="PackedScene" uid="uid://dovgvwa4c7xqb" path="res://game_object/werewolf_boss/werewolf_boss.tscn" id="4_yw2ou"]
 [ext_resource type="PackedScene" uid="uid://26cf244jidne" path="res://game_object/bat_enemy/bat_enemy.tscn" id="5_ir7p6"]
+[ext_resource type="Texture2D" uid="uid://bj7a3y6ub4wre" path="res://assets/vfx/Arrow.png" id="7_vudx3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_32n0c"]
+size = Vector2(3550, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mxkhp"]
+size = Vector2(200, 3900)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g1pgq"]
+size = Vector2(200, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mds76"]
+atlas = ExtResource("7_vudx3")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1pu1h"]
+atlas = ExtResource("7_vudx3")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w6g2b"]
+atlas = ExtResource("7_vudx3")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3ein"]
+atlas = ExtResource("7_vudx3")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_usthw"]
+atlas = ExtResource("7_vudx3")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ct6tt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mds76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1pu1h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w6g2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u3ein")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_usthw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
 
 [node name="FirstBossRoom" type="Node2D"]
 y_sort_enabled = true
@@ -158,6 +211,37 @@ position = Vector2(83, -432)
 
 [node name="BatEnemy22" parent="Enemies" instance=ExtResource("5_ir7p6")]
 position = Vector2(-455, 148)
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(0, -1850)
+shape = SubResource("RectangleShape2D_32n0c")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(0, 1850)
+shape = SubResource("RectangleShape2D_32n0c")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-1850, 0)
+shape = SubResource("RectangleShape2D_mxkhp")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(1875, 0)
+shape = SubResource("RectangleShape2D_mxkhp")
+
+[node name="NextStageEntrance" type="Area2D" parent="."]
+position = Vector2(1622, -171)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NextStageEntrance"]
+position = Vector2(204, 2)
+shape = SubResource("RectangleShape2D_g1pgq")
+debug_color = Color(1, 0, 0, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="NextStageEntrance"]
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_ct6tt")
+autoplay = "default"
 
 [editable path="Trees/Tree2"]
 [editable path="Trees/Tree6"]

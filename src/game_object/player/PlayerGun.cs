@@ -8,12 +8,12 @@ public partial class PlayerGun : Sprite2D {
 	[Export] private Marker2D _bulletSpawnPosition;
 	private RangedAttack _rangedAttack;
 	
-    public override void _Ready() {
+	public override void _Ready() {
 		_rangedAttack = new RangedAttack(_player, _bulletSpawnPosition, TimerUtil.CreateTimer(this, true), _projectilePrefab, AttackCooldown);
 	}
 
 	public void AimGun(Vector2 aimedPosition) {
-        Vector2 direction = aimedPosition - GlobalPosition;
+		Vector2 direction = aimedPosition - GlobalPosition;
 		Rotation = direction.Angle();
 	}
 

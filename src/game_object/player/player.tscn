@@ -237,10 +237,10 @@ _onHitAnimationPlayer = NodePath("Vignette/AnimationPlayer")
 _playerCamera = NodePath("Camera2D")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-limit_left = -1800
-limit_top = -1800
-limit_right = 1800
-limit_bottom = 1800
+limit_left = -1750
+limit_top = -1750
+limit_right = 1750
+limit_bottom = 1750
 script = ExtResource("2_gm243")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

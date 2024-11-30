@@ -1,7 +1,60 @@
-[gd_scene load_steps=3 format=3 uid="uid://dy7ye3ffgwcy0"]
+[gd_scene load_steps=13 format=3 uid="uid://dy7ye3ffgwcy0"]
 
 [ext_resource type="Texture2D" uid="uid://dxll8v3iehm1l" path="res://scenes/rooms/Mob Path 2.png" id="1_nwj2g"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_wbolr"]
+[ext_resource type="Texture2D" uid="uid://bj7a3y6ub4wre" path="res://assets/vfx/Arrow.png" id="3_ljsnc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_26mmb"]
+size = Vector2(3550, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cyn6o"]
+size = Vector2(200, 3900)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ff0cj"]
+size = Vector2(200, 600)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mds76"]
+atlas = ExtResource("3_ljsnc")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1pu1h"]
+atlas = ExtResource("3_ljsnc")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w6g2b"]
+atlas = ExtResource("3_ljsnc")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3ein"]
+atlas = ExtResource("3_ljsnc")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_usthw"]
+atlas = ExtResource("3_ljsnc")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_is0qn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mds76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1pu1h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w6g2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u3ein")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_usthw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
 
 [node name="MobPath2" type="Node2D"]
 
@@ -10,3 +63,35 @@ scale = Vector2(6, 6)
 texture = ExtResource("1_nwj2g")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("2_wbolr")]
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(0, -1850)
+shape = SubResource("RectangleShape2D_26mmb")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(0, 1850)
+shape = SubResource("RectangleShape2D_26mmb")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-1850, 0)
+shape = SubResource("RectangleShape2D_cyn6o")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(1875, 0)
+shape = SubResource("RectangleShape2D_cyn6o")
+
+[node name="NextStageEntrance" type="Area2D" parent="."]
+position = Vector2(172, 1576)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NextStageEntrance"]
+position = Vector2(204, 2)
+shape = SubResource("RectangleShape2D_ff0cj")
+debug_color = Color(1, 0, 0, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="NextStageEntrance"]
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_is0qn")
+autoplay = "default"

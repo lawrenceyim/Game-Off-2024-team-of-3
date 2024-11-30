@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmltqrmlv1u3w"]
+[gd_scene load_steps=5 format=3 uid="uid://bmltqrmlv1u3w"]
 
 [ext_resource type="Texture2D" uid="uid://5t87ifsf6rxc" path="res://scenes/rooms/Final Boss Room.png" id="1_44acm"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_upk7t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hwrqh"]
+size = Vector2(3550, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vq3j7"]
+size = Vector2(200, 3900)
 
 [node name="FinalBossRoom" type="Node2D"]
 
@@ -10,3 +16,21 @@ scale = Vector2(6, 6)
 texture = ExtResource("1_44acm")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("2_upk7t")]
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(0, -1850)
+shape = SubResource("RectangleShape2D_hwrqh")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(0, 1850)
+shape = SubResource("RectangleShape2D_hwrqh")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-1850, 0)
+shape = SubResource("RectangleShape2D_vq3j7")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(1875, 0)
+shape = SubResource("RectangleShape2D_vq3j7")
