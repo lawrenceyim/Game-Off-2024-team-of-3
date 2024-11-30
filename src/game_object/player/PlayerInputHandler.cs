@@ -33,25 +33,15 @@ public partial class PlayerInputHandler : Node, IInputListener {
 		if (Input.IsActionJustPressed("Escape")) {
 			// Escape menu
 		}
-	}
 
-	public override void _Input(InputEvent @event) {
-		if (@event is InputEventMouseButton eventMouseButton) {
-			if (eventMouseButton.ButtonIndex == MouseButton.Left &&
-				eventMouseButton.IsPressed()
-			) {
-				_gun.FireGun();
-			} else if (eventMouseButton.ButtonIndex == MouseButton.Right &&
-				eventMouseButton.IsPressed()
-			) {
-				_playerMovement.Dash();
-			}
-		} else if (@event is InputEventMouseMotion eventMouseMotion) {
-			Vector2 origin = GetViewport().GetVisibleRect().Size / 2;
-			_camera.SetAimedPosition(eventMouseMotion.Position);
-			Vector2 cameraOffset = _camera.GlobalPosition - _player.GlobalPosition;
-			Vector2 direction = (eventMouseMotion.Position - origin + cameraOffset).Normalized();
-			_gun.AimGun(direction);
-		}
+        _gun.AimGun(_player.GetGlobalMousePosition());
+
+        if (Input.IsMouseButtonPressed(MouseButton.Left)) {
+            _gun.FireGun();
+        }
+        
+        if (Input.IsMouseButtonPressed(MouseButton.Right)) {
+            _playerMovement.Dash();
+        }
 	}
 }

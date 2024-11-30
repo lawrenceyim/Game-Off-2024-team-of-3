@@ -7,13 +7,16 @@ public partial class PlayerGun : Sprite2D {
 	[Export] private PackedScene _projectilePrefab;
 	[Export] private Marker2D _bulletSpawnPosition;
 	private RangedAttack _rangedAttack;
-
-	public override void _Ready() {
+    private Vector2 _aimedPosition;
+	
+    public override void _Ready() {
 		_rangedAttack = new RangedAttack(_player, _bulletSpawnPosition, TimerUtil.CreateTimer(this, true), _projectilePrefab, AttackCooldown);
 	}
 
 	public void AimGun(Vector2 aimedPosition) {
-		Rotation = aimedPosition.Angle();
+        _aimedPosition = aimedPosition;
+        Vector2 direction = aimedPosition - GlobalPosition;
+		Rotation = direction.Angle();
 	}
 
 	public void FlipGunSpriteVertically(bool flip) {
@@ -23,7 +26,7 @@ public partial class PlayerGun : Sprite2D {
 	public void FireGun() {
 		if (_rangedAttack.CanAttack()) {
 			_gunAudioPlayer.Play();
-			_rangedAttack.AttackIfReady(Rotation);
+			_rangedAttack.AttackIfReady(_aimedPosition);
 		}
 	}
 }
