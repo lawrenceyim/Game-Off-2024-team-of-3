@@ -1,0 +1,141 @@
+[gd_scene load_steps=8 format=3 uid="uid://cnkel5owcjb3g"]
+
+[ext_resource type="Texture2D" uid="uid://dfyno7jnj2vpm" path="res://scenes/rooms/Mob Path 1.png" id="1_5r1w2"]
+[ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_2kliy"]
+[ext_resource type="PackedScene" uid="uid://b6wiqmly6d6rd" path="res://game_object/tree/tree.tscn" id="3_wiu66"]
+[ext_resource type="PackedScene" uid="uid://brli2lq6jvaqg" path="res://vfx/fog_effect.tscn" id="4_31dm3"]
+[ext_resource type="PackedScene" uid="uid://26cf244jidne" path="res://game_object/bat_enemy/bat_enemy.tscn" id="5_cvrmj"]
+[ext_resource type="PackedScene" uid="uid://dkqxnp3rgn3mj" path="res://game_object/floating_enemy/floating_enemy.tscn" id="6_ovyfj"]
+[ext_resource type="PackedScene" uid="uid://7u7mu36ttwt7" path="res://game_object/mushroom_enemy/mushroom_enemy.tscn" id="7_q4pew"]
+
+[node name="MobPath1" type="Node2D"]
+y_sort_enabled = true
+
+[node name="FogEffect" parent="." instance=ExtResource("4_31dm3")]
+layer = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -5
+scale = Vector2(3, 3)
+texture = ExtResource("1_5r1w2")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_2kliy")]
+position = Vector2(-813, -1242)
+
+[node name="Trees" type="Node2D" parent="."]
+y_sort_enabled = true
+position = Vector2(-2, 206)
+
+[node name="Tree" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(-1718, -850)
+
+[node name="Tree2" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(-1540, -567)
+
+[node name="Sprite2D" parent="Trees/Tree2" index="0"]
+frame = 1
+
+[node name="Tree3" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(-1779, 800)
+
+[node name="Sprite2D" parent="Trees/Tree3" index="0"]
+frame = 1
+
+[node name="Tree4" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(-1518, 660)
+
+[node name="Tree5" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(-989, 1385)
+
+[node name="Tree6" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(1168, 1498)
+
+[node name="Tree7" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(1420, 1289)
+
+[node name="Sprite2D" parent="Trees/Tree7" index="0"]
+frame = 1
+
+[node name="Tree8" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(201, 144)
+
+[node name="Tree9" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(301, -1109)
+
+[node name="Tree10" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(463, -1430)
+
+[node name="Tree11" parent="Trees" instance=ExtResource("3_wiu66")]
+position = Vector2(1329, -1487)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="BatEnemy" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(-1282, -73)
+
+[node name="BatEnemy2" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(595, -992)
+
+[node name="BatEnemy3" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(1075, -619)
+
+[node name="BatEnemy4" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(-1602, 220)
+
+[node name="BatEnemy5" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(514, 369)
+
+[node name="BatEnemy6" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(-1218, 849)
+
+[node name="BatEnemy7" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(130, -232)
+
+[node name="BatEnemy8" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(-1222, 1271)
+
+[node name="BatEnemy9" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(-671, 1588)
+
+[node name="BatEnemy10" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(405, 1078)
+
+[node name="BatEnemy11" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(1330, 1557)
+
+[node name="BatEnemy12" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(-1713, -248)
+
+[node name="BatEnemy13" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(-1528, 1032)
+
+[node name="BatEnemy14" parent="Enemies" instance=ExtResource("5_cvrmj")]
+position = Vector2(-1309, 1579)
+
+[node name="FloatingEnemy" parent="Enemies" instance=ExtResource("6_ovyfj")]
+position = Vector2(-257, -434)
+
+[node name="FloatingEnemy2" parent="Enemies" instance=ExtResource("6_ovyfj")]
+position = Vector2(-397, -253)
+
+[node name="FloatingEnemy3" parent="Enemies" instance=ExtResource("6_ovyfj")]
+position = Vector2(309, 1378)
+
+[node name="FloatingEnemy4" parent="Enemies" instance=ExtResource("6_ovyfj")]
+position = Vector2(135, 1499)
+
+[node name="FloatingEnemy5" parent="Enemies" instance=ExtResource("6_ovyfj")]
+position = Vector2(886, -49)
+
+[node name="MushroomEnemy" parent="Enemies" instance=ExtResource("7_q4pew")]
+position = Vector2(-1144, -517)
+
+[node name="MushroomEnemy2" parent="Enemies" instance=ExtResource("7_q4pew")]
+position = Vector2(-880, -611)
+
+[node name="MushroomEnemy3" parent="Enemies" instance=ExtResource("7_q4pew")]
+position = Vector2(-665, -490)
+
+[editable path="Trees/Tree2"]
+[editable path="Trees/Tree3"]
+[editable path="Trees/Tree7"]

@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://b6wiqmly6d6rd"]
+
+[ext_resource type="Shader" path="res://vfx/shaders/wind_sway.gdshader" id="1_8q4wu"]
+[ext_resource type="Texture2D" uid="uid://dbi64tfrkkw24" path="res://assets/environment/Trees.png" id="2_iy3u4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8n4vc"]
+shader = ExtResource("1_8q4wu")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 3.5
+shader_parameter/detail = 1.0
+shader_parameter/distortion = null
+shader_parameter/heightOffset = null
+shader_parameter/offset = 0.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_apcs5"]
+radius = 19.0
+height = 38.0
+
+[node name="Tree" type="Node2D"]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+material = SubResource("ShaderMaterial_8n4vc")
+scale = Vector2(6, 6)
+texture = ExtResource("2_iy3u4")
+offset = Vector2(0, -35)
+hframes = 4
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1, 28)
+shape = SubResource("CapsuleShape2D_apcs5")

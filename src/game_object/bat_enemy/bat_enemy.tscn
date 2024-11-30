@@ -41,7 +41,7 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7i6a5"]
 
-[sub_resource type="Shader" id="Shader_vhe3b"]
+[sub_resource type="Shader" id="Shader_j80yx"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -56,7 +56,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iktfg"]
 resource_local_to_scene = true
-shader = SubResource("Shader_vhe3b")
+shader = SubResource("Shader_j80yx")
 shader_parameter/lerp_percent = null
 
 [sub_resource type="Animation" id="Animation_x8r5v"]
@@ -119,6 +119,9 @@ _sprite = NodePath("AnimatedSprite2D")
 _animationPlayer = NodePath("AnimationPlayer")
 _alertLabel = NodePath("Alert")
 _hitFlash = NodePath("Hit Flash Node")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 2.0
 
 [node name="Movement CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_wr3yr")

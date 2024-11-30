@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmltqrmlv1u3w"]
+
+[ext_resource type="Texture2D" uid="uid://5t87ifsf6rxc" path="res://scenes/rooms/Final Boss Room.png" id="1_44acm"]
+[ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_upk7t"]
+
+[node name="FinalBossRoom" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(6, 6)
+texture = ExtResource("1_44acm")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_upk7t")]

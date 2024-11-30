@@ -2,7 +2,7 @@ using System;
 using Godot;
 
 public partial class BatEnemy : CharacterBody2D, IDamageable {
-	private const float WanderingSpeed = 300f;
+	private const float WanderingSpeed = 200f;
 	private const float MaxSpeed = 500f;
 	private const float AccelerationTime = 5;
 	private const double MinWanderTime = 3f;

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dy7ye3ffgwcy0"]
+
+[ext_resource type="Texture2D" uid="uid://dxll8v3iehm1l" path="res://scenes/rooms/Mob Path 2.png" id="1_nwj2g"]
+[ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_wbolr"]
+
+[node name="MobPath2" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(6, 6)
+texture = ExtResource("1_nwj2g")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_wbolr")]

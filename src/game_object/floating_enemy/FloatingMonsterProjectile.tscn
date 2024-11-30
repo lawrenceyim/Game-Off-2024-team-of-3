@@ -14,6 +14,10 @@ script = ExtResource("1_8v00r")
 _damage = 1
 _projectileSpeed = 500.0
 
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 2.0
+texture = ExtResource("1_tgtrj")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_tgtrj")
 
