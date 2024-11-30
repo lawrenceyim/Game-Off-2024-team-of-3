@@ -24,6 +24,7 @@ public partial class PlayerMovement : Node {
 	public void Move(Vector2 move) {
 		if (move.IsZeroApprox()) {
 			_movementAudioPlayer.Stop();
+			_animation.UpdateMovement(move);
 		} else if (!_dashDurationTimer.IsStopped()) {
 			_body.MoveAndCollide(_dashVelocity * (float)GetProcessDeltaTime());
 			_animation.StartDashAnimation();
