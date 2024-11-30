@@ -10,7 +10,7 @@ public partial class DarkLion : CharacterBody2D, IDamageable {
 	private const double MinWanderTime = 3f;
 	private const double MaxWanderTime = 5f;
 	private const double ttackCooldown = .5f;
-	private const int AttackDamage = 1;
+	private const int AttackDamage = 2;
 	private const int BaseHealth = 10;
 	private const float CloseEnoughRange = 10f;
 	private const float MinDashRange = 400f;

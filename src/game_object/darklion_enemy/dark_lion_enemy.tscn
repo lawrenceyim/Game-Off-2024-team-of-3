@@ -172,6 +172,35 @@ tracks/6/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_dqnnp"]
+resource_name = "die"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"DeathAnimationFinished"
+}]
+}
+
 [sub_resource type="Animation" id="Animation_7qq4e"]
 resource_name = "idle"
 length = 0.6
@@ -292,35 +321,6 @@ tracks/4/keys = {
 "values": [0.0, 0.0523599, 0.0261804, 8.73864e-07]
 }
 
-[sub_resource type="Animation" id="Animation_dqnnp"]
-resource_name = "die"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"DeathAnimationFinished"
-}]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ebp4r"]
 _data = {
 "RESET": SubResource("Animation_qvurc"),
@@ -333,7 +333,7 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_v6qa1"]
 radius = 19.0
 
-[sub_resource type="Shader" id="Shader_4osuq"]
+[sub_resource type="Shader" id="Shader_hivo0"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -348,7 +348,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1arw6"]
 resource_local_to_scene = true
-shader = SubResource("Shader_4osuq")
+shader = SubResource("Shader_hivo0")
 shader_parameter/lerp_percent = null
 
 [node name="DarkLionEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hitFlash")]

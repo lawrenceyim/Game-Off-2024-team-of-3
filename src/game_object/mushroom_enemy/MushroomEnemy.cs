@@ -5,7 +5,7 @@ public partial class MushroomEnemy : CharacterBody2D, IDamageable {
 	private const float WanderingSpeed = 100f;
 	private const double MinWanderTime = 3f;
 	private const double MaxWanderTime = 5f;
-	private const int BaseHealth = 2;
+	private const int BaseHealth = 6;
 	private const double AttackCooldown = .5f;
 	private const int AttackDamage = 1;
 	private const float DetectionRange = 500;

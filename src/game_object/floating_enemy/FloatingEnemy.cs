@@ -5,7 +5,7 @@ public partial class FloatingEnemy : CharacterBody2D, IDamageable {
 	private const float WanderingSpeed = 150f;
 	private const double MinWanderTime = 3f;
 	private const double MaxWanderTime = 5f;
-	private const int BaseHealth = 5;
+	private const int BaseHealth = 4;
 	private const double MeleeAttackCooldown = .5f;
 	private const double RangedAttackCooldown = 1f;
 	private const int AttackDamage = 1;

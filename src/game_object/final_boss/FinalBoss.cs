@@ -4,7 +4,7 @@ using System;
 public partial class FinalBoss : CharacterBody2D, IDamageable {
 	private const float Phase1Speed = 200f;
 	private const float Phase2Speed = 350f;
-	private const int BaseHealth = 5;
+	private const int BaseHealth = 15;
 	private const double MeleeAttack1Cooldown = 1f;
 	private const double MeleeAttack2Cooldown = 1f;
 	private const int Attack1Damage = 1;
@@ -71,7 +71,7 @@ public partial class FinalBoss : CharacterBody2D, IDamageable {
 			.SetPhysicsUpdate((double delta) => {
 				float distanceFromTarget = Position.DistanceTo(_player.Position);
 				if (distanceFromTarget > CloseEnoughRange) {
-					_animationPlayer.SpeedScale = _firstPhase ? 1 : 2;
+					_animationPlayer.SpeedScale = _firstPhase ? 1 : 1.2f;
 					Velocity = (_player.Position - Position).Normalized() * (_firstPhase ? Phase1Speed : Phase2Speed);
 					MoveAndSlide();
 					_animationPlayer.Play(MoveAnimation);
