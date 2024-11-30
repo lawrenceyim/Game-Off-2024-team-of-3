@@ -22,7 +22,9 @@ public partial class PlayerMovement : Node {
 	}
 
 	public void Move(Vector2 move) {
-		if (!_dashDurationTimer.IsStopped()) {
+		if (move.IsZeroApprox()) {
+			_movementAudioPlayer.Stop();
+		} else if (!_dashDurationTimer.IsStopped()) {
 			_body.MoveAndCollide(_dashVelocity * (float)GetProcessDeltaTime());
 			_animation.StartDashAnimation();
 		} else {
