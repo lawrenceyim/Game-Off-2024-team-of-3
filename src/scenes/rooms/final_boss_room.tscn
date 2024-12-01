@@ -14,11 +14,12 @@ size = Vector2(3550, 200)
 size = Vector2(200, 3900)
 
 [node name="FinalBossRoom" type="Node2D"]
+y_sort_enabled = true
 
 [node name="FogEffect" parent="." instance=ExtResource("1_in8as")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = -3
+z_index = -5
 scale = Vector2(6, 6)
 texture = ExtResource("1_44acm")
 
@@ -44,6 +45,7 @@ position = Vector2(1875, 0)
 shape = SubResource("RectangleShape2D_vq3j7")
 
 [node name="Trees" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="Tree" parent="Trees" instance=ExtResource("4_icark")]
 position = Vector2(-346, -1422)

@@ -62,10 +62,12 @@ animations = [{
 }]
 
 [node name="MobPath2" type="Node2D"]
+y_sort_enabled = true
 
 [node name="FogEffect" parent="." instance=ExtResource("1_ooopw")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -4
 scale = Vector2(6, 6)
 texture = ExtResource("1_nwj2g")
 
@@ -105,6 +107,7 @@ sprite_frames = SubResource("SpriteFrames_is0qn")
 autoplay = "default"
 
 [node name="Trees" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="Tree" parent="Trees" instance=ExtResource("5_b43ky")]
 position = Vector2(-1693, -1120)
