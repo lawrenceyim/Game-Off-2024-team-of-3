@@ -44,12 +44,9 @@ public partial class PlayerCharacter : CharacterBody2D, IDamageable {
 	}
 
 	private void InitiateDeath(object sender, EventArgs e) {
-		// Start death animation
-		// Start death SFX
-
 		GD.Print("Player died.");
 
-
+		SceneManager.GetInstance().RestartLevel();
 	}
 
 	private void FinishDeath() {
