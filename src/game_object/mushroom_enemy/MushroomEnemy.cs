@@ -8,8 +8,8 @@ public partial class MushroomEnemy : CharacterBody2D, IDamageable {
 	private const int BaseHealth = 6;
 	private const double AttackCooldown = .5f;
 	private const int AttackDamage = 1;
-	private const float DetectionRange = 500;
-	private const float CloseEnoughRange = 10f;
+	private const float DetectionRange = 800;
+	private const float CloseEnoughRange = 20f;
 	private const string WanderingState = "wander";
 	private const string PursuitState = "pursue";
 	private const string DeathState = "death";

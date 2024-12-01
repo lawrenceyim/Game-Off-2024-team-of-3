@@ -189,6 +189,15 @@ position = Vector2(-880, -611)
 [node name="MushroomEnemy3" parent="Enemies" instance=ExtResource("7_q4pew")]
 position = Vector2(-665, -490)
 
+[node name="MushroomEnemy4" parent="Enemies" instance=ExtResource("7_q4pew")]
+position = Vector2(-830, -75)
+
+[node name="MushroomEnemy5" parent="Enemies" instance=ExtResource("7_q4pew")]
+position = Vector2(-1072, 285)
+
+[node name="MushroomEnemy6" parent="Enemies" instance=ExtResource("7_q4pew")]
+position = Vector2(-733, 539)
+
 [node name="Boundaries" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries"]

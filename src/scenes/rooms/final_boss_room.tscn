@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmltqrmlv1u3w"]
+[gd_scene load_steps=9 format=3 uid="uid://bmltqrmlv1u3w"]
 
 [ext_resource type="Texture2D" uid="uid://5t87ifsf6rxc" path="res://scenes/rooms/Final Boss Room.png" id="1_44acm"]
 [ext_resource type="PackedScene" uid="uid://brli2lq6jvaqg" path="res://vfx/fog_effect.tscn" id="1_in8as"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_upk7t"]
 [ext_resource type="PackedScene" uid="uid://xv6g486dj7m7" path="res://game_object/final_boss/final_boss.tscn" id="3_hg441"]
+[ext_resource type="PackedScene" uid="uid://b6wiqmly6d6rd" path="res://game_object/tree/tree.tscn" id="4_icark"]
+[ext_resource type="PackedScene" uid="uid://ddikru4jh4tn8" path="res://game_object/darklion_enemy/dark_lion_enemy.tscn" id="6_jl36t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hwrqh"]
 size = Vector2(3550, 200)
@@ -41,4 +43,88 @@ shape = SubResource("RectangleShape2D_vq3j7")
 position = Vector2(1875, 0)
 shape = SubResource("RectangleShape2D_vq3j7")
 
-[node name="FinalBoss" parent="." instance=ExtResource("3_hg441")]
+[node name="Trees" type="Node2D" parent="."]
+
+[node name="Tree" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(-346, -1422)
+
+[node name="Sprite2D" parent="Trees/Tree" index="0"]
+frame = 3
+
+[node name="Tree2" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(1322, -1376)
+
+[node name="Sprite2D" parent="Trees/Tree2" index="0"]
+frame = 2
+
+[node name="Tree3" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(-1671, -346)
+
+[node name="Sprite2D" parent="Trees/Tree3" index="0"]
+frame = 2
+
+[node name="Tree4" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(-1479, -218)
+
+[node name="Sprite2D" parent="Trees/Tree4" index="0"]
+frame = 3
+
+[node name="Tree5" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(-1366, 1040)
+
+[node name="Sprite2D" parent="Trees/Tree5" index="0"]
+frame = 2
+
+[node name="Tree6" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(-1574, 1327)
+
+[node name="Sprite2D" parent="Trees/Tree6" index="0"]
+frame = 2
+
+[node name="Tree7" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(-1232, 1574)
+
+[node name="Sprite2D" parent="Trees/Tree7" index="0"]
+frame = 3
+
+[node name="Tree8" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(744, 1595)
+
+[node name="Sprite2D" parent="Trees/Tree8" index="0"]
+frame = 2
+
+[node name="Tree9" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(1351, 1350)
+
+[node name="Sprite2D" parent="Trees/Tree9" index="0"]
+frame = 2
+
+[node name="Tree10" parent="Trees" instance=ExtResource("4_icark")]
+position = Vector2(1606, 1575)
+
+[node name="Sprite2D" parent="Trees/Tree10" index="0"]
+frame = 3
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="FinalBoss" parent="Enemies" instance=ExtResource("3_hg441")]
+
+[node name="DarkLionEnemy" parent="Enemies" instance=ExtResource("6_jl36t")]
+position = Vector2(-384, -161)
+
+[node name="DarkLionEnemy2" parent="Enemies" instance=ExtResource("6_jl36t")]
+position = Vector2(434, -163)
+
+[node name="DarkLionEnemy3" parent="Enemies" instance=ExtResource("6_jl36t")]
+position = Vector2(2, -468)
+
+[editable path="Trees/Tree"]
+[editable path="Trees/Tree2"]
+[editable path="Trees/Tree3"]
+[editable path="Trees/Tree4"]
+[editable path="Trees/Tree5"]
+[editable path="Trees/Tree6"]
+[editable path="Trees/Tree7"]
+[editable path="Trees/Tree8"]
+[editable path="Trees/Tree9"]
+[editable path="Trees/Tree10"]

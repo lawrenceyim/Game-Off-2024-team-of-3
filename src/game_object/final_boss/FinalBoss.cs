@@ -2,8 +2,8 @@ using Godot;
 using System;
 
 public partial class FinalBoss : CharacterBody2D, IDamageable {
-	private const float Phase1Speed = 200f;
-	private const float Phase2Speed = 350f;
+	private const float Phase1Speed = 300f;
+	private const float Phase2Speed = 400f;
 	private const int BaseHealth = 15;
 	private const double MeleeAttack1Cooldown = 1f;
 	private const double MeleeAttack2Cooldown = 1f;
