@@ -48,6 +48,11 @@ public partial class PlayerCamera : Camera2D {
 		_traumaTimer.Start(TraumaDuration);
 	}
 
+	public void ClearTrauma() {
+		_trauma = 0;
+		_traumaTimer.Stop();
+	}
+
 	private void ShakeScreen() {
 		float amount = (float)Math.Pow(_trauma, _traumaPower);
 		Vector2 newOffset = Offset;

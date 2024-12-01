@@ -43,7 +43,7 @@ public partial class PlayerCharacter : CharacterBody2D, IDamageable {
 
 	private void InitiateDeath(object sender, EventArgs e) {
 		GD.Print("Player died.");
-
+		_playerCamera.ClearTrauma();
 		SceneManager.GetInstance().RestartLevel();
 	}
 
