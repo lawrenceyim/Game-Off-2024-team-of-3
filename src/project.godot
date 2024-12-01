@@ -20,6 +20,7 @@ DialogueManager="*res://scripts/dialogue/DialogueManager.cs"
 InputManager="*res://scripts/input_handling/InputManager.cs"
 WindowSize="*res://scripts/ui/WindowSize.cs"
 Projectiles="*res://prefabs/Projectiles.tscn"
+SceneManager="*res://scripts/scene_management/SceneManager.cs"
 
 [display]
 

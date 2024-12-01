@@ -1,5 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://uhbgouejxh8"]
+[gd_scene load_steps=20 format=3 uid="uid://uhbgouejxh8"]
 
+[ext_resource type="Script" path="res://scripts/scene_management/LevelScene.cs" id="1_l3rv5"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="1_woenx"]
 [ext_resource type="Texture2D" uid="uid://b3us2us16n644" path="res://scenes/rooms/First Boss Room.png" id="2_dskho"]
 [ext_resource type="Script" path="res://scripts/scene_management/SceneTransitionZone.cs" id="3_bape6"]
@@ -64,6 +65,7 @@ animations = [{
 
 [node name="FirstBossRoom" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_l3rv5")
 
 [node name="FogEffect" parent="." instance=ExtResource("4_e4wji")]
 
@@ -232,10 +234,9 @@ shape = SubResource("RectangleShape2D_mxkhp")
 position = Vector2(1875, 0)
 shape = SubResource("RectangleShape2D_mxkhp")
 
-[node name="NextStageEntrance" type="Area2D" parent="." node_paths=PackedStringArray("_currentScene")]
+[node name="NextStageEntrance" type="Area2D" parent="."]
 position = Vector2(1622, -171)
 script = ExtResource("3_bape6")
-_currentScene = NodePath("..")
 _nextScene = ExtResource("4_pbdrg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NextStageEntrance"]

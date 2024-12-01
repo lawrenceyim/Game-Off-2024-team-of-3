@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://bmltqrmlv1u3w"]
+[gd_scene load_steps=10 format=3 uid="uid://bmltqrmlv1u3w"]
 
+[ext_resource type="Script" path="res://scripts/scene_management/LevelScene.cs" id="1_5xok0"]
 [ext_resource type="Texture2D" uid="uid://5t87ifsf6rxc" path="res://scenes/rooms/Final Boss Room.png" id="1_44acm"]
 [ext_resource type="PackedScene" uid="uid://brli2lq6jvaqg" path="res://vfx/fog_effect.tscn" id="1_in8as"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_upk7t"]
@@ -15,6 +16,7 @@ size = Vector2(200, 3900)
 
 [node name="FinalBossRoom" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_5xok0")
 
 [node name="FogEffect" parent="." instance=ExtResource("1_in8as")]
 

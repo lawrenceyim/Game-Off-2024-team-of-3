@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public partial class SceneManager : Node {
 	private static SceneManager _instance;
-	private Stack<Node> _sceneStack;
+	private PackedScene _currentLevelPackedScene;
 	private Node _activeScene;
 
 	private SceneManager() {
@@ -24,64 +24,32 @@ public partial class SceneManager : Node {
 
 	public override void _Ready() {
 		_instance = this;
-		_sceneStack = new Stack<Node>();
 	}
 
-	public void PauseAndAddScene(Node scene) {
-		GD.Print("Scene paused and added.");
-		if (_activeScene == null) {
-			_activeScene = scene;
-			return;
-		}
-		PauseScene(_activeScene);
-		_sceneStack.Push(_activeScene);
-		_activeScene = scene;
-		GD.Print("Stack count: " + _sceneStack.Count);
+	public void SwitchLevel(PackedScene newScene) {
+		ClearAllProjectiiles();
+		_activeScene.QueueFree();
+		InputManager.GetInstance().ClearActiveListener();
+		_currentLevelPackedScene = newScene;
+		GetTree().Root.AddChild(_currentLevelPackedScene.Instantiate());
 	}
 
-	public void AddScene(Node scene) {
-		GD.Print("Scene added.");
-		if (_activeScene == null) {
-			_activeScene = scene;
-			return;
-		}
-		_sceneStack.Push(_activeScene);
-		_activeScene = scene;
-		GD.Print("Stack count: " + _sceneStack.Count);
+	public void RestartLevel() {
+		ClearAllProjectiiles();
+		_activeScene.QueueFree();
+		InputManager.GetInstance().ClearActiveListener();
+		GetTree().Root.AddChild(_currentLevelPackedScene.Instantiate());
 	}
 
-	public void ReplaceCurrentScene(Node scene) {
-		GD.Print("Current scene replaced.");
-		_activeScene?.QueueFree();
-		_activeScene = scene;
+	public void SetCurrentLevel(Node currentLevel, string filepath) {
+		_activeScene = currentLevel;
+		_currentLevelPackedScene = (PackedScene) ResourceLoader.Load(filepath);
 	}
 
-	public void ReturnToPreviousScene() {
-		GD.Print("Return to previous scene called.");
-		if (_sceneStack.Count > 0) {
-			_activeScene?.QueueFree();
-			_activeScene = _sceneStack.Pop();
-			UnpauseScene(_activeScene);
-		}
-	}
-
-	public void EmptySceneStack() {
-		_sceneStack.Clear();
-	}
-
-	public void PauseScene(Node scene) {
-		GD.Print("Scene Paused.");
-		scene.ProcessMode = ProcessModeEnum.Disabled;
-		foreach (Node node in scene.GetChildren()) {
-			PauseScene(node);
-		}
-	}
-
-	public void UnpauseScene(Node scene) {
-		GD.Print("Scene unpaused.");
-		scene.ProcessMode = ProcessModeEnum.Inherit;
-		foreach (Node node in scene.GetChildren()) {
-			UnpauseScene(node);
+	private void ClearAllProjectiiles() {
+		Node projectileRoot = GetTree().Root.GetNode("Projectiles");
+		foreach (Node projectile in projectileRoot.GetChildren()) {
+			projectile.QueueFree();
 		}
 	}
 }

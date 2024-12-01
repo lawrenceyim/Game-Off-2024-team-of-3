@@ -1,6 +1,7 @@
-[gd_scene load_steps=20 format=3 uid="uid://cnkel5owcjb3g"]
+[gd_scene load_steps=21 format=3 uid="uid://cnkel5owcjb3g"]
 
 [ext_resource type="Texture2D" uid="uid://dfyno7jnj2vpm" path="res://scenes/rooms/Mob Path 1.png" id="1_5r1w2"]
+[ext_resource type="Script" path="res://scripts/scene_management/LevelScene.cs" id="1_ievg5"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_2kliy"]
 [ext_resource type="PackedScene" uid="uid://b6wiqmly6d6rd" path="res://game_object/tree/tree.tscn" id="3_wiu66"]
 [ext_resource type="PackedScene" uid="uid://brli2lq6jvaqg" path="res://vfx/fog_effect.tscn" id="4_31dm3"]
@@ -65,6 +66,7 @@ animations = [{
 
 [node name="MobPath1" type="Node2D"]
 y_sort_enabled = true
+script = ExtResource("1_ievg5")
 
 [node name="FogEffect" parent="." instance=ExtResource("4_31dm3")]
 layer = 3
@@ -220,10 +222,9 @@ shape = SubResource("RectangleShape2D_0svrv")
 position = Vector2(1875, 0)
 shape = SubResource("RectangleShape2D_0svrv")
 
-[node name="NextStageEntrance" type="Area2D" parent="." node_paths=PackedStringArray("_currentScene")]
+[node name="NextStageEntrance" type="Area2D" parent="."]
 position = Vector2(1609, 294)
 script = ExtResource("8_14us6")
-_currentScene = NodePath("..")
 _nextScene = ExtResource("9_m01dr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NextStageEntrance"]
