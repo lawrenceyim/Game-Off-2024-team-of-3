@@ -230,7 +230,7 @@ _data = {
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ihmf"]
 
-[sub_resource type="Shader" id="Shader_7r1d3"]
+[sub_resource type="Shader" id="Shader_idado"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -245,7 +245,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gb6kg"]
 resource_local_to_scene = true
-shader = SubResource("Shader_7r1d3")
+shader = SubResource("Shader_idado")
 shader_parameter/lerp_percent = null
 
 [node name="FloatingEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hitFlash")]

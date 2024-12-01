@@ -52,6 +52,7 @@ public partial class SceneManager : Node {
 
 	public void ReplaceCurrentScene(Node scene) {
 		GD.Print("Current scene replaced.");
+		_activeScene?.QueueFree();
 		_activeScene = scene;
 	}
 

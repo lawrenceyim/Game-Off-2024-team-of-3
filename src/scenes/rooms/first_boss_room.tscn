@@ -1,9 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://uhbgouejxh8"]
+[gd_scene load_steps=19 format=3 uid="uid://uhbgouejxh8"]
 
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="1_woenx"]
 [ext_resource type="Texture2D" uid="uid://b3us2us16n644" path="res://scenes/rooms/First Boss Room.png" id="2_dskho"]
+[ext_resource type="Script" path="res://scripts/scene_management/SceneTransitionZone.cs" id="3_bape6"]
 [ext_resource type="PackedScene" uid="uid://b6wiqmly6d6rd" path="res://game_object/tree/tree.tscn" id="3_s7mix"]
 [ext_resource type="PackedScene" uid="uid://brli2lq6jvaqg" path="res://vfx/fog_effect.tscn" id="4_e4wji"]
+[ext_resource type="PackedScene" uid="uid://dy7ye3ffgwcy0" path="res://scenes/rooms/mob_path_2.tscn" id="4_pbdrg"]
 [ext_resource type="PackedScene" uid="uid://dovgvwa4c7xqb" path="res://game_object/werewolf_boss/werewolf_boss.tscn" id="4_yw2ou"]
 [ext_resource type="PackedScene" uid="uid://26cf244jidne" path="res://game_object/bat_enemy/bat_enemy.tscn" id="5_ir7p6"]
 [ext_resource type="Texture2D" uid="uid://bj7a3y6ub4wre" path="res://assets/vfx/Arrow.png" id="7_vudx3"]
@@ -230,8 +232,11 @@ shape = SubResource("RectangleShape2D_mxkhp")
 position = Vector2(1875, 0)
 shape = SubResource("RectangleShape2D_mxkhp")
 
-[node name="NextStageEntrance" type="Area2D" parent="."]
+[node name="NextStageEntrance" type="Area2D" parent="." node_paths=PackedStringArray("_currentScene")]
 position = Vector2(1622, -171)
+script = ExtResource("3_bape6")
+_currentScene = NodePath("..")
+_nextScene = ExtResource("4_pbdrg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NextStageEntrance"]
 position = Vector2(204, 2)

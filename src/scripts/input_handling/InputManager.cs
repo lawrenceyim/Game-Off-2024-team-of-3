@@ -51,7 +51,13 @@ public partial class InputManager : Node {
 	public void ReturnToPreviousListener() {
 		if (_listenerStack.Count > 0) {
 			_activeListener = _listenerStack.Pop();
+		} else {
+			_activeListener = null;
 		}
+	}
+
+	public void ReplaceCurrentListener(IInputListener inputListener) {
+		_activeListener = inputListener;
 	}
 
 	public void EmptyListenerStack() {

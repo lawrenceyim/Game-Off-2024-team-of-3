@@ -333,7 +333,7 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_v6qa1"]
 radius = 19.0
 
-[sub_resource type="Shader" id="Shader_hivo0"]
+[sub_resource type="Shader" id="Shader_ix5eg"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 
@@ -348,7 +348,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1arw6"]
 resource_local_to_scene = true
-shader = SubResource("Shader_hivo0")
+shader = SubResource("Shader_ix5eg")
 shader_parameter/lerp_percent = null
 
 [node name="DarkLionEnemy" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_alertLabel", "_hitFlash")]

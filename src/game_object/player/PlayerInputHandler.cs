@@ -8,7 +8,7 @@ public partial class PlayerInputHandler : Node, IInputListener {
 	[Export] private PlayerCamera _camera;
 
 	public override void _Ready() {
-		InputManager.GetInstance().AddListener(this);
+		InputManager.GetInstance().ReplaceCurrentListener(this);
 	}
 
 	public void ProcessInput() {

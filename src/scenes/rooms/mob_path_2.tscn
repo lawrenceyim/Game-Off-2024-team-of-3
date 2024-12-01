@@ -1,10 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://dy7ye3ffgwcy0"]
+[gd_scene load_steps=20 format=3 uid="uid://dy7ye3ffgwcy0"]
 
 [ext_resource type="Texture2D" uid="uid://dxll8v3iehm1l" path="res://scenes/rooms/Mob Path 2.png" id="1_nwj2g"]
 [ext_resource type="PackedScene" uid="uid://brli2lq6jvaqg" path="res://vfx/fog_effect.tscn" id="1_ooopw"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="2_wbolr"]
 [ext_resource type="Texture2D" uid="uid://bj7a3y6ub4wre" path="res://assets/vfx/Arrow.png" id="3_ljsnc"]
+[ext_resource type="Script" path="res://scripts/scene_management/SceneTransitionZone.cs" id="4_463pi"]
 [ext_resource type="PackedScene" uid="uid://b6wiqmly6d6rd" path="res://game_object/tree/tree.tscn" id="5_b43ky"]
+[ext_resource type="PackedScene" uid="uid://bmltqrmlv1u3w" path="res://scenes/rooms/final_boss_room.tscn" id="5_k7am0"]
 [ext_resource type="PackedScene" uid="uid://26cf244jidne" path="res://game_object/bat_enemy/bat_enemy.tscn" id="6_h4o0i"]
 [ext_resource type="PackedScene" uid="uid://ddikru4jh4tn8" path="res://game_object/darklion_enemy/dark_lion_enemy.tscn" id="7_571ea"]
 [ext_resource type="PackedScene" uid="uid://dkqxnp3rgn3mj" path="res://game_object/floating_enemy/floating_enemy.tscn" id="8_34ktc"]
@@ -92,9 +94,12 @@ shape = SubResource("RectangleShape2D_cyn6o")
 position = Vector2(1875, 0)
 shape = SubResource("RectangleShape2D_cyn6o")
 
-[node name="NextStageEntrance" type="Area2D" parent="."]
+[node name="NextStageEntrance" type="Area2D" parent="." node_paths=PackedStringArray("_currentScene")]
 position = Vector2(172, 1576)
 rotation = 1.5708
+script = ExtResource("4_463pi")
+_currentScene = NodePath("..")
+_nextScene = ExtResource("5_k7am0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NextStageEntrance"]
 position = Vector2(204, 2)
