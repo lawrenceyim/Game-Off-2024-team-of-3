@@ -41,6 +41,7 @@ public partial class SceneManager : Node {
 		GetTree().Root.AddChild(_currentLevelPackedScene.Instantiate());
 	}
 
+	// Called by SceneLevel nodes in their _Ready method
 	public void SetCurrentLevel(Node currentLevel, string filepath) {
 		_activeScene = currentLevel;
 		_currentLevelPackedScene = (PackedScene) ResourceLoader.Load(filepath);

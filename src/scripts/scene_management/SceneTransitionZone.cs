@@ -10,7 +10,11 @@ public partial class SceneTransitionZone : Area2D {
 	public void ChangeScene(Node2D body) {
 		GD.Print("Player enetered zone");
 		if (body is PlayerCharacter) {
-			SceneManager.GetInstance().SwitchLevel(_nextScene);
+			CallDeferred(nameof(DeferredChangeScene));
 		}
+	}
+
+	private void DeferredChangeScene() {
+		SceneManager.GetInstance().SwitchLevel(_nextScene);
 	}
 }
