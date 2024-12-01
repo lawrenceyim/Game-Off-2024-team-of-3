@@ -9,7 +9,6 @@ public partial class PlayerCamera : Camera2D {
 	private const float Amplitude = 100f;
 	private const float TraumaDuration = 1f;
 	private readonly FastNoiseLite _noise = new FastNoiseLite();
-	[Export] private PlayerCharacter _playerCharacter;
 	private Timer _traumaTimer;
 	private double _trauma = 0;
 	private float _traumaPower = 2;
