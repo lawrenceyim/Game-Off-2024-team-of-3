@@ -35,8 +35,6 @@ public partial class PlayerCharacter : CharacterBody2D, IDamageable {
 	}
 
 	public void TakeDamage(int damage) {
-		// Play damaged sfx
-		// Add damaged vfx
 		_health.DecreaseHealth(damage);
 		_playerCamera.AddTrauma(1);
 		_onHitAnimationPlayer.Play(OnHitAnimation);

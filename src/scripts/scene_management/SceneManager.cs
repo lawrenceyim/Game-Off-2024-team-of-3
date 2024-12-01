@@ -3,7 +3,6 @@
 */
 
 using Godot;
-using System.Collections.Generic;
 
 public partial class SceneManager : Node {
 	private static SceneManager _instance;
