@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmltqrmlv1u3w"]
+[gd_scene load_steps=11 format=3 uid="uid://bmltqrmlv1u3w"]
 
 [ext_resource type="Script" path="res://scripts/scene_management/LevelScene.cs" id="1_5xok0"]
 [ext_resource type="Texture2D" uid="uid://5t87ifsf6rxc" path="res://scenes/rooms/Final Boss Room.png" id="1_44acm"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://xv6g486dj7m7" path="res://game_object/final_boss/final_boss.tscn" id="3_hg441"]
 [ext_resource type="PackedScene" uid="uid://b6wiqmly6d6rd" path="res://game_object/tree/tree.tscn" id="4_icark"]
 [ext_resource type="PackedScene" uid="uid://ddikru4jh4tn8" path="res://game_object/darklion_enemy/dark_lion_enemy.tscn" id="6_jl36t"]
+[ext_resource type="AudioStream" uid="uid://bs0f30e5ueeyi" path="res://assets/audio/Hunter 1 (final boss) M 11-21-24.wav" id="8_qljo2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hwrqh"]
 size = Vector2(3550, 200)
@@ -123,6 +124,10 @@ position = Vector2(434, -163)
 
 [node name="DarkLionEnemy3" parent="Enemies" instance=ExtResource("6_jl36t")]
 position = Vector2(2, -468)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_qljo2")
+autoplay = true
 
 [editable path="Trees/Tree"]
 [editable path="Trees/Tree2"]

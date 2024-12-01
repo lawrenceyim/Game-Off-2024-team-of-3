@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cnkel5owcjb3g"]
+[gd_scene load_steps=22 format=3 uid="uid://cnkel5owcjb3g"]
 
 [ext_resource type="Texture2D" uid="uid://dfyno7jnj2vpm" path="res://scenes/rooms/Mob Path 1.png" id="1_5r1w2"]
 [ext_resource type="Script" path="res://scripts/scene_management/LevelScene.cs" id="1_ievg5"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/scene_management/SceneTransitionZone.cs" id="8_14us6"]
 [ext_resource type="Texture2D" uid="uid://bj7a3y6ub4wre" path="res://assets/vfx/Arrow.png" id="8_ukbdh"]
 [ext_resource type="PackedScene" uid="uid://uhbgouejxh8" path="res://scenes/rooms/first_boss_room.tscn" id="9_m01dr"]
+[ext_resource type="AudioStream" uid="uid://djx4f6765t531" path="res://assets/audio/Hunter Combat 1 M 11-21-24.wav" id="12_pcj1a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lyc8t"]
 size = Vector2(3550, 200)
@@ -238,6 +239,10 @@ sprite_frames = SubResource("SpriteFrames_52003")
 autoplay = "default"
 frame = 2
 frame_progress = 0.746187
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_pcj1a")
+autoplay = true
 
 [editable path="Trees/Tree2"]
 [editable path="Trees/Tree3"]

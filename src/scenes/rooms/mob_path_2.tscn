@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dy7ye3ffgwcy0"]
+[gd_scene load_steps=22 format=3 uid="uid://dy7ye3ffgwcy0"]
 
 [ext_resource type="Texture2D" uid="uid://dxll8v3iehm1l" path="res://scenes/rooms/Mob Path 2.png" id="1_nwj2g"]
 [ext_resource type="PackedScene" uid="uid://brli2lq6jvaqg" path="res://vfx/fog_effect.tscn" id="1_ooopw"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://26cf244jidne" path="res://game_object/bat_enemy/bat_enemy.tscn" id="6_h4o0i"]
 [ext_resource type="PackedScene" uid="uid://ddikru4jh4tn8" path="res://game_object/darklion_enemy/dark_lion_enemy.tscn" id="7_571ea"]
 [ext_resource type="PackedScene" uid="uid://dkqxnp3rgn3mj" path="res://game_object/floating_enemy/floating_enemy.tscn" id="8_34ktc"]
+[ext_resource type="AudioStream" uid="uid://cpjewj8mtirtj" path="res://assets/audio/Hunter Combat 2 M 11-21-24.wav" id="12_1abvm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_26mmb"]
 size = Vector2(3550, 200)
@@ -301,6 +302,10 @@ position = Vector2(-470, -1343)
 
 [node name="FloatingEnemy3" parent="Enemies" instance=ExtResource("8_34ktc")]
 position = Vector2(1353, -668)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_1abvm")
+autoplay = true
 
 [editable path="Trees/Tree"]
 [editable path="Trees/Tree3"]

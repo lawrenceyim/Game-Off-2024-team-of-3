@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://uhbgouejxh8"]
+[gd_scene load_steps=21 format=3 uid="uid://uhbgouejxh8"]
 
 [ext_resource type="Script" path="res://scripts/scene_management/LevelScene.cs" id="1_l3rv5"]
 [ext_resource type="PackedScene" uid="uid://cp0rxpjfn7ga1" path="res://game_object/player/player.tscn" id="1_woenx"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dovgvwa4c7xqb" path="res://game_object/werewolf_boss/werewolf_boss.tscn" id="4_yw2ou"]
 [ext_resource type="PackedScene" uid="uid://26cf244jidne" path="res://game_object/bat_enemy/bat_enemy.tscn" id="5_ir7p6"]
 [ext_resource type="Texture2D" uid="uid://bj7a3y6ub4wre" path="res://assets/vfx/Arrow.png" id="7_vudx3"]
+[ext_resource type="AudioStream" uid="uid://ca5hfj35ydtay" path="res://assets/audio/Hunter Out of Combat 1 M 11-22-24.wav" id="11_7t4ao"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_32n0c"]
 size = Vector2(3550, 200)
@@ -250,6 +251,10 @@ debug_color = Color(1, 0, 0, 1)
 scale = Vector2(5, 5)
 sprite_frames = SubResource("SpriteFrames_ct6tt")
 autoplay = "default"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_7t4ao")
+autoplay = true
 
 [editable path="Trees/Tree2"]
 [editable path="Trees/Tree6"]
